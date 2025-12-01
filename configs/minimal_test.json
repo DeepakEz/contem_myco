@@ -1,0 +1,24 @@
+{
+  "experiment_name": "minimal_test",
+  "environment_width": 15,
+  "environment_height": 15,
+  "initial_population": 5,
+  "max_population": 20,
+  "max_steps": 100,
+  "save_interval": 25,
+  "enable_overmind": false,
+  "brain_input_size": 12,
+  "brain_hidden_size": 24,
+  "brain_output_size": 6,
+  "output_directory": "results_minimal",
+  "contemplative_config": {
+    "enable_contemplative_processing": true,
+    "mindfulness_update_frequency": 5,
+    "wisdom_signal_strength": 0.5,
+    "collective_meditation_threshold": 0.8,
+    "ethical_reasoning_depth": 2,
+    "contemplative_memory_capacity": 200,
+    "wisdom_sharing_radius": 2,
+    "compassion_sensitivity": 0.7
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "experiment_name": "advanced_contemplative_study",
+  "environment_width": 40,
+  "environment_height": 40,
+  "initial_population": 20,
+  "max_population": 100,
+  "max_steps": 1000,
+  "save_interval": 100,
+  "visualization_interval": 25,
+  "enable_overmind": true,
+  "overmind_intervention_frequency": 15,
+  "brain_input_size": 16,
+  "brain_hidden_size": 32,
+  "brain_output_size": 8,
+  "output_directory": "results_advanced",
+  "track_wisdom_propagation": true,
+  "track_collective_behavior": true,
+  "track_ethical_decisions": true,
+  "contemplative_config": {
+    "enable_contemplative_processing": true,
+    "mindfulness_update_frequency": 10,
+    "wisdom_signal_strength": 0.8,
+    "collective_meditation_threshold": 0.6,
+    "ethical_reasoning_depth": 5,
+    "contemplative_memory_capacity": 1000,
+    "wisdom_sharing_radius": 5,
+    "compassion_sensitivity": 0.9
+  },
+  "wisdom_signal_config": {
+    "signal_types": [
+      "ethical_insight",
+      "suffering_alert",
+      "compassion_gradient",
+      "wisdom_beacon",
+      "meditation_sync",
+      "cooperation_call",
+      "mindfulness_wave"
+    ],
+    "base_diffusion_rate": 0.1,
+    "base_decay_rate": 0.05,
+    "propagation_distance": 5,
+    "intensity_threshold": 0.1,
+    "cross_signal_interference": true
+  }
+}
