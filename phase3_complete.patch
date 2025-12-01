@@ -1,0 +1,285 @@
+--- phase3_overmind_original.py
++++ phase3_overmind_complete.py
+@@ -22,6 +22,85 @@
+ 
+ logger = logging.getLogger(__name__)
+ 
++class OvermindActionType(Enum):
++    """Actions available to the overmind"""
++    NO_ACTION = 0
++    TRIGGER_COLLECTIVE_MEDITATION = 1
++    PROMOTE_COOPERATION = 2
++    ENHANCE_WISDOM_PROPAGATION = 3
++    INCREASE_RESOURCE_REGENERATION = 4
++    REDUCE_ENVIRONMENTAL_HAZARDS = 5
++    REDISTRIBUTE_RESOURCES = 6
++    IMPROVE_COMMUNICATION = 7
++    ENFORCE_BOUNDARIES = 8
++    ENCOURAGE_EXPLORATION = 9
++    INITIATE_HEALING_PROTOCOL = 10
++    FOCUS_ON_SUSTAINABILITY = 11
++    STRENGTHEN_DEFENSES = 12
++    FACILITATE_KNOWLEDGE_TRANSFER = 13
++    BALANCE_INDIVIDUAL_COLLECTIVE_NEEDS = 14
++
++class ColonyMetrics:
++    """Comprehensive colony state metrics"""
++    def __init__(self, agents: List):
++        self.total_population = len(agents)
++        self.average_energy = np.mean([getattr(a, 'energy', 0.5) for a in agents])
++        self.average_health = np.mean([getattr(a, 'health', 0.5) for a in agents])
++        self.collective_mindfulness = np.mean([getattr(a, 'mindfulness_level', 0.5) for a in agents])
++        self.average_wisdom = np.mean([getattr(a, 'wisdom_accumulated', 0) for a in agents])
++        self.cooperation_rate = self._calculate_cooperation_rate(agents)
++        self.conflict_rate = self._calculate_conflict_rate(agents)
++        self.wisdom_sharing_frequency = self._calculate_wisdom_sharing(agents)
++        self.innovation_rate = np.mean([getattr(a, 'innovation_capacity', 0.4) for a in agents])
++        self.resource_distribution_equity = self._calculate_resource_equity(agents)
++        self.sustainability_index = self._calculate_sustainability(agents)
++        self.wisdom_emergence_rate = self._calculate_wisdom_emergence(agents)
++        
++    def crisis_level(self) -> float:
++        """Calculate overall crisis level"""
++        health_crisis = max(0, 1.0 - self.average_health)
++        energy_crisis = max(0, 1.0 - self.average_energy)
++        conflict_crisis = self.conflict_rate
++        return min(1.0, (health_crisis + energy_crisis + conflict_crisis) / 2.0)
++    
++    def overall_wellbeing(self) -> float:
++        """Calculate overall colony wellbeing"""
++        return (self.average_health * 0.3 + 
++                self.average_energy * 0.3 + 
++                self.collective_mindfulness * 0.2 +
++                (1.0 - self.conflict_rate) * 0.2)
++    
++    def _calculate_cooperation_rate(self, agents: List) -> float:
++        """Calculate cooperation rate among agents"""
++        if len(agents) < 2:
++            return 1.0
++        cooperative_actions = sum(1 for a in agents if getattr(a, 'cooperation_tendency', 0.5) > 0.6)
++        return cooperative_actions / len(agents)
++    
++    def _calculate_conflict_rate(self, agents: List) -> float:
++        """Calculate conflict rate among agents"""
++        if len(agents) < 2:
++            return 0.0
++        conflict_count = sum(1 for a in agents if getattr(a, 'conflict_tendency', 0.2) > 0.5)
++        return conflict_count / len(agents)
++    
++    def _calculate_wisdom_sharing(self, agents: List) -> float:
++        """Calculate wisdom sharing frequency"""
++        sharing_agents = sum(1 for a in agents if getattr(a, 'wisdom_accumulated', 0) > 2.0)
++        return sharing_agents / max(1, len(agents))
++    
++    def _calculate_resource_equity(self, agents: List) -> float:
++        """Calculate resource distribution equity using Gini coefficient"""
++        energies = [getattr(a, 'energy', 0.5) for a in agents]
++        if not energies or np.sum(energies) == 0:
++            return 1.0
++        gini = 1.0 - 2 * np.sum(np.cumsum(sorted(energies))) / (len(energies) * np.sum(energies))
++        return 1.0 - gini  # Convert so higher is more equitable
++    
++    def _calculate_sustainability(self, agents: List) -> float:
++        """Calculate sustainability index"""
++        energy_efficiency = np.mean([getattr(a, 'energy_efficiency', 0.5) for a in agents])
++        resource_conservation = np.mean([getattr(a, 'resource_conservation_tendency', 0.5) for a in agents])
++        return (energy_efficiency + resource_conservation) / 2.0
++    
++    def _calculate_wisdom_emergence(self, agents: List) -> float:
++        """Calculate rate of wisdom emergence"""
++        wisdom_levels = [getattr(a, 'wisdom_accumulated', 0) for a in agents]
++        if len(wisdom_levels) < 2:
++            return 0.0
++        wisdom_variance = np.var(wisdom_levels)
++        avg_wisdom = np.mean(wisdom_levels)
++        return min(1.0, avg_wisdom / 10.0 * (1.0 / (1.0 + wisdom_variance)))
++
++class EnvironmentalState:
++    """Environmental conditions"""
++    def __init__(self, temperature: float = 25.0, resource_abundance: float = 0.7):
++        self.temperature = temperature
++        self.resource_abundance = resource_abundance
++        self.hazard_level = 0.2
++        self.season = "balanced"
++        self.time_of_day = "midday"
++        
+ class RitualType(Enum):
+     """Types of collective rituals the overmind can orchestrate"""
+     SYNCHRONIZED_MEDITATION = "synchronized_meditation"
+@@ -1733,7 +1812,61 @@
+         for proposal in proposals:
+             for resource, amount in proposal.resource_requirements.items():
+-                combined_requirements[resource]
++                combined_requirements[resource] += amount
++        
++        # Average confidence and urgency
++        avg_confidence = np.mean([p.confidence for p in proposals])
++        avg_urgency = np.mean([p.urgency for p in proposals])
++        
++        # Combined affected agent count
++        total_affected = sum(p.affected_agent_count for p in proposals)
++        
++        return SubColonyProposal(
++            sub_colony_id="synthesized_" + "_".join([p.sub_colony_id for p in proposals]),
++            proposed_action=primary_proposal.proposed_action,
++            justification=f"Synthesized proposal: {combined_justification}",
++            expected_benefits=dict(combined_benefits),
++            resource_requirements=dict(combined_requirements),
++            affected_agent_count=total_affected,
++            confidence=avg_confidence,
++            urgency=avg_urgency,
++            negotiation_stance=NegotiationStance.COOPERATIVE,
++            alternative_actions=list(action_group)
++        )
++    
++    def _calculate_expected_benefits(self, action: OvermindActionType, metrics: Dict[str, float]) -> Dict[str, float]:
++        """Calculate expected benefits of an action"""
++        benefits = {}
++        
++        if action == OvermindActionType.TRIGGER_COLLECTIVE_MEDITATION:
++            benefits['mindfulness_increase'] = 0.3 * (1.0 - metrics.get('average_mindfulness', 0.5))
++            benefits['stress_reduction'] = 0.4
++            benefits['wisdom_gain'] = 0.2
++        elif action == OvermindActionType.PROMOTE_COOPERATION:
++            benefits['cooperation_increase'] = 0.4 * (1.0 - metrics.get('internal_cooperation', 0.5))
++            benefits['conflict_reduction'] = 0.3
++            benefits['productivity_boost'] = 0.2
++        elif action == OvermindActionType.INCREASE_RESOURCE_REGENERATION:
++            benefits['energy_regeneration'] = 0.5
++            benefits['sustainability_improvement'] = 0.3
++            benefits['long_term_stability'] = 0.4
++        elif action == OvermindActionType.ENHANCE_WISDOM_PROPAGATION:
++            benefits['wisdom_spread'] = 0.6
++            benefits['learning_acceleration'] = 0.4
++            benefits['innovation_boost'] = 0.3
++        else:
++            benefits['general_improvement'] = 0.3
++            
++        return benefits
++    
++    def _estimate_resource_requirements(self, action: OvermindActionType, agent_count: int) -> Dict[str, float]:
++        """Estimate resource requirements for an action"""
++        base_costs = {
++            OvermindActionType.TRIGGER_COLLECTIVE_MEDITATION: {'energy': 0.05, 'time': 8},
++            OvermindActionType.PROMOTE_COOPERATION: {'energy': 0.04, 'time': 6},
++            OvermindActionType.INCREASE_RESOURCE_REGENERATION: {'energy': 0.1, 'time': 10},
++            OvermindActionType.ENHANCE_WISDOM_PROPAGATION: {'energy': 0.06, 'time': 12},
++        }
++        
++        costs = base_costs.get(action, {'energy': 0.05, 'time': 5})
++        return {k: v * (agent_count / 10.0) for k, v in costs.items()}
++    
++    def _generate_justification(self, need: str, metrics: Dict[str, float], sub_colony_id: str) -> str:
++        """Generate justification for proposal"""
++        justifications = {
++            'energy_shortage': f"Sub-colony {sub_colony_id} experiencing critical energy shortage ({metrics.get('average_energy', 0):.2f})",
++            'low_cooperation': f"Internal cooperation breakdown in {sub_colony_id} ({metrics.get('internal_cooperation', 0):.2f})",
++            'low_mindfulness': f"Mindfulness deficit in {sub_colony_id} threatens collective harmony",
++            'wisdom_deficit': f"Wisdom stagnation in {sub_colony_id} limiting growth potential",
++            'health_crisis': f"Health emergency in {sub_colony_id} requires immediate intervention",
++            'poor_communication': f"Communication breakdown in {sub_colony_id} causing fragmentation"
++        }
++        return justifications.get(need, f"Intervention needed for {sub_colony_id}")
++    
++    def _calculate_proposal_confidence(self, metrics: Dict[str, float], need: str) -> float:
++        """Calculate confidence in proposal success"""
++        base_confidence = 0.5
++        
++        # Adjust based on sub-colony cohesion
++        cohesion_boost = metrics.get('cohesion_score', 0.5) * 0.3
++        
++        # Adjust based on severity of need
++        severity_multiplier = {
++            'energy_shortage': 0.9,
++            'health_crisis': 0.9,
++            'low_cooperation': 0.7,
++            'low_mindfulness': 0.6,
++            'wisdom_deficit': 0.5,
++            'poor_communication': 0.6
++        }.get(need, 0.5)
++        
++        return min(1.0, base_confidence + cohesion_boost) * severity_multiplier
++    
++    def _calculate_proposal_urgency(self, metrics: Dict[str, float], need: str) -> float:
++        """Calculate urgency of proposal"""
++        urgency_factors = {
++            'energy_shortage': 1.0 - metrics.get('average_energy', 0.5),
++            'health_crisis': 1.0 - metrics.get('average_health', 0.5),
++            'low_cooperation': metrics.get('conflict_rate', 0.3) * 2.0,
++            'low_mindfulness': 0.5,
++            'wisdom_deficit': 0.3,
++            'poor_communication': 1.0 - metrics.get('cohesion_score', 0.5)
++        }
++        return min(1.0, urgency_factors.get(need, 0.5))
++    
++    def _generate_alternatives(self, primary_action: OvermindActionType) -> List[OvermindActionType]:
++        """Generate alternative actions"""
++        alternatives = {
++            OvermindActionType.TRIGGER_COLLECTIVE_MEDITATION: [
++                OvermindActionType.ENHANCE_WISDOM_PROPAGATION,
++                OvermindActionType.PROMOTE_COOPERATION
++            ],
++            OvermindActionType.PROMOTE_COOPERATION: [
++                OvermindActionType.IMPROVE_COMMUNICATION,
++                OvermindActionType.TRIGGER_COLLECTIVE_MEDITATION
++            ],
++            OvermindActionType.INCREASE_RESOURCE_REGENERATION: [
++                OvermindActionType.REDISTRIBUTE_RESOURCES,
++                OvermindActionType.FOCUS_ON_SUSTAINABILITY
++            ],
++            OvermindActionType.ENHANCE_WISDOM_PROPAGATION: [
++                OvermindActionType.FACILITATE_KNOWLEDGE_TRANSFER,
++                OvermindActionType.TRIGGER_COLLECTIVE_MEDITATION
++            ]
++        }
++        return alternatives.get(primary_action, [OvermindActionType.NO_ACTION])
++    
++    def _assess_colony_alignment(self, proposal: SubColonyProposal, colony_metrics: ColonyMetrics) -> float:
++        """Assess how well proposal aligns with overall colony needs"""
++        alignment_score = 0.0
++        
++        # Crisis alignment
++        if colony_metrics.crisis_level() > 0.6:
++            if proposal.urgency > 0.7:
++                alignment_score += 0.4
++        
++        # Resource alignment
++        if colony_metrics.average_energy < 0.4:
++            if proposal.proposed_action == OvermindActionType.INCREASE_RESOURCE_REGENERATION:
++                alignment_score += 0.3
++        
++        # Cooperation alignment
++        if colony_metrics.cooperation_rate < 0.5:
++            if proposal.proposed_action in [OvermindActionType.PROMOTE_COOPERATION, 
++                                           OvermindActionType.IMPROVE_COMMUNICATION]:
++                alignment_score += 0.3
++        
++        return min(1.0, alignment_score)
++    
++    def _assess_resource_efficiency(self, proposal: SubColonyProposal) -> float:
++        """Assess resource efficiency of proposal"""
++        total_cost = sum(proposal.resource_requirements.values())
++        total_benefit = sum(proposal.expected_benefits.values())
++        
++        if total_cost == 0:
++            return 1.0
++            
++        efficiency = total_benefit / (total_cost + 0.1)
++        return min(1.0, efficiency / 2.0)  # Normalize to 0-1
++    
++    def _assess_non_interference(self, proposal: SubColonyProposal) -> float:
++        """Assess non-interference with other sub-colonies"""
++        # Simple heuristic based on affected agent count
++        interference_factor = proposal.affected_agent_count / 100.0
++        return max(0.0, 1.0 - interference_factor)
++
++class OvermindDecision:
++    """Decision made by overmind"""
++    def __init__(self, chosen_action: OvermindActionType, confidence: float = 0.7, 
++                 urgency: float = 0.5, success_probability: float = 0.7):
++        self.chosen_action = chosen_action
++        self.confidence = confidence
++        self.urgency = urgency
++        self.success_probability = success_probability
++        self.expected_impact = {}
++        self.timestamp = time.time()

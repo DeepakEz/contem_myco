@@ -1,0 +1,25 @@
+2025-07-25 23:38:23,585 - overmind_overmind_1753466903 - INFO - Simulation initialized with 30 agents.
+2025-07-25 23:38:23,585 - overmind_overmind_1753466903 - INFO - Overmind 'overmind_1753466903' is active and fully modular.
+2025-07-25 23:38:23,585 - overmind_overmind_1753466903 - INFO - Starting simulation run for 500 steps.
+2025-07-25 23:38:29,601 - overmind_overmind_1753466903 - INFO - Decision at step 0: TRIGGER_COLLECTIVE_MEDITATION (confidence: 0.700, processing: 605.7ms)
+2025-07-25 23:38:29,601 - overmind_overmind_1753466903 - INFO - Decision at step 0: TRIGGER_COLLECTIVE_MEDITATION (confidence: 0.700, processing: 0.0ms)
+2025-07-25 23:38:29,602 - overmind_overmind_1753466903 - ERROR - A critical error occurred during the simulation: 'ColonyMetrics' object has no attribute 'living_agents'
+Traceback (most recent call last):
+  File "F:\scrolllife\myconet_new\contem_myco\myconet_contemplative_main.py", line 312, in main
+    simulation.run()
+    ~~~~~~~~~~~~~~^^
+  File "F:\scrolllife\myconet_new\contem_myco\myconet_contemplative_main.py", line 168, in run
+    self._simulation_step()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "F:\scrolllife\myconet_new\contem_myco\myconet_contemplative_main.py", line 213, in _simulation_step
+    self._log_run_data(colony_metrics)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "F:\scrolllife\myconet_new\contem_myco\myconet_contemplative_main.py", line 235, in _log_run_data
+    "avg_wisdom": np.mean([a.wisdom_accumulated for a in metrics.living_agents]) if metrics.living_agents else 0,
+                                                                                    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'ColonyMetrics' object has no attribute 'living_agents'
+2025-07-25 23:38:29,616 - overmind_overmind_1753466903 - INFO - ==================================================
+2025-07-25 23:38:29,617 - overmind_overmind_1753466903 - INFO - SIMULATION ENDED
+2025-07-25 23:38:29,617 - overmind_overmind_1753466903 - INFO - ==================================================
+2025-07-25 23:38:29,617 - overmind_overmind_1753466903 - INFO - Generating final simulation summary...
+2025-07-25 23:38:29,636 - overmind_overmind_1753466903 - INFO - Successfully exported simulation data to run_data.json

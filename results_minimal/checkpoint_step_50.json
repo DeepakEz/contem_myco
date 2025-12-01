@@ -1,0 +1,1858 @@
+{
+  "step": 50,
+  "config": {
+    "environment_width": 15,
+    "environment_height": 15,
+    "initial_population": 5,
+    "max_population": 20,
+    "max_steps": 100,
+    "save_interval": 25,
+    "visualization_interval": 50,
+    "contemplative_config": {
+      "enable_contemplative_processing": true,
+      "mindfulness_update_frequency": 5,
+      "wisdom_signal_strength": 0.5,
+      "collective_meditation_threshold": 0.8,
+      "ethical_reasoning_depth": 2,
+      "contemplative_memory_capacity": 200,
+      "wisdom_sharing_radius": 2,
+      "compassion_sensitivity": 0.7
+    },
+    "wisdom_signal_config": {
+      "signal_types": [
+        {
+          "_value_": "ethical_insight",
+          "_name_": "ETHICAL_INSIGHT",
+          "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000266AE338FE0>)>, '__module__': 'myconet_wisdom_signals', '__firstlineno__': 22, '__doc__': 'Types of wisdom signals that can propagate through the network', '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFE50F14700>, '_use_args_': False, '_member_names_': ['ETHICAL_INSIGHT', 'SUFFERING_ALERT', 'COMPASSION_GRADIENT', 'WISDOM_BEACON', 'MEDITATION_SYNC', 'COOPERATION_CALL', 'CAUTION_WARNING', 'MINDFULNESS_WAVE'], '_member_map_': {'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_value2member_map_': {'ethical_insight': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'suffering_alert': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'compassion_gradient': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'wisdom_beacon': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'meditation_sync': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'cooperation_call': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'caution_warning': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'mindfulness_wave': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_hashable_values_': ['ethical_insight', 'suffering_alert', 'compassion_gradient', 'wisdom_beacon', 'meditation_sync', 'cooperation_call', 'caution_warning', 'mindfulness_wave'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, 'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>, '__new__': <function Enum.__new__ at 0x00000266AE338D60>}",
+          "_sort_order_": 0
+        },
+        {
+          "_value_": "suffering_alert",
+          "_name_": "SUFFERING_ALERT",
+          "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000266AE338FE0>)>, '__module__': 'myconet_wisdom_signals', '__firstlineno__': 22, '__doc__': 'Types of wisdom signals that can propagate through the network', '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFE50F14700>, '_use_args_': False, '_member_names_': ['ETHICAL_INSIGHT', 'SUFFERING_ALERT', 'COMPASSION_GRADIENT', 'WISDOM_BEACON', 'MEDITATION_SYNC', 'COOPERATION_CALL', 'CAUTION_WARNING', 'MINDFULNESS_WAVE'], '_member_map_': {'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_value2member_map_': {'ethical_insight': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'suffering_alert': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'compassion_gradient': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'wisdom_beacon': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'meditation_sync': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'cooperation_call': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'caution_warning': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'mindfulness_wave': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_hashable_values_': ['ethical_insight', 'suffering_alert', 'compassion_gradient', 'wisdom_beacon', 'meditation_sync', 'cooperation_call', 'caution_warning', 'mindfulness_wave'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, 'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>, '__new__': <function Enum.__new__ at 0x00000266AE338D60>}",
+          "_sort_order_": 1
+        },
+        {
+          "_value_": "compassion_gradient",
+          "_name_": "COMPASSION_GRADIENT",
+          "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000266AE338FE0>)>, '__module__': 'myconet_wisdom_signals', '__firstlineno__': 22, '__doc__': 'Types of wisdom signals that can propagate through the network', '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFE50F14700>, '_use_args_': False, '_member_names_': ['ETHICAL_INSIGHT', 'SUFFERING_ALERT', 'COMPASSION_GRADIENT', 'WISDOM_BEACON', 'MEDITATION_SYNC', 'COOPERATION_CALL', 'CAUTION_WARNING', 'MINDFULNESS_WAVE'], '_member_map_': {'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_value2member_map_': {'ethical_insight': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'suffering_alert': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'compassion_gradient': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'wisdom_beacon': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'meditation_sync': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'cooperation_call': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'caution_warning': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'mindfulness_wave': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_hashable_values_': ['ethical_insight', 'suffering_alert', 'compassion_gradient', 'wisdom_beacon', 'meditation_sync', 'cooperation_call', 'caution_warning', 'mindfulness_wave'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, 'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>, '__new__': <function Enum.__new__ at 0x00000266AE338D60>}",
+          "_sort_order_": 2
+        },
+        {
+          "_value_": "wisdom_beacon",
+          "_name_": "WISDOM_BEACON",
+          "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000266AE338FE0>)>, '__module__': 'myconet_wisdom_signals', '__firstlineno__': 22, '__doc__': 'Types of wisdom signals that can propagate through the network', '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFE50F14700>, '_use_args_': False, '_member_names_': ['ETHICAL_INSIGHT', 'SUFFERING_ALERT', 'COMPASSION_GRADIENT', 'WISDOM_BEACON', 'MEDITATION_SYNC', 'COOPERATION_CALL', 'CAUTION_WARNING', 'MINDFULNESS_WAVE'], '_member_map_': {'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_value2member_map_': {'ethical_insight': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'suffering_alert': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'compassion_gradient': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'wisdom_beacon': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'meditation_sync': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'cooperation_call': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'caution_warning': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'mindfulness_wave': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_hashable_values_': ['ethical_insight', 'suffering_alert', 'compassion_gradient', 'wisdom_beacon', 'meditation_sync', 'cooperation_call', 'caution_warning', 'mindfulness_wave'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, 'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>, '__new__': <function Enum.__new__ at 0x00000266AE338D60>}",
+          "_sort_order_": 3
+        },
+        {
+          "_value_": "meditation_sync",
+          "_name_": "MEDITATION_SYNC",
+          "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000266AE338FE0>)>, '__module__': 'myconet_wisdom_signals', '__firstlineno__': 22, '__doc__': 'Types of wisdom signals that can propagate through the network', '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFE50F14700>, '_use_args_': False, '_member_names_': ['ETHICAL_INSIGHT', 'SUFFERING_ALERT', 'COMPASSION_GRADIENT', 'WISDOM_BEACON', 'MEDITATION_SYNC', 'COOPERATION_CALL', 'CAUTION_WARNING', 'MINDFULNESS_WAVE'], '_member_map_': {'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_value2member_map_': {'ethical_insight': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'suffering_alert': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'compassion_gradient': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'wisdom_beacon': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'meditation_sync': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'cooperation_call': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'caution_warning': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'mindfulness_wave': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_hashable_values_': ['ethical_insight', 'suffering_alert', 'compassion_gradient', 'wisdom_beacon', 'meditation_sync', 'cooperation_call', 'caution_warning', 'mindfulness_wave'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, 'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>, '__new__': <function Enum.__new__ at 0x00000266AE338D60>}",
+          "_sort_order_": 4
+        },
+        {
+          "_value_": "cooperation_call",
+          "_name_": "COOPERATION_CALL",
+          "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000266AE338FE0>)>, '__module__': 'myconet_wisdom_signals', '__firstlineno__': 22, '__doc__': 'Types of wisdom signals that can propagate through the network', '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFE50F14700>, '_use_args_': False, '_member_names_': ['ETHICAL_INSIGHT', 'SUFFERING_ALERT', 'COMPASSION_GRADIENT', 'WISDOM_BEACON', 'MEDITATION_SYNC', 'COOPERATION_CALL', 'CAUTION_WARNING', 'MINDFULNESS_WAVE'], '_member_map_': {'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_value2member_map_': {'ethical_insight': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'suffering_alert': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'compassion_gradient': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'wisdom_beacon': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'meditation_sync': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'cooperation_call': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'caution_warning': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'mindfulness_wave': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_hashable_values_': ['ethical_insight', 'suffering_alert', 'compassion_gradient', 'wisdom_beacon', 'meditation_sync', 'cooperation_call', 'caution_warning', 'mindfulness_wave'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, 'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>, '__new__': <function Enum.__new__ at 0x00000266AE338D60>}",
+          "_sort_order_": 5
+        },
+        {
+          "_value_": "caution_warning",
+          "_name_": "CAUTION_WARNING",
+          "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000266AE338FE0>)>, '__module__': 'myconet_wisdom_signals', '__firstlineno__': 22, '__doc__': 'Types of wisdom signals that can propagate through the network', '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFE50F14700>, '_use_args_': False, '_member_names_': ['ETHICAL_INSIGHT', 'SUFFERING_ALERT', 'COMPASSION_GRADIENT', 'WISDOM_BEACON', 'MEDITATION_SYNC', 'COOPERATION_CALL', 'CAUTION_WARNING', 'MINDFULNESS_WAVE'], '_member_map_': {'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_value2member_map_': {'ethical_insight': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'suffering_alert': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'compassion_gradient': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'wisdom_beacon': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'meditation_sync': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'cooperation_call': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'caution_warning': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'mindfulness_wave': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_hashable_values_': ['ethical_insight', 'suffering_alert', 'compassion_gradient', 'wisdom_beacon', 'meditation_sync', 'cooperation_call', 'caution_warning', 'mindfulness_wave'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, 'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>, '__new__': <function Enum.__new__ at 0x00000266AE338D60>}",
+          "_sort_order_": 6
+        },
+        {
+          "_value_": "mindfulness_wave",
+          "_name_": "MINDFULNESS_WAVE",
+          "__objclass__": "{'_generate_next_value_': <staticmethod(<function Enum._generate_next_value_ at 0x00000266AE338FE0>)>, '__module__': 'myconet_wisdom_signals', '__firstlineno__': 22, '__doc__': 'Types of wisdom signals that can propagate through the network', '__static_attributes__': (), '_new_member_': <built-in method __new__ of type object at 0x00007FFE50F14700>, '_use_args_': False, '_member_names_': ['ETHICAL_INSIGHT', 'SUFFERING_ALERT', 'COMPASSION_GRADIENT', 'WISDOM_BEACON', 'MEDITATION_SYNC', 'COOPERATION_CALL', 'CAUTION_WARNING', 'MINDFULNESS_WAVE'], '_member_map_': {'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_value2member_map_': {'ethical_insight': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'suffering_alert': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'compassion_gradient': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'wisdom_beacon': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'meditation_sync': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'cooperation_call': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'caution_warning': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'mindfulness_wave': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>}, '_hashable_values_': ['ethical_insight', 'suffering_alert', 'compassion_gradient', 'wisdom_beacon', 'meditation_sync', 'cooperation_call', 'caution_warning', 'mindfulness_wave'], '_unhashable_values_': [], '_unhashable_values_map_': {}, '_member_type_': <class 'object'>, '_value_repr_': None, 'ETHICAL_INSIGHT': <WisdomSignalType.ETHICAL_INSIGHT: 'ethical_insight'>, 'SUFFERING_ALERT': <WisdomSignalType.SUFFERING_ALERT: 'suffering_alert'>, 'COMPASSION_GRADIENT': <WisdomSignalType.COMPASSION_GRADIENT: 'compassion_gradient'>, 'WISDOM_BEACON': <WisdomSignalType.WISDOM_BEACON: 'wisdom_beacon'>, 'MEDITATION_SYNC': <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>, 'COOPERATION_CALL': <WisdomSignalType.COOPERATION_CALL: 'cooperation_call'>, 'CAUTION_WARNING': <WisdomSignalType.CAUTION_WARNING: 'caution_warning'>, 'MINDFULNESS_WAVE': <WisdomSignalType.MINDFULNESS_WAVE: 'mindfulness_wave'>, '__new__': <function Enum.__new__ at 0x00000266AE338D60>}",
+          "_sort_order_": 7
+        }
+      ],
+      "base_diffusion_rate": 0.1,
+      "base_decay_rate": 0.05,
+      "propagation_distance": 5,
+      "intensity_threshold": 0.1,
+      "cross_signal_interference": true,
+      "signal_amplification": {}
+    },
+    "enable_overmind": false,
+    "overmind_intervention_frequency": 10,
+    "brain_input_size": 12,
+    "brain_hidden_size": 24,
+    "brain_output_size": 6,
+    "experiment_name": "minimal_test_seed42",
+    "output_directory": "results_minimal",
+    "track_wisdom_propagation": true,
+    "track_collective_behavior": true,
+    "track_ethical_decisions": true
+  },
+  "agent_states": [
+    {
+      "agent_id": 0,
+      "x": 12,
+      "y": 13,
+      "energy": 0.6359614494000959,
+      "health": 1.0,
+      "age": 51,
+      "generation": 0,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.35695945371625754,
+      "decisions_made": 51,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 0,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.9650000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.7245923837025958,
+            "attention_coherence": 0.5460315346717834,
+            "attention_weights": [
+              0.037248607724905014,
+              0.03698906674981117,
+              0.04084315523505211,
+              0.04154767468571663,
+              0.05054203048348427,
+              0.0387553907930851,
+              0.05643199384212494,
+              0.034389153122901917,
+              0.03992900997400284,
+              0.03748445212841034,
+              0.054245464503765106,
+              0.03894978389143944,
+              0.03529675304889679,
+              0.034298647195100784,
+              0.0447966530919075,
+              0.03811027109622955,
+              0.05329740047454834,
+              0.03346960246562958,
+              0.04951733350753784,
+              0.04129844158887863,
+              0.04460997134447098,
+              0.04175015538930893,
+              0.043258365243673325,
+              0.03294050693511963
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5230239629745483,
+            "deontological": 0.4712309241294861,
+            "virtue_ethics": 0.5065467953681946,
+            "buddhist_compassion": 0.457224041223526,
+            "buddhist_wisdom": 0.5471376776695251,
+            "buddhist_combined": 0.5021808743476868,
+            "overall_ethical_score": 0.5010327100753784
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.7245923837025958,
+        "ethical_score": 0.5010327100753784,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 1,
+      "x": 3,
+      "y": 8,
+      "energy": 0.8107032091573212,
+      "health": 1.0,
+      "age": 51,
+      "generation": 0,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3667799344666913,
+      "decisions_made": 51,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 1,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.9650000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.745292526483536,
+            "attention_coherence": 0.5496227145195007,
+            "attention_weights": [
+              0.047651465982198715,
+              0.050858136266469955,
+              0.05293972045183182,
+              0.04196910932660103,
+              0.036989476531744,
+              0.05028243735432625,
+              0.03545403108000755,
+              0.037543222308158875,
+              0.04407404363155365,
+              0.03342406451702118,
+              0.030858898535370827,
+              0.04310661181807518,
+              0.03912417218089104,
+              0.048176359385252,
+              0.03195946291089058,
+              0.0646645799279213,
+              0.0286748968064785,
+              0.031580083072185516,
+              0.026503155007958412,
+              0.04800117015838623,
+              0.03429987654089928,
+              0.05732138454914093,
+              0.047787390649318695,
+              0.036756325513124466
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5225168466567993,
+            "deontological": 0.48847508430480957,
+            "virtue_ethics": 0.4767075777053833,
+            "buddhist_compassion": 0.5406286716461182,
+            "buddhist_wisdom": 0.4897424876689911,
+            "buddhist_combined": 0.5151855945587158,
+            "overall_ethical_score": 0.5036141276359558
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.745292526483536,
+        "ethical_score": 0.5036141276359558,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 2,
+      "x": 7,
+      "y": 11,
+      "energy": 0.98,
+      "health": 1.0,
+      "age": 51,
+      "generation": 0,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.21751699356558427,
+      "decisions_made": 51,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 2,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.9650000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.4318251619736356,
+            "attention_coherence": 0.48727428913116455,
+            "attention_weights": [
+              0.03397843986749649,
+              0.033810097724199295,
+              0.04277002438902855,
+              0.03650631010532379,
+              0.053314946591854095,
+              0.04146656021475792,
+              0.03297926113009453,
+              0.042364321649074554,
+              0.049756065011024475,
+              0.037767767906188965,
+              0.04039605334401131,
+              0.037543345242738724,
+              0.049001190811395645,
+              0.029009848833084106,
+              0.03661232814192772,
+              0.044022414833307266,
+              0.054468922317028046,
+              0.03706985339522362,
+              0.045201294124126434,
+              0.059704095125198364,
+              0.03488556295633316,
+              0.03995147719979286,
+              0.02835347130894661,
+              0.059066370129585266
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5522971153259277,
+            "deontological": 0.46559518575668335,
+            "virtue_ethics": 0.5049294233322144,
+            "buddhist_compassion": 0.5309731960296631,
+            "buddhist_wisdom": 0.5082558989524841,
+            "buddhist_combined": 0.519614577293396,
+            "overall_ethical_score": 0.5124102234840393
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.4318251619736356,
+        "ethical_score": 0.5124102234840393,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 3,
+      "x": 14,
+      "y": 4,
+      "energy": 0.98,
+      "health": 1.0,
+      "age": 51,
+      "generation": 0,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2904426329775055,
+      "decisions_made": 51,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 3,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.9650000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.5849824349085493,
+            "attention_coherence": 0.5177597999572754,
+            "attention_weights": [
+              0.04660988971590996,
+              0.034976158291101456,
+              0.0433526374399662,
+              0.035297829657793045,
+              0.03880530968308449,
+              0.045771289616823196,
+              0.03834386542439461,
+              0.050110772252082825,
+              0.03554384037852287,
+              0.0347626656293869,
+              0.03888890519738197,
+              0.03786390274763107,
+              0.05867030471563339,
+              0.042340755462646484,
+              0.035161323845386505,
+              0.034317415207624435,
+              0.042991556227207184,
+              0.02899690717458725,
+              0.045917488634586334,
+              0.06294369697570801,
+              0.06183827668428421,
+              0.027485797181725502,
+              0.041672591120004654,
+              0.037336815148591995
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.4862789809703827,
+            "deontological": 0.46536582708358765,
+            "virtue_ethics": 0.4843354821205139,
+            "buddhist_compassion": 0.5320133566856384,
+            "buddhist_wisdom": 0.46925780177116394,
+            "buddhist_combined": 0.50063556432724,
+            "overall_ethical_score": 0.4874503016471863
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.5849824349085493,
+        "ethical_score": 0.4874503016471863,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 4,
+      "x": 1,
+      "y": 8,
+      "energy": 0.94,
+      "health": 1.0,
+      "age": 51,
+      "generation": 0,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2937673309899567,
+      "decisions_made": 51,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 4,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.9650000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.591953508059184,
+            "attention_coherence": 0.519393801689148,
+            "attention_weights": [
+              0.03287286311388016,
+              0.0647682473063469,
+              0.02851603366434574,
+              0.046343494206666946,
+              0.03948036953806877,
+              0.032101694494485855,
+              0.05258804187178612,
+              0.043911661952733994,
+              0.04694069176912308,
+              0.05641879886388779,
+              0.03464384377002716,
+              0.03414437919855118,
+              0.031771622598171234,
+              0.04109435901045799,
+              0.044822774827480316,
+              0.03012198954820633,
+              0.04350858926773071,
+              0.02830129861831665,
+              0.04786881059408188,
+              0.036062758415937424,
+              0.04094862937927246,
+              0.03505733236670494,
+              0.038958434015512466,
+              0.06875326484441757
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5011600852012634,
+            "deontological": 0.4712846279144287,
+            "virtue_ethics": 0.5487207770347595,
+            "buddhist_compassion": 0.5053410530090332,
+            "buddhist_wisdom": 0.4613875448703766,
+            "buddhist_combined": 0.4833642840385437,
+            "overall_ethical_score": 0.49757879972457886
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.591953508059184,
+        "ethical_score": 0.49757879972457886,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 395767,
+      "x": 10,
+      "y": 0,
+      "energy": 0.6963524720797645,
+      "health": 1.0,
+      "age": 47,
+      "generation": 1,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2193660155984007,
+      "decisions_made": 47,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 395767,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.9250000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.4352131803830465,
+            "attention_coherence": 0.48516809940338135,
+            "attention_weights": [
+              0.04211180657148361,
+              0.052713487297296524,
+              0.024230962619185448,
+              0.03909148648381233,
+              0.05522436276078224,
+              0.0337735190987587,
+              0.0482059046626091,
+              0.041204169392585754,
+              0.04104314371943474,
+              0.04942142590880394,
+              0.029667530208826065,
+              0.045171916484832764,
+              0.0509125180542469,
+              0.04145383462309837,
+              0.039493411779403687,
+              0.03951815143227577,
+              0.042888183146715164,
+              0.04220786318182945,
+              0.040667641907930374,
+              0.041478171944618225,
+              0.03985003009438515,
+              0.04281320422887802,
+              0.03474650904536247,
+              0.042110707610845566
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.4943216145038605,
+            "deontological": 0.4718520939350128,
+            "virtue_ethics": 0.5458393692970276,
+            "buddhist_compassion": 0.4707415997982025,
+            "buddhist_wisdom": 0.45934098958969116,
+            "buddhist_combined": 0.46504127979278564,
+            "overall_ethical_score": 0.4884191155433655
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.4352131803830465,
+        "ethical_score": 0.4884191155433655,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 860084,
+      "x": 11,
+      "y": 3,
+      "energy": 0.97,
+      "health": 1.0,
+      "age": 46,
+      "generation": 1,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3444737455884636,
+      "decisions_made": 46,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 860084,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.9150000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.699641160170237,
+            "attention_coherence": 0.5457090139389038,
+            "attention_weights": [
+              0.030911628156900406,
+              0.03821353241801262,
+              0.046186335384845734,
+              0.05234371870756149,
+              0.036957308650016785,
+              0.04068796709179878,
+              0.04062899202108383,
+              0.04708055779337883,
+              0.03931602090597153,
+              0.03707373887300491,
+              0.04180074855685234,
+              0.04543691128492355,
+              0.045931532979011536,
+              0.03966231644153595,
+              0.03675822541117668,
+              0.04459645226597786,
+              0.053488343954086304,
+              0.033197373151779175,
+              0.04595475271344185,
+              0.05163053795695305,
+              0.03997686505317688,
+              0.04208708927035332,
+              0.03314204886555672,
+              0.036937013268470764
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.470232218503952,
+            "deontological": 0.5117512941360474,
+            "virtue_ethics": 0.5491984486579895,
+            "buddhist_compassion": 0.4582388401031494,
+            "buddhist_wisdom": 0.4713976979255676,
+            "buddhist_combined": 0.4648182690143585,
+            "overall_ethical_score": 0.4921637177467346
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.699641160170237,
+        "ethical_score": 0.4921637177467346,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 859990,
+      "x": 0,
+      "y": 7,
+      "energy": 0.9839856702169685,
+      "health": 1.0,
+      "age": 42,
+      "generation": 1,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2942040082327618,
+      "decisions_made": 42,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 859990,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8750000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.5938839932282765,
+            "attention_coherence": 0.5234257578849792,
+            "attention_weights": [
+              0.060882020741701126,
+              0.036569152027368546,
+              0.040951184928417206,
+              0.06266717612743378,
+              0.04026907682418823,
+              0.03609587624669075,
+              0.04644846171140671,
+              0.033107172697782516,
+              0.03215062618255615,
+              0.030048664659261703,
+              0.05560079589486122,
+              0.041599784046411514,
+              0.024731643497943878,
+              0.038147103041410446,
+              0.03686169534921646,
+              0.05493706464767456,
+              0.03332793712615967,
+              0.048643287271261215,
+              0.03761088848114014,
+              0.04000121355056763,
+              0.040678948163986206,
+              0.03888827562332153,
+              0.05491917207837105,
+              0.03486274182796478
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.532107412815094,
+            "deontological": 0.4914044439792633,
+            "virtue_ethics": 0.5516268014907837,
+            "buddhist_compassion": 0.4883750379085541,
+            "buddhist_wisdom": 0.48876631259918213,
+            "buddhist_combined": 0.4885706901550293,
+            "overall_ethical_score": 0.5104559659957886
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.5938839932282765,
+        "ethical_score": 0.5104559659957886,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 306555,
+      "x": 5,
+      "y": 3,
+      "energy": 1.0,
+      "health": 1.0,
+      "age": 42,
+      "generation": 2,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.24353259944585626,
+      "decisions_made": 42,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 306555,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8750000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.4863999933004379,
+            "attention_coherence": 0.4953421354293823,
+            "attention_weights": [
+              0.036109425127506256,
+              0.04913858324289322,
+              0.034101009368896484,
+              0.038597770035266876,
+              0.04576759412884712,
+              0.03241140767931938,
+              0.031220970675349236,
+              0.04368843510746956,
+              0.04727032408118248,
+              0.03520357981324196,
+              0.046040333807468414,
+              0.041362419724464417,
+              0.034677084535360336,
+              0.03564641997218132,
+              0.044807955622673035,
+              0.03494982421398163,
+              0.044280607253313065,
+              0.05854494497179985,
+              0.04580533131957054,
+              0.050427742302417755,
+              0.03848451003432274,
+              0.044056087732315063,
+              0.041875436902046204,
+              0.04553224518895149
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.4872922897338867,
+            "deontological": 0.5208315253257751,
+            "virtue_ethics": 0.4665210247039795,
+            "buddhist_compassion": 0.5081598162651062,
+            "buddhist_wisdom": 0.4864674210548401,
+            "buddhist_combined": 0.49731361865997314,
+            "overall_ethical_score": 0.49385443329811096
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.4863999933004379,
+        "ethical_score": 0.49385443329811096,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 738071,
+      "x": 3,
+      "y": 9,
+      "energy": 1.0,
+      "health": 1.0,
+      "age": 41,
+      "generation": 1,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.27066007766008304,
+      "decisions_made": 41,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 738071,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8650000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.5439687709013619,
+            "attention_coherence": 0.5112272500991821,
+            "attention_weights": [
+              0.0353943333029747,
+              0.03828967362642288,
+              0.050166334956884384,
+              0.03895648941397667,
+              0.05891384929418564,
+              0.0339152030646801,
+              0.043546926230192184,
+              0.046058762818574905,
+              0.039803508669137955,
+              0.04002559557557106,
+              0.03997541591525078,
+              0.03784879297018051,
+              0.05268761143088341,
+              0.03823210299015045,
+              0.043698955327272415,
+              0.039400819689035416,
+              0.05259020999073982,
+              0.0479559600353241,
+              0.04405808821320534,
+              0.03506806865334511,
+              0.03333562612533569,
+              0.03246430680155754,
+              0.041014354676008224,
+              0.03659899905323982
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.45543015003204346,
+            "deontological": 0.5051855444908142,
+            "virtue_ethics": 0.4837341606616974,
+            "buddhist_compassion": 0.489402174949646,
+            "buddhist_wisdom": 0.5460749864578247,
+            "buddhist_combined": 0.5177385807037354,
+            "overall_ethical_score": 0.4959653913974762
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.5439687709013619,
+        "ethical_score": 0.4959653913974762,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 802682,
+      "x": 4,
+      "y": 13,
+      "energy": 0.7199999999999995,
+      "health": 1.0,
+      "age": 38,
+      "generation": 3,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.22350474413950666,
+      "decisions_made": 38,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 802682,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8350000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.44318347970644645,
+            "attention_coherence": 0.4831564724445343,
+            "attention_weights": [
+              0.05101447552442551,
+              0.03427663818001747,
+              0.03524162247776985,
+              0.03477606922388077,
+              0.04051866754889488,
+              0.0453060120344162,
+              0.03479050472378731,
+              0.048578303307294846,
+              0.04387270659208298,
+              0.0451388955116272,
+              0.05335212126374245,
+              0.041746001690626144,
+              0.040579117834568024,
+              0.03300004079937935,
+              0.035729777067899704,
+              0.05038881301879883,
+              0.04070562124252319,
+              0.04049234092235565,
+              0.044751886278390884,
+              0.04937545955181122,
+              0.047134652733802795,
+              0.03724151849746704,
+              0.03137863427400589,
+              0.040610138326883316
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5158334374427795,
+            "deontological": 0.4843849241733551,
+            "virtue_ethics": 0.44703060388565063,
+            "buddhist_compassion": 0.5381442308425903,
+            "buddhist_wisdom": 0.4809228181838989,
+            "buddhist_combined": 0.5095335245132446,
+            "overall_ethical_score": 0.49326324462890625
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.44318347970644645,
+        "ethical_score": 0.49326324462890625,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 329192,
+      "x": 14,
+      "y": 14,
+      "energy": 0.8999999999999999,
+      "health": 1.0,
+      "age": 37,
+      "generation": 1,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.22828589297339247,
+      "decisions_made": 37,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 329192,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8250000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.45344140728314736,
+            "attention_coherence": 0.48694199323654175,
+            "attention_weights": [
+              0.05032896623015404,
+              0.03555737063288689,
+              0.03819990158081055,
+              0.036649033427238464,
+              0.04231987148523331,
+              0.03572351485490799,
+              0.028876831755042076,
+              0.04369806870818138,
+              0.05237293988466263,
+              0.034849006682634354,
+              0.04302478954195976,
+              0.053006984293460846,
+              0.04278397932648659,
+              0.03438754379749298,
+              0.048267047852277756,
+              0.05651708319783211,
+              0.050104185938835144,
+              0.03679650276899338,
+              0.053602103143930435,
+              0.03008754923939705,
+              0.034345220774412155,
+              0.04786020517349243,
+              0.030583735555410385,
+              0.040057651698589325
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.4784858822822571,
+            "deontological": 0.4818361699581146,
+            "virtue_ethics": 0.46696874499320984,
+            "buddhist_compassion": 0.4879673719406128,
+            "buddhist_wisdom": 0.5521323680877686,
+            "buddhist_combined": 0.5200498700141907,
+            "overall_ethical_score": 0.49347811937332153
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.45344140728314736,
+        "ethical_score": 0.49347811937332153,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 794096,
+      "x": 10,
+      "y": 12,
+      "energy": 0.99,
+      "health": 1.0,
+      "age": 36,
+      "generation": 4,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3001923356096463,
+      "decisions_made": 36,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 794096,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8150000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.6077707389990488,
+            "attention_coherence": 0.5316827893257141,
+            "attention_weights": [
+              0.034905336797237396,
+              0.04673042893409729,
+              0.050305821001529694,
+              0.02973603643476963,
+              0.030359217897057533,
+              0.05184672772884369,
+              0.05431138351559639,
+              0.05398860201239586,
+              0.041220251470804214,
+              0.02608245424926281,
+              0.047413405030965805,
+              0.0463113859295845,
+              0.046200670301914215,
+              0.05501917004585266,
+              0.041452787816524506,
+              0.030625540763139725,
+              0.03595452383160591,
+              0.04643058031797409,
+              0.040119193494319916,
+              0.03675542771816254,
+              0.03044155053794384,
+              0.04079278185963631,
+              0.042150888592004776,
+              0.040845874696969986
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5313445329666138,
+            "deontological": 0.4803789556026459,
+            "virtue_ethics": 0.44742870330810547,
+            "buddhist_compassion": 0.45275506377220154,
+            "buddhist_wisdom": 0.5021840929985046,
+            "buddhist_combined": 0.4774695634841919,
+            "overall_ethical_score": 0.48281827569007874
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.6077707389990488,
+        "ethical_score": 0.48281827569007874,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 706782,
+      "x": 2,
+      "y": 1,
+      "energy": 0.97,
+      "health": 1.0,
+      "age": 34,
+      "generation": 2,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.26904366796067153,
+      "decisions_made": 34,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 706782,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7950000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.541176507870356,
+            "attention_coherence": 0.5138376951217651,
+            "attention_weights": [
+              0.03269538655877113,
+              0.03250662982463837,
+              0.047516752034425735,
+              0.0258813314139843,
+              0.029390765354037285,
+              0.050351839512586594,
+              0.04074246063828468,
+              0.03926709294319153,
+              0.05328333377838135,
+              0.03716380149126053,
+              0.04923848435282707,
+              0.03424985334277153,
+              0.041962433606386185,
+              0.037664033472537994,
+              0.061772946268320084,
+              0.05573534220457077,
+              0.029189569875597954,
+              0.034837137907743454,
+              0.05599716305732727,
+              0.03797491267323494,
+              0.04392092302441597,
+              0.041170865297317505,
+              0.045806027948856354,
+              0.04168079420924187
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5411607623100281,
+            "deontological": 0.4991450607776642,
+            "virtue_ethics": 0.5302602052688599,
+            "buddhist_compassion": 0.48141154646873474,
+            "buddhist_wisdom": 0.51486736536026,
+            "buddhist_combined": 0.4981394410133362,
+            "overall_ethical_score": 0.5133689641952515
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.541176507870356,
+        "ethical_score": 0.5133689641952515,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 855724,
+      "x": 12,
+      "y": 4,
+      "energy": 0.9099999999999999,
+      "health": 1.0,
+      "age": 32,
+      "generation": 1,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.23831164000841948,
+      "decisions_made": 32,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 855724,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7750000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.4746559808651607,
+            "attention_coherence": 0.49090734124183655,
+            "attention_weights": [
+              0.032446619123220444,
+              0.04383736848831177,
+              0.05743957683444023,
+              0.033263370394706726,
+              0.06376110017299652,
+              0.03353974595665932,
+              0.03647992014884949,
+              0.046027641743421555,
+              0.03828604519367218,
+              0.04639281705021858,
+              0.03561962768435478,
+              0.0514339804649353,
+              0.032078083604574203,
+              0.05578292906284332,
+              0.0427127406001091,
+              0.04424598440527916,
+              0.03531442582607269,
+              0.03486548364162445,
+              0.04490538686513901,
+              0.05163770914077759,
+              0.03643112629652023,
+              0.029060203582048416,
+              0.041688669472932816,
+              0.03274952620267868
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5325855016708374,
+            "deontological": 0.47606217861175537,
+            "virtue_ethics": 0.48656657338142395,
+            "buddhist_compassion": 0.505730390548706,
+            "buddhist_wisdom": 0.5343984961509705,
+            "buddhist_combined": 0.5200644731521606,
+            "overall_ethical_score": 0.5070686340332031
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.4746559808651607,
+        "ethical_score": 0.5070686340332031,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 942495,
+      "x": 2,
+      "y": 1,
+      "energy": 0.9099999999999999,
+      "health": 1.0,
+      "age": 30,
+      "generation": 2,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.279605603444757,
+      "decisions_made": 30,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 942495,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7550000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.5646065930525459,
+            "attention_coherence": 0.5233772397041321,
+            "attention_weights": [
+              0.049011845141649246,
+              0.054125040769577026,
+              0.051014870405197144,
+              0.045606255531311035,
+              0.050645411014556885,
+              0.04807871952652931,
+              0.029404930770397186,
+              0.03896500542759895,
+              0.036672573536634445,
+              0.0313560776412487,
+              0.05037539824843407,
+              0.03364109620451927,
+              0.040029749274253845,
+              0.03463814780116081,
+              0.04158838093280792,
+              0.03936111181974411,
+              0.04779224470257759,
+              0.034952081739902496,
+              0.05240432918071747,
+              0.037242550402879715,
+              0.03904780000448227,
+              0.036950115114450455,
+              0.04521894454956055,
+              0.03187728673219681
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5296204090118408,
+            "deontological": 0.530147135257721,
+            "virtue_ethics": 0.5015317797660828,
+            "buddhist_compassion": 0.5360888838768005,
+            "buddhist_wisdom": 0.5276113152503967,
+            "buddhist_combined": 0.5318500995635986,
+            "overall_ethical_score": 0.5249999165534973
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.5646065930525459,
+        "ethical_score": 0.5249999165534973,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 613271,
+      "x": 5,
+      "y": 0,
+      "energy": 0.95,
+      "health": 1.0,
+      "age": 27,
+      "generation": 3,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2742202553232061,
+      "decisions_made": 27,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 613271,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7250000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.5533031682173413,
+            "attention_coherence": 0.5217549800872803,
+            "attention_weights": [
+              0.038069628179073334,
+              0.04543483257293701,
+              0.03921410068869591,
+              0.036955419927835464,
+              0.03754148632287979,
+              0.04108573868870735,
+              0.03583740070462227,
+              0.04988144338130951,
+              0.035481132566928864,
+              0.04648703336715698,
+              0.05448269471526146,
+              0.040496572852134705,
+              0.04490705579519272,
+              0.05479148030281067,
+              0.036489568650722504,
+              0.032739635556936264,
+              0.038362544029951096,
+              0.03976130485534668,
+              0.03580766171216965,
+              0.04674728587269783,
+              0.04678191989660263,
+              0.039951473474502563,
+              0.03831801563501358,
+              0.04437453672289848
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5297184586524963,
+            "deontological": 0.5155689716339111,
+            "virtue_ethics": 0.5206698775291443,
+            "buddhist_compassion": 0.5108533501625061,
+            "buddhist_wisdom": 0.5506241917610168,
+            "buddhist_combined": 0.5307387709617615,
+            "overall_ethical_score": 0.525486946105957
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.5533031682173413,
+        "ethical_score": 0.525486946105957,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 440907,
+      "x": 12,
+      "y": 0,
+      "energy": 0.8032424952859782,
+      "health": 1.0,
+      "age": 26,
+      "generation": 2,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.22359655261048428,
+      "decisions_made": 26,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 440907,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7150000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.44158274829387667,
+            "attention_coherence": 0.4764409363269806,
+            "attention_weights": [
+              0.03140920773148537,
+              0.046491850167512894,
+              0.03961469978094101,
+              0.03979993984103203,
+              0.036127522587776184,
+              0.03976576402783394,
+              0.031729940325021744,
+              0.03356446325778961,
+              0.058694593608379364,
+              0.03489337116479874,
+              0.04057606682181358,
+              0.03433235362172127,
+              0.03368380293250084,
+              0.04815182834863663,
+              0.03780285641551018,
+              0.058144550770521164,
+              0.03647397831082344,
+              0.04743627831339836,
+              0.03934367746114731,
+              0.037358228117227554,
+              0.043939102441072464,
+              0.049290455877780914,
+              0.054913461208343506,
+              0.046461962163448334
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.4607367515563965,
+            "deontological": 0.4934515953063965,
+            "virtue_ethics": 0.5056354999542236,
+            "buddhist_compassion": 0.526944100856781,
+            "buddhist_wisdom": 0.5282363295555115,
+            "buddhist_combined": 0.5275902152061462,
+            "overall_ethical_score": 0.5030008554458618
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.44158274829387667,
+        "ethical_score": 0.5030008554458618,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 208197,
+      "x": 14,
+      "y": 7,
+      "energy": 0.99,
+      "health": 1.0,
+      "age": 25,
+      "generation": 2,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.24331953572075687,
+      "decisions_made": 25,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 208197,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7050000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.48504947125911724,
+            "attention_coherence": 0.4939747452735901,
+            "attention_weights": [
+              0.03313940018415451,
+              0.038922764360904694,
+              0.052247870713472366,
+              0.04715750366449356,
+              0.04160897061228752,
+              0.047778401523828506,
+              0.04392032325267792,
+              0.04392453283071518,
+              0.04287749528884888,
+              0.02789766900241375,
+              0.038192085921764374,
+              0.05332110449671745,
+              0.03221002221107483,
+              0.047048766165971756,
+              0.032654985785484314,
+              0.041821762919425964,
+              0.05080857872962952,
+              0.028471868485212326,
+              0.0565030612051487,
+              0.03974170982837677,
+              0.04089973494410515,
+              0.03769131749868393,
+              0.032738447189331055,
+              0.04842165485024452
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5407284498214722,
+            "deontological": 0.5161925554275513,
+            "virtue_ethics": 0.46358993649482727,
+            "buddhist_compassion": 0.5472937226295471,
+            "buddhist_wisdom": 0.4813137352466583,
+            "buddhist_combined": 0.5143037438392639,
+            "overall_ethical_score": 0.5098236799240112
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.48504947125911724,
+        "ethical_score": 0.5098236799240112,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 797268,
+      "x": 1,
+      "y": 1,
+      "energy": 0.96,
+      "health": 1.0,
+      "age": 23,
+      "generation": 1,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.24259996222722124,
+      "decisions_made": 23,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 797268,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6850000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.4831696112950643,
+            "attention_coherence": 0.49166780710220337,
+            "attention_weights": [
+              0.03854811191558838,
+              0.0467534102499485,
+              0.03540331497788429,
+              0.06026311218738556,
+              0.03712432458996773,
+              0.04042796418070793,
+              0.04363778233528137,
+              0.0397762656211853,
+              0.03902575746178627,
+              0.044330161064863205,
+              0.050052475184202194,
+              0.04293864965438843,
+              0.04330411180853844,
+              0.04770733043551445,
+              0.0379638746380806,
+              0.04801001772284508,
+              0.0417853482067585,
+              0.049721911549568176,
+              0.03780990466475487,
+              0.04191742092370987,
+              0.036496084183454514,
+              0.030802760273218155,
+              0.031141698360443115,
+              0.03505825623869896
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5358622074127197,
+            "deontological": 0.5315361618995667,
+            "virtue_ethics": 0.48533129692077637,
+            "buddhist_compassion": 0.4998711049556732,
+            "buddhist_wisdom": 0.5175732374191284,
+            "buddhist_combined": 0.508722186088562,
+            "overall_ethical_score": 0.5140348076820374
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.4831696112950643,
+        "ethical_score": 0.5140348076820374,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 704831,
+      "x": 10,
+      "y": 13,
+      "energy": 0.9806434329319377,
+      "health": 1.0,
+      "age": 23,
+      "generation": 3,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2407812554591806,
+      "decisions_made": 23,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 704831,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6850000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.4792436550060909,
+            "attention_coherence": 0.49133622646331787,
+            "attention_weights": [
+              0.03941603749990463,
+              0.04276265576481819,
+              0.04812447726726532,
+              0.04563299939036369,
+              0.03273830562829971,
+              0.03906387835741043,
+              0.05457957461476326,
+              0.03980161249637604,
+              0.03714597597718239,
+              0.0350472629070282,
+              0.03954344615340233,
+              0.035612307488918304,
+              0.0517287515103817,
+              0.035415079444646835,
+              0.047500379383563995,
+              0.0351092666387558,
+              0.041425157338380814,
+              0.03557152301073074,
+              0.05353797227144241,
+              0.04480679705739021,
+              0.04041486606001854,
+              0.0351266972720623,
+              0.03990393131971359,
+              0.04999112710356712
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.4469394385814667,
+            "deontological": 0.4822619557380676,
+            "virtue_ethics": 0.5669997334480286,
+            "buddhist_compassion": 0.43925926089286804,
+            "buddhist_wisdom": 0.5274258255958557,
+            "buddhist_combined": 0.4833425283432007,
+            "overall_ethical_score": 0.4925772249698639
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.4792436550060909,
+        "ethical_score": 0.4925772249698639,
+        "wisdom_insights_used": 0
+      }
+    },
+    {
+      "agent_id": 589697,
+      "x": 5,
+      "y": 4,
+      "energy": 0.9230921771192165,
+      "health": 1.0,
+      "age": 23,
+      "generation": 3,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.23410124685743766,
+      "decisions_made": 23,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 589697,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6850000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "last_contemplative_info": {
+          "mindfulness": {
+            "mindfulness_level": 0.4640132397413253,
+            "attention_coherence": 0.48238101601600647,
+            "attention_weights": [
+              0.03744438663125038,
+              0.05672119930386543,
+              0.03768274933099747,
+              0.050206415355205536,
+              0.035402871668338776,
+              0.031229522079229355,
+              0.043694477528333664,
+              0.034752052277326584,
+              0.0526028536260128,
+              0.0397040992975235,
+              0.03189217299222946,
+              0.04353570565581322,
+              0.039661891758441925,
+              0.039266008883714676,
+              0.03680174797773361,
+              0.035978637635707855,
+              0.04803374037146568,
+              0.045663684606552124,
+              0.037623777985572815,
+              0.04584784060716629,
+              0.045934002846479416,
+              0.049220532178878784,
+              0.03806380182504654,
+              0.04303574189543724
+            ],
+            "contemplative_modifier": 1.0
+          },
+          "ethics": {
+            "consequentialist": 0.5152950286865234,
+            "deontological": 0.498235821723938,
+            "virtue_ethics": 0.5336563587188721,
+            "buddhist_compassion": 0.5167882442474365,
+            "buddhist_wisdom": 0.5144833326339722,
+            "buddhist_combined": 0.5156357884407043,
+            "overall_ethical_score": 0.5156917572021484
+          },
+          "wisdom": {
+            "insights_used": 0,
+            "wisdom_enhancement": 0.0
+          }
+        },
+        "mindfulness_level": 0.4640132397413253,
+        "ethical_score": 0.5156917572021484,
+        "wisdom_insights_used": 0
+      }
+    }
+  ],
+  "simulation_data": {
+    "steps": [],
+    "population_data": [
+      {
+        "step": 0,
+        "total_population": 5,
+        "average_energy": 0.9940000000000001,
+        "average_health": 1.0,
+        "average_age": 1.0,
+        "generation_diversity": 1
+      },
+      {
+        "step": 25,
+        "total_population": 19,
+        "average_energy": 0.8283849426512138,
+        "average_health": 1.0,
+        "average_age": 14.894736842105264,
+        "generation_diversity": 5
+      },
+      {
+        "step": 50,
+        "total_population": 22,
+        "average_energy": 0.9092718593723309,
+        "average_health": 1.0,
+        "average_age": 37.59090909090909,
+        "generation_diversity": 5
+      }
+    ],
+    "wisdom_data": [
+      {
+        "step": 0,
+        "total_wisdom_generated": 0,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.5
+      },
+      {
+        "step": 25,
+        "total_wisdom_generated": 0,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.6094736842105264
+      },
+      {
+        "step": 50,
+        "total_wisdom_generated": 0,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.8309090909090909
+      }
+    ],
+    "ethical_data": [
+      {
+        "step": 0,
+        "total_ethical_decisions": 0,
+        "total_decisions": 5,
+        "ethical_decision_ratio": 0.0,
+        "collective_harmony": 0.425
+      },
+      {
+        "step": 25,
+        "total_ethical_decisions": 0,
+        "total_decisions": 283,
+        "ethical_decision_ratio": 0.0,
+        "collective_harmony": 0.2924791846700114
+      },
+      {
+        "step": 50,
+        "total_ethical_decisions": 0,
+        "total_decisions": 827,
+        "ethical_decision_ratio": 0.0,
+        "collective_harmony": 0.26796661293528373
+      }
+    ],
+    "overmind_data": [
+      {
+        "step": 0
+      },
+      {
+        "step": 25
+      },
+      {
+        "step": 50
+      }
+    ],
+    "network_data": [
+      {
+        "step": 0,
+        "total_signal_intensity": 0.0,
+        "signal_diversity": 0.0,
+        "network_contemplative_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "active_signal_layers": 0,
+        "total_signals_created": 0
+      },
+      {
+        "step": 25,
+        "total_signal_intensity": 0.0,
+        "signal_diversity": 0.0,
+        "network_contemplative_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "active_signal_layers": 0,
+        "total_signals_created": 0
+      },
+      {
+        "step": 50,
+        "total_signal_intensity": 0.0,
+        "signal_diversity": 0.0,
+        "network_contemplative_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "active_signal_layers": 0,
+        "total_signals_created": 0
+      }
+    ]
+  },
+  "overmind_state": null
+}

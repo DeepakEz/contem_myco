@@ -1,0 +1,551 @@
+{
+  "config": {
+    "environment_width": 40,
+    "environment_height": 40,
+    "initial_population": 20,
+    "max_population": 80,
+    "max_steps": 500,
+    "save_interval": 50,
+    "visualization_interval": 50,
+    "contemplative_config": {
+      "enable_contemplative_processing": true,
+      "mindfulness_update_frequency": 10,
+      "wisdom_signal_strength": 0.5,
+      "collective_meditation_threshold": 0.7,
+      "ethical_reasoning_depth": 3,
+      "contemplative_memory_capacity": 2000,
+      "wisdom_sharing_radius": 4,
+      "compassion_sensitivity": 0.8
+    },
+    "wisdom_signal_config": {
+      "signal_types": [],
+      "base_diffusion_rate": 0.0,
+      "base_decay_rate": 1.0,
+      "propagation_distance": 0,
+      "intensity_threshold": 1.0,
+      "cross_signal_interference": false,
+      "signal_amplification": {}
+    },
+    "enable_overmind": true,
+    "overmind_intervention_frequency": 10,
+    "brain_input_size": 16,
+    "brain_hidden_size": 32,
+    "brain_output_size": 8,
+    "experiment_name": "ablation_no_wisdom_run_04",
+    "output_directory": "publication_results",
+    "track_wisdom_propagation": true,
+    "track_collective_behavior": true,
+    "track_ethical_decisions": true,
+    "random_seed": 442
+  },
+  "simulation_data": {
+    "steps": [],
+    "population_data": [
+      {
+        "step": 0,
+        "total_population": 22,
+        "average_energy": 0.9754545454545454,
+        "average_health": 1.0,
+        "average_age": 0.9090909090909091,
+        "generation_diversity": 2
+      },
+      {
+        "step": 50,
+        "total_population": 54,
+        "average_energy": 0.6237695530932974,
+        "average_health": 1.0,
+        "average_age": 35.18518518518518,
+        "generation_diversity": 8
+      },
+      {
+        "step": 100,
+        "total_population": 71,
+        "average_energy": 0.5592112026642532,
+        "average_health": 1.0,
+        "average_age": 53.7887323943662,
+        "generation_diversity": 10
+      },
+      {
+        "step": 150,
+        "total_population": 82,
+        "average_energy": 0.5367402434623468,
+        "average_health": 1.0,
+        "average_age": 68.78048780487805,
+        "generation_diversity": 11
+      },
+      {
+        "step": 200,
+        "total_population": 81,
+        "average_energy": 0.6179136381798254,
+        "average_health": 1.0,
+        "average_age": 75.4320987654321,
+        "generation_diversity": 11
+      },
+      {
+        "step": 250,
+        "total_population": 81,
+        "average_energy": 0.6222704699444151,
+        "average_health": 1.0,
+        "average_age": 90.04938271604938,
+        "generation_diversity": 11
+      },
+      {
+        "step": 300,
+        "total_population": 80,
+        "average_energy": 0.6429553956929912,
+        "average_health": 1.0,
+        "average_age": 99.85,
+        "generation_diversity": 13
+      },
+      {
+        "step": 350,
+        "total_population": 79,
+        "average_energy": 0.644490816838322,
+        "average_health": 1.0,
+        "average_age": 127.32911392405063,
+        "generation_diversity": 14
+      },
+      {
+        "step": 400,
+        "total_population": 83,
+        "average_energy": 0.6615660270290226,
+        "average_health": 1.0,
+        "average_age": 136.63855421686748,
+        "generation_diversity": 14
+      },
+      {
+        "step": 450,
+        "total_population": 81,
+        "average_energy": 0.7245927519972848,
+        "average_health": 1.0,
+        "average_age": 148.12345679012347,
+        "generation_diversity": 15
+      },
+      {
+        "step": 499,
+        "total_population": 80,
+        "average_energy": 0.6052291464341137,
+        "average_health": 1.0,
+        "average_age": 178.975,
+        "generation_diversity": 15
+      }
+    ],
+    "wisdom_data": [
+      {
+        "step": 0,
+        "total_wisdom_generated": 0,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.5
+      },
+      {
+        "step": 50,
+        "total_wisdom_generated": 11,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.6337037037037038
+      },
+      {
+        "step": 100,
+        "total_wisdom_generated": 203,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7263380281690143
+      },
+      {
+        "step": 150,
+        "total_wisdom_generated": 472,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7690853658536587
+      },
+      {
+        "step": 200,
+        "total_wisdom_generated": 640,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7736419753086421
+      },
+      {
+        "step": 250,
+        "total_wisdom_generated": 671,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7969753086419754
+      },
+      {
+        "step": 300,
+        "total_wisdom_generated": 760,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7915000000000001
+      },
+      {
+        "step": 350,
+        "total_wisdom_generated": 912,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.8504430379746836
+      },
+      {
+        "step": 400,
+        "total_wisdom_generated": 1072,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.8376506024096386
+      },
+      {
+        "step": 450,
+        "total_wisdom_generated": 1076,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.832777777777778
+      },
+      {
+        "step": 499,
+        "total_wisdom_generated": 1366,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.889
+      }
+    ],
+    "ethical_data": [
+      {
+        "step": 0,
+        "total_ethical_decisions": 6,
+        "total_decisions": 20,
+        "ethical_decision_ratio": 0.3,
+        "collective_harmony": 0.44702586802569305
+      },
+      {
+        "step": 50,
+        "total_ethical_decisions": 625,
+        "total_decisions": 1900,
+        "ethical_decision_ratio": 0.32894736842105265,
+        "collective_harmony": 0.32592012277428767
+      },
+      {
+        "step": 100,
+        "total_ethical_decisions": 1086,
+        "total_decisions": 3819,
+        "ethical_decision_ratio": 0.28436763550667715,
+        "collective_harmony": 0.31668766968839607
+      },
+      {
+        "step": 150,
+        "total_ethical_decisions": 1407,
+        "total_decisions": 5640,
+        "ethical_decision_ratio": 0.249468085106383,
+        "collective_harmony": 0.3125237667948635
+      },
+      {
+        "step": 200,
+        "total_ethical_decisions": 1975,
+        "total_decisions": 6110,
+        "ethical_decision_ratio": 0.323240589198036,
+        "collective_harmony": 0.31433443941995276
+      },
+      {
+        "step": 250,
+        "total_ethical_decisions": 2856,
+        "total_decisions": 7294,
+        "ethical_decision_ratio": 0.3915547024952015,
+        "collective_harmony": 0.3093777427092004
+      },
+      {
+        "step": 300,
+        "total_ethical_decisions": 3349,
+        "total_decisions": 7988,
+        "ethical_decision_ratio": 0.41925388082123183,
+        "collective_harmony": 0.3079398321331892
+      },
+      {
+        "step": 350,
+        "total_ethical_decisions": 3766,
+        "total_decisions": 10059,
+        "ethical_decision_ratio": 0.3743910925539318,
+        "collective_harmony": 0.30893249719889
+      },
+      {
+        "step": 400,
+        "total_ethical_decisions": 4545,
+        "total_decisions": 11341,
+        "ethical_decision_ratio": 0.4007583105546248,
+        "collective_harmony": 0.30726246796454665
+      },
+      {
+        "step": 450,
+        "total_ethical_decisions": 4680,
+        "total_decisions": 11998,
+        "ethical_decision_ratio": 0.39006501083513917,
+        "collective_harmony": 0.31651400794398654
+      },
+      {
+        "step": 499,
+        "total_ethical_decisions": 5784,
+        "total_decisions": 14318,
+        "ethical_decision_ratio": 0.4039670345020254,
+        "collective_harmony": 0.30936066112161476
+      }
+    ],
+    "overmind_data": [
+      {
+        "step": 0,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 50,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 100,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 150,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 200,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 250,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 300,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 350,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 400,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 450,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 499,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      }
+    ],
+    "network_data": [
+      {
+        "step": 0,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 50,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 100,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 150,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 200,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 250,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 300,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 350,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 400,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 450,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 499,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      }
+    ]
+  },
+  "final_analysis": {
+    "experiment_name": "ablation_no_wisdom_run_04",
+    "total_steps": 499,
+    "final_population": 80,
+    "survival_rate": 4.0,
+    "final_metrics": {
+      "population": {
+        "population_size": 80,
+        "average_energy": 0.6052291464341136,
+        "average_health": 1.0,
+        "average_age": 178.975
+      },
+      "contemplative": {
+        "total_wisdom_generated": 1366,
+        "average_mindfulness": 0.889,
+        "collective_harmony": 0.30936066112161476,
+        "wisdom_propagation_efficiency": 0.0
+      },
+      "ethical": {
+        "overall_ethical_ratio": 0.4039670345020254,
+        "ethical_consistency": 0.5,
+        "ethical_improvement": 0.0
+      },
+      "network": {
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      }
+    }
+  }
+}

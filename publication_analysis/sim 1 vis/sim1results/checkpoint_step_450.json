@@ -1,0 +1,4118 @@
+{
+  "step": 450,
+  "config": {
+    "environment_width": 40,
+    "environment_height": 40,
+    "initial_population": 20,
+    "max_population": 80,
+    "max_steps": 500,
+    "save_interval": 50,
+    "visualization_interval": 50,
+    "contemplative_config": {
+      "enable_contemplative_processing": true,
+      "mindfulness_update_frequency": 10,
+      "wisdom_signal_strength": 0.5,
+      "collective_meditation_threshold": 0.7,
+      "ethical_reasoning_depth": 0,
+      "contemplative_memory_capacity": 2000,
+      "wisdom_sharing_radius": 4,
+      "compassion_sensitivity": 0.8
+    },
+    "wisdom_signal_config": {
+      "signal_types": [
+        "WisdomSignalType.SUFFERING_ALERT",
+        "WisdomSignalType.COMPASSION_GRADIENT",
+        "WisdomSignalType.WISDOM_BEACON",
+        "WisdomSignalType.MEDITATION_SYNC",
+        "WisdomSignalType.COOPERATION_CALL",
+        "WisdomSignalType.CAUTION_WARNING",
+        "WisdomSignalType.MINDFULNESS_WAVE"
+      ],
+      "base_diffusion_rate": 0.1,
+      "base_decay_rate": 0.05,
+      "propagation_distance": 6,
+      "intensity_threshold": 0.1,
+      "cross_signal_interference": true,
+      "signal_amplification": {}
+    },
+    "enable_overmind": true,
+    "overmind_intervention_frequency": 10,
+    "brain_input_size": 16,
+    "brain_hidden_size": 32,
+    "brain_output_size": 8,
+    "experiment_name": "ablation_no_ethics_run_04",
+    "output_directory": "publication_results",
+    "track_wisdom_propagation": true,
+    "track_collective_behavior": true,
+    "track_ethical_decisions": true,
+    "random_seed": 442
+  },
+  "agent_states": [
+    {
+      "agent_id": 414612,
+      "x": 37,
+      "y": 39,
+      "energy": 0.6514938141764182,
+      "health": 1.0,
+      "age": 441,
+      "generation": 1,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.27553523422592885,
+      "decisions_made": 441,
+      "ethical_decisions": 441,
+      "wisdom_insights_generated": 162,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 414612,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 96,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.4530374307640754
+      },
+      "brain_summary": {
+        "total_decisions": 441,
+        "ethical_decisions": 441,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 441,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 3.8227819919586183,
+        "recent_mindfulness": 0.5416418731212616,
+        "recent_wisdom_influence": 0.10292091518640518,
+        "decision_consistency": 0.029944110893029507
+      }
+    },
+    {
+      "agent_id": 712244,
+      "x": 19,
+      "y": 0,
+      "energy": 0.9374285782897613,
+      "health": 1.0,
+      "age": 423,
+      "generation": 4,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3675280494393695,
+      "decisions_made": 423,
+      "ethical_decisions": 45,
+      "wisdom_insights_generated": 199,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 712244,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 50,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.5359285490277004
+      },
+      "brain_summary": {
+        "total_decisions": 423,
+        "ethical_decisions": 45,
+        "ethical_ratio": 0.10638297872340426,
+        "recent_decisions": 423,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -3.452591023445129,
+        "recent_mindfulness": 0.72386394739151,
+        "recent_wisdom_influence": 0.12066126689314842,
+        "decision_consistency": 0.01814283263201419
+      }
+    },
+    {
+      "agent_id": 744836,
+      "x": 4,
+      "y": 25,
+      "energy": 0.7619510731660586,
+      "health": 1.0,
+      "age": 413,
+      "generation": 2,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2097441586815419,
+      "decisions_made": 413,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 98,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 744836,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 35,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.2897803216021686
+      },
+      "brain_summary": {
+        "total_decisions": 413,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 413,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -3.757898058891297,
+        "recent_mindfulness": 0.42811581790447234,
+        "recent_wisdom_influence": 0.08598154559731483,
+        "decision_consistency": 0.03136151774740177
+      }
+    },
+    {
+      "agent_id": 995882,
+      "x": 32,
+      "y": 24,
+      "energy": 0.9197769466405934,
+      "health": 1.0,
+      "age": 390,
+      "generation": 2,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3680246062205652,
+      "decisions_made": 390,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 74,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 995882,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 71,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.389256958087832
+      },
+      "brain_summary": {
+        "total_decisions": 390,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 390,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -6.913321425914765,
+        "recent_mindfulness": 0.7309025526046753,
+        "recent_wisdom_influence": 0.10166227519512176,
+        "decision_consistency": 0.15651305382188826
+      }
+    },
+    {
+      "agent_id": 565080,
+      "x": 6,
+      "y": 28,
+      "energy": 0.952289453130174,
+      "health": 1.0,
+      "age": 385,
+      "generation": 4,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.37783635624647716,
+      "decisions_made": 385,
+      "ethical_decisions": 159,
+      "wisdom_insights_generated": 111,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 565080,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 95,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.3787042412996886
+      },
+      "brain_summary": {
+        "total_decisions": 385,
+        "ethical_decisions": 159,
+        "ethical_ratio": 0.412987012987013,
+        "recent_decisions": 385,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 0.03167227506637586,
+        "recent_mindfulness": 0.7589732587337494,
+        "recent_wisdom_influence": 0.12240582332015038,
+        "decision_consistency": 0.07887599695270159
+      }
+    },
+    {
+      "agent_id": 156773,
+      "x": 4,
+      "y": 33,
+      "energy": 0.6806898251111068,
+      "health": 1.0,
+      "age": 384,
+      "generation": 5,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2901809330743834,
+      "decisions_made": 384,
+      "ethical_decisions": 347,
+      "wisdom_insights_generated": 145,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 156773,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 137,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.3244051515301059
+      },
+      "brain_summary": {
+        "total_decisions": 384,
+        "ethical_decisions": 347,
+        "ethical_ratio": 0.9036458333333334,
+        "recent_decisions": 384,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 7.939164314270021,
+        "recent_mindfulness": 0.5529223799705505,
+        "recent_wisdom_influence": 0.07259554117918014,
+        "decision_consistency": 0.08890848901005736
+      }
+    },
+    {
+      "agent_id": 908962,
+      "x": 15,
+      "y": 8,
+      "energy": 1.0,
+      "health": 1.0,
+      "age": 285,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3802515201650867,
+      "decisions_made": 285,
+      "ethical_decisions": 285,
+      "wisdom_insights_generated": 67,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 908962,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 23,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.6612948565001369
+      },
+      "brain_summary": {
+        "total_decisions": 285,
+        "ethical_decisions": 285,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 285,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 3.414165759086609,
+        "recent_mindfulness": 0.7823379099369049,
+        "recent_wisdom_influence": 0.09713291749358177,
+        "decision_consistency": 0.05480620831757113
+      }
+    },
+    {
+      "agent_id": 730824,
+      "x": 31,
+      "y": 20,
+      "energy": 1.0,
+      "health": 1.0,
+      "age": 268,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3372049109259611,
+      "decisions_made": 268,
+      "ethical_decisions": 199,
+      "wisdom_insights_generated": 24,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 730824,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 17,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.8497068930185753
+      },
+      "brain_summary": {
+        "total_decisions": 268,
+        "ethical_decisions": 199,
+        "ethical_ratio": 0.7425373134328358,
+        "recent_decisions": 268,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 1.0763917988538743,
+        "recent_mindfulness": 0.6672766268253326,
+        "recent_wisdom_influence": 0.11950049847364426,
+        "decision_consistency": 0.10398452180352807
+      }
+    },
+    {
+      "agent_id": 704335,
+      "x": 14,
+      "y": 0,
+      "energy": 0.954922113627524,
+      "health": 1.0,
+      "age": 251,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.21136987552182207,
+      "decisions_made": 251,
+      "ethical_decisions": 52,
+      "wisdom_insights_generated": 69,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 704335,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 67,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.7286208829225004
+      },
+      "brain_summary": {
+        "total_decisions": 251,
+        "ethical_decisions": 52,
+        "ethical_ratio": 0.20717131474103587,
+        "recent_decisions": 251,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.673419542312622,
+        "recent_mindfulness": 0.45258866548538207,
+        "recent_wisdom_influence": 0.09927263557910919,
+        "decision_consistency": 0.03594537794537089
+      }
+    },
+    {
+      "agent_id": 517134,
+      "x": 4,
+      "y": 34,
+      "energy": 0.99,
+      "health": 1.0,
+      "age": 248,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.42863425562740176,
+      "decisions_made": 248,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 172,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 517134,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 157,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.5757863259418662
+      },
+      "brain_summary": {
+        "total_decisions": 248,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 248,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -5.6099345684051505,
+        "recent_mindfulness": 0.8736532092094421,
+        "recent_wisdom_influence": 0.10742723047733307,
+        "decision_consistency": 0.1574365917064337
+      }
+    },
+    {
+      "agent_id": 213907,
+      "x": 39,
+      "y": 19,
+      "energy": 0.22999999999999932,
+      "health": 1.0,
+      "age": 239,
+      "generation": 3,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3563785559720928,
+      "decisions_made": 239,
+      "ethical_decisions": 239,
+      "wisdom_insights_generated": 52,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 213907,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 43,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.5490016761362106
+      },
+      "brain_summary": {
+        "total_decisions": 239,
+        "ethical_decisions": 239,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 239,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 3.8630858993530275,
+        "recent_mindfulness": 0.7115310311317444,
+        "recent_wisdom_influence": 0.08828973025083542,
+        "decision_consistency": 0.03877205407329515
+      }
+    },
+    {
+      "agent_id": 773822,
+      "x": 0,
+      "y": 19,
+      "energy": 0.304263541190911,
+      "health": 1.0,
+      "age": 236,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3909975650572434,
+      "decisions_made": 236,
+      "ethical_decisions": 236,
+      "wisdom_insights_generated": 161,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 773822,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 102,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.5495023028262361
+      },
+      "brain_summary": {
+        "total_decisions": 236,
+        "ethical_decisions": 236,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 236,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 13.43713285446167,
+        "recent_mindfulness": 0.7862338602542878,
+        "recent_wisdom_influence": 0.10557262599468231,
+        "decision_consistency": 0.045513054328285195
+      }
+    },
+    {
+      "agent_id": 942840,
+      "x": 9,
+      "y": 10,
+      "energy": 0.9345919533220642,
+      "health": 1.0,
+      "age": 234,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.34968360292780926,
+      "decisions_made": 234,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 24,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 942840,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 14,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.47557126369534986
+      },
+      "brain_summary": {
+        "total_decisions": 234,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 234,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -2.3989526486396793,
+        "recent_mindfulness": 0.7047828376293183,
+        "recent_wisdom_influence": 0.09598655998706818,
+        "decision_consistency": 0.03038050350742522
+      }
+    },
+    {
+      "agent_id": 347585,
+      "x": 0,
+      "y": 10,
+      "energy": 0.40156184817665463,
+      "health": 1.0,
+      "age": 212,
+      "generation": 4,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.42554732246588206,
+      "decisions_made": 212,
+      "ethical_decisions": 32,
+      "wisdom_insights_generated": 121,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 347585,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 59,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.5839717290122478
+      },
+      "brain_summary": {
+        "total_decisions": 212,
+        "ethical_decisions": 32,
+        "ethical_ratio": 0.1509433962264151,
+        "recent_decisions": 212,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -2.89990523815155,
+        "recent_mindfulness": 0.8457819283008575,
+        "recent_wisdom_influence": 0.10877139940857887,
+        "decision_consistency": 0.025814438977543586
+      }
+    },
+    {
+      "agent_id": 392326,
+      "x": 19,
+      "y": 29,
+      "energy": 1.0,
+      "health": 1.0,
+      "age": 206,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.29456068490614784,
+      "decisions_made": 206,
+      "ethical_decisions": 206,
+      "wisdom_insights_generated": 11,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 392326,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 5,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.558313451596986
+      },
+      "brain_summary": {
+        "total_decisions": 206,
+        "ethical_decisions": 206,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 206,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 7.8537650966644295,
+        "recent_mindfulness": 0.5944868445396423,
+        "recent_wisdom_influence": 0.12827867418527603,
+        "decision_consistency": 0.046027494971106746
+      }
+    },
+    {
+      "agent_id": 929265,
+      "x": 16,
+      "y": 13,
+      "energy": 0.9828328836759851,
+      "health": 1.0,
+      "age": 187,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2992664694608932,
+      "decisions_made": 187,
+      "ethical_decisions": 187,
+      "wisdom_insights_generated": 39,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 929265,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 39,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.5449572936103828
+      },
+      "brain_summary": {
+        "total_decisions": 187,
+        "ethical_decisions": 187,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 187,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 4.885928514003753,
+        "recent_mindfulness": 0.6092361807823181,
+        "recent_wisdom_influence": 0.08476743325591088,
+        "decision_consistency": 0.026269059716132335
+      }
+    },
+    {
+      "agent_id": 918073,
+      "x": 9,
+      "y": 13,
+      "energy": 0.4595162637292856,
+      "health": 1.0,
+      "age": 172,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3077121586344695,
+      "decisions_made": 172,
+      "ethical_decisions": 172,
+      "wisdom_insights_generated": 12,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 918073,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 12,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.6143505938945637
+      },
+      "brain_summary": {
+        "total_decisions": 172,
+        "ethical_decisions": 172,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 172,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.267978391647339,
+        "recent_mindfulness": 0.6196700453758239,
+        "recent_wisdom_influence": 0.10090850740671158,
+        "decision_consistency": 0.0525002009586166
+      }
+    },
+    {
+      "agent_id": 697237,
+      "x": 8,
+      "y": 36,
+      "energy": 0.6460829153127201,
+      "health": 1.0,
+      "age": 172,
+      "generation": 4,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.28814442579229954,
+      "decisions_made": 172,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 9,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 697237,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 9,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.4693208055609661
+      },
+      "brain_summary": {
+        "total_decisions": 172,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 172,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.15694273471832304,
+        "recent_mindfulness": 0.571010559797287,
+        "recent_wisdom_influence": 0.0973315954208374,
+        "decision_consistency": 0.027586896758443523
+      }
+    },
+    {
+      "agent_id": 696025,
+      "x": 0,
+      "y": 38,
+      "energy": 0.9862685545789949,
+      "health": 1.0,
+      "age": 157,
+      "generation": 10,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.24188579115675085,
+      "decisions_made": 157,
+      "ethical_decisions": 100,
+      "wisdom_insights_generated": 52,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 696025,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 47,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.6832010794268083
+      },
+      "brain_summary": {
+        "total_decisions": 157,
+        "ethical_decisions": 100,
+        "ethical_ratio": 0.6369426751592356,
+        "recent_decisions": 157,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.7567379426956176,
+        "recent_mindfulness": 0.4796012371778488,
+        "recent_wisdom_influence": 0.0699446178972721,
+        "decision_consistency": 0.035932471590845276
+      }
+    },
+    {
+      "agent_id": 539174,
+      "x": 5,
+      "y": 7,
+      "energy": 0.8899999999999999,
+      "health": 1.0,
+      "age": 141,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3652665007055278,
+      "decisions_made": 141,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 69,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 539174,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 62,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.6419136046282078
+      },
+      "brain_summary": {
+        "total_decisions": 141,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 141,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -4.5574633240699765,
+        "recent_mindfulness": 0.7625526905059814,
+        "recent_wisdom_influence": 0.10052285119891166,
+        "decision_consistency": 0.022473639203748536
+      }
+    },
+    {
+      "agent_id": 173412,
+      "x": 14,
+      "y": 8,
+      "energy": 0.5904807576958238,
+      "health": 1.0,
+      "age": 128,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3028486768365028,
+      "decisions_made": 128,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 33,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 173412,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 11,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.7926400355219223
+      },
+      "brain_summary": {
+        "total_decisions": 128,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 128,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.3600171184539798,
+        "recent_mindfulness": 0.6071449995040894,
+        "recent_wisdom_influence": 0.08488374799489976,
+        "decision_consistency": 0.06634320797531913
+      }
+    },
+    {
+      "agent_id": 942919,
+      "x": 13,
+      "y": 8,
+      "energy": 0.638127953610319,
+      "health": 1.0,
+      "age": 122,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.33871739329353623,
+      "decisions_made": 122,
+      "ethical_decisions": 122,
+      "wisdom_insights_generated": 27,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 942919,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 27,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.7077029835490888
+      },
+      "brain_summary": {
+        "total_decisions": 122,
+        "ethical_decisions": 122,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 122,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 0.749563516974449,
+        "recent_mindfulness": 0.6827177762985229,
+        "recent_wisdom_influence": 0.09933020770549775,
+        "decision_consistency": 0.02342099955464661
+      }
+    },
+    {
+      "agent_id": 858515,
+      "x": 28,
+      "y": 9,
+      "energy": 1.0,
+      "health": 1.0,
+      "age": 121,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2538184936042112,
+      "decisions_made": 121,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 8,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 858515,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 7,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.8028456021706293
+      },
+      "brain_summary": {
+        "total_decisions": 121,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 121,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.31444313287734993,
+        "recent_mindfulness": 0.5041995525360108,
+        "recent_wisdom_influence": 0.08805758208036422,
+        "decision_consistency": 0.13190801984222156
+      }
+    },
+    {
+      "agent_id": 127713,
+      "x": 31,
+      "y": 3,
+      "energy": 0.03443061486482025,
+      "health": 1.0,
+      "age": 121,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2587851613318262,
+      "decisions_made": 121,
+      "ethical_decisions": 121,
+      "wisdom_insights_generated": 33,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 127713,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 19,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.8510557421556693
+      },
+      "brain_summary": {
+        "total_decisions": 121,
+        "ethical_decisions": 121,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 121,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.255247714519501,
+        "recent_mindfulness": 0.5248618185520172,
+        "recent_wisdom_influence": 0.0951133742928505,
+        "decision_consistency": 0.04929624686416999
+      }
+    },
+    {
+      "agent_id": 634354,
+      "x": 20,
+      "y": 13,
+      "energy": 0.9902547457462604,
+      "health": 1.0,
+      "age": 117,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2739173146187561,
+      "decisions_made": 117,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 634354,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 117,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 117,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.5496577835083007,
+        "recent_mindfulness": 0.5465425968170166,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.029213245927519962
+      }
+    },
+    {
+      "agent_id": 516277,
+      "x": 35,
+      "y": 16,
+      "energy": 0.08999999999999908,
+      "health": 1.0,
+      "age": 111,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3104646186475858,
+      "decisions_made": 111,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 2,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 516277,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 1.0,
+        "wisdom_insights_count": 2,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.6917836798574948
+      },
+      "brain_summary": {
+        "total_decisions": 111,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 111,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.8562502789497376,
+        "recent_mindfulness": 0.6234651863574981,
+        "recent_wisdom_influence": 0.13102781772613525,
+        "decision_consistency": 0.03289271084953865
+      }
+    },
+    {
+      "agent_id": 978449,
+      "x": 29,
+      "y": 0,
+      "energy": 0.3399999999999992,
+      "health": 1.0,
+      "age": 104,
+      "generation": 4,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.39574748223270095,
+      "decisions_made": 104,
+      "ethical_decisions": 104,
+      "wisdom_insights_generated": 43,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 978449,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.9750000000000004,
+        "wisdom_insights_count": 28,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.8026192352558723
+      },
+      "brain_summary": {
+        "total_decisions": 104,
+        "ethical_decisions": 104,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 104,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.4836763024330137,
+        "recent_mindfulness": 0.7772788643836975,
+        "recent_wisdom_influence": 0.09728319495916367,
+        "decision_consistency": 0.12868029320697807
+      }
+    },
+    {
+      "agent_id": 838226,
+      "x": 39,
+      "y": 27,
+      "energy": 0.289999999999999,
+      "health": 1.0,
+      "age": 101,
+      "generation": 3,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3331078048286362,
+      "decisions_made": 101,
+      "ethical_decisions": 101,
+      "wisdom_insights_generated": 1,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 838226,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.9600000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 101,
+        "ethical_decisions": 101,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 101,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.956268773078918,
+        "recent_mindfulness": 0.6732566714286804,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.054062944457651516
+      }
+    },
+    {
+      "agent_id": 838726,
+      "x": 4,
+      "y": 26,
+      "energy": 0.6245268589739413,
+      "health": 1.0,
+      "age": 100,
+      "generation": 5,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.259072605871043,
+      "decisions_made": 100,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 2,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 838726,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.9550000000000004,
+        "wisdom_insights_count": 2,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.7890847500000004
+      },
+      "brain_summary": {
+        "total_decisions": 100,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 100,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -4.070974149703979,
+        "recent_mindfulness": 0.522782278060913,
+        "recent_wisdom_influence": 0.009978955984115601,
+        "decision_consistency": 0.039309122674530475
+      }
+    },
+    {
+      "agent_id": 598267,
+      "x": 39,
+      "y": 26,
+      "energy": 0.2599999999999991,
+      "health": 1.0,
+      "age": 92,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3552935838414118,
+      "decisions_made": 92,
+      "ethical_decisions": 92,
+      "wisdom_insights_generated": 3,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 598267,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.9150000000000004,
+        "wisdom_insights_count": 1,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.6829690317409355
+      },
+      "brain_summary": {
+        "total_decisions": 92,
+        "ethical_decisions": 92,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 92,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.371283642053604,
+        "recent_mindfulness": 0.711392629146576,
+        "recent_wisdom_influence": 0.11659731939435006,
+        "decision_consistency": 0.03247787782448039
+      }
+    },
+    {
+      "agent_id": 128719,
+      "x": 6,
+      "y": 27,
+      "energy": 0.94,
+      "health": 1.0,
+      "age": 91,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.29088302001359057,
+      "decisions_made": 91,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 5,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 128719,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.9100000000000004,
+        "wisdom_insights_count": 3,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.7723252187500004
+      },
+      "brain_summary": {
+        "total_decisions": 91,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 91,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.5283955383300781,
+        "recent_mindfulness": 0.5784309864044189,
+        "recent_wisdom_influence": 0.02293543443083763,
+        "decision_consistency": 0.042664525395302806
+      }
+    },
+    {
+      "agent_id": 444939,
+      "x": 20,
+      "y": 20,
+      "energy": 0.29999999999999916,
+      "health": 1.0,
+      "age": 89,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.31874034969747883,
+      "decisions_made": 89,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 444939,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.9000000000000004,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 89,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 89,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.1150808560848238,
+        "recent_mindfulness": 0.6377255201339722,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.043191711072222375
+      }
+    },
+    {
+      "agent_id": 181268,
+      "x": 39,
+      "y": 16,
+      "energy": 0.39999999999999947,
+      "health": 1.0,
+      "age": 86,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2693514192297773,
+      "decisions_made": 86,
+      "ethical_decisions": 86,
+      "wisdom_insights_generated": 6,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 181268,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.8850000000000003,
+        "wisdom_insights_count": 6,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.8697845787604042
+      },
+      "brain_summary": {
+        "total_decisions": 86,
+        "ethical_decisions": 86,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 86,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.761769270896911,
+        "recent_mindfulness": 0.5366175234317779,
+        "recent_wisdom_influence": 0.06167473196983338,
+        "decision_consistency": 0.04911075964967571
+      }
+    },
+    {
+      "agent_id": 153103,
+      "x": 31,
+      "y": 0,
+      "energy": 0.009999999999999275,
+      "health": 1.0,
+      "age": 85,
+      "generation": 4,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.32086952145275044,
+      "decisions_made": 85,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 44,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 153103,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.8800000000000003,
+        "wisdom_insights_count": 34,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.7723818666530571
+      },
+      "brain_summary": {
+        "total_decisions": 85,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 85,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -5.381184973716735,
+        "recent_mindfulness": 0.6330148696899414,
+        "recent_wisdom_influence": 0.12257585451006889,
+        "decision_consistency": 0.023454667776438152
+      }
+    },
+    {
+      "agent_id": 748901,
+      "x": 16,
+      "y": 16,
+      "energy": 0.4899999999999991,
+      "health": 1.0,
+      "age": 85,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.29159952713767734,
+      "decisions_made": 85,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 748901,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8800000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 85,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 85,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.790587112903595,
+        "recent_mindfulness": 0.5808386504650116,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.025271251229128572
+      }
+    },
+    {
+      "agent_id": 467610,
+      "x": 39,
+      "y": 30,
+      "energy": 0.38999999999999924,
+      "health": 1.0,
+      "age": 77,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3805452624251515,
+      "decisions_made": 77,
+      "ethical_decisions": 77,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 467610,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8400000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 77,
+        "ethical_decisions": 77,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 77,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 4.891456079483033,
+        "recent_mindfulness": 0.7521633625030517,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.044531938242808385
+      }
+    },
+    {
+      "agent_id": 553130,
+      "x": 20,
+      "y": 2,
+      "energy": 0.7991880544339688,
+      "health": 1.0,
+      "age": 70,
+      "generation": 10,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3699786345721728,
+      "decisions_made": 70,
+      "ethical_decisions": 37,
+      "wisdom_insights_generated": 13,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 553130,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.8050000000000003,
+        "wisdom_insights_count": 5,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.7906401915455703
+      },
+      "brain_summary": {
+        "total_decisions": 70,
+        "ethical_decisions": 37,
+        "ethical_ratio": 0.5285714285714286,
+        "recent_decisions": 70,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 0.7212836629152297,
+        "recent_mindfulness": 0.7357916176319123,
+        "recent_wisdom_influence": 0.09758155941963195,
+        "decision_consistency": 0.009145798999060668
+      }
+    },
+    {
+      "agent_id": 240693,
+      "x": 39,
+      "y": 21,
+      "energy": 0.18999999999999928,
+      "health": 1.0,
+      "age": 69,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.43301493078714587,
+      "decisions_made": 69,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 11,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 240693,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.8000000000000003,
+        "wisdom_insights_count": 3,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.7524583854166673
+      },
+      "brain_summary": {
+        "total_decisions": 69,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 69,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -2.1903717970848087,
+        "recent_mindfulness": 0.8651080250740051,
+        "recent_wisdom_influence": 0.021876601874828337,
+        "decision_consistency": 0.023477768052002603
+      }
+    },
+    {
+      "agent_id": 836800,
+      "x": 39,
+      "y": 26,
+      "energy": 0.9299999999999993,
+      "health": 1.0,
+      "age": 67,
+      "generation": 5,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.335117072792287,
+      "decisions_made": 67,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 4,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 836800,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.7900000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 67,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 67,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -2.7622143685817724,
+        "recent_mindfulness": 0.6802930533885956,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.011229392215424785
+      }
+    },
+    {
+      "agent_id": 247142,
+      "x": 21,
+      "y": 8,
+      "energy": 0.22999999999999932,
+      "health": 1.0,
+      "age": 67,
+      "generation": 10,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3085946571015905,
+      "decisions_made": 67,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 247142,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7900000000000003,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 67,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 67,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -5.321239107847213,
+        "recent_mindfulness": 0.6169686675071716,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.049223610103023584
+      }
+    },
+    {
+      "agent_id": 177693,
+      "x": 39,
+      "y": 0,
+      "energy": 0.5699999999999994,
+      "health": 1.0,
+      "age": 67,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.33787928299033354,
+      "decisions_made": 67,
+      "ethical_decisions": 67,
+      "wisdom_insights_generated": 37,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 177693,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 0.7900000000000003,
+        "wisdom_insights_count": 29,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.8111898615635811
+      },
+      "brain_summary": {
+        "total_decisions": 67,
+        "ethical_decisions": 67,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 67,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 8.384414331912994,
+        "recent_mindfulness": 0.7000341415405273,
+        "recent_wisdom_influence": 0.09372411966323853,
+        "decision_consistency": 0.02851911574613912
+      }
+    },
+    {
+      "agent_id": 194391,
+      "x": 11,
+      "y": 23,
+      "energy": 0.06999999999999951,
+      "health": 1.0,
+      "age": 61,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.36656095659068394,
+      "decisions_made": 61,
+      "ethical_decisions": 61,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 194391,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 0.7600000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 61,
+        "ethical_decisions": 61,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 61,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 0.9088134253025055,
+        "recent_mindfulness": 0.7335592091083527,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.0035576114564058597
+      }
+    },
+    {
+      "agent_id": 937693,
+      "x": 19,
+      "y": 14,
+      "energy": 0.3299999999999994,
+      "health": 1.0,
+      "age": 57,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3834375437583966,
+      "decisions_made": 57,
+      "ethical_decisions": 57,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 937693,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7400000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 57,
+        "ethical_decisions": 57,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 57,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 1.5867912709712981,
+        "recent_mindfulness": 0.7689135372638702,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.040252964015244724
+      }
+    },
+    {
+      "agent_id": 162099,
+      "x": 8,
+      "y": 19,
+      "energy": 0.5922404833576467,
+      "health": 1.0,
+      "age": 57,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.31406895679136443,
+      "decisions_made": 57,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 6,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 162099,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7400000000000002,
+        "wisdom_insights_count": 6,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.8536394848032475
+      },
+      "brain_summary": {
+        "total_decisions": 57,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 57,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.6650682353973387,
+        "recent_mindfulness": 0.626207560300827,
+        "recent_wisdom_influence": 0.10029997006058693,
+        "decision_consistency": 0.02116644492805991
+      }
+    },
+    {
+      "agent_id": 890441,
+      "x": 13,
+      "y": 0,
+      "energy": 0.3199999999999994,
+      "health": 1.0,
+      "age": 54,
+      "generation": 10,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3537037939463309,
+      "decisions_made": 54,
+      "ethical_decisions": 54,
+      "wisdom_insights_generated": 15,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 890441,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7250000000000002,
+        "wisdom_insights_count": 15,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.8646606177128601
+      },
+      "brain_summary": {
+        "total_decisions": 54,
+        "ethical_decisions": 54,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 54,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 1.1848439478874209,
+        "recent_mindfulness": 0.7080674052238465,
+        "recent_wisdom_influence": 0.12268577590584755,
+        "decision_consistency": 0.06300050366376146
+      }
+    },
+    {
+      "agent_id": 979480,
+      "x": 2,
+      "y": 9,
+      "energy": 0.36999999999999944,
+      "health": 1.0,
+      "age": 53,
+      "generation": 11,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.25651066719545085,
+      "decisions_made": 53,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 5,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 979480,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7200000000000002,
+        "wisdom_insights_count": 4,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.7952488929274387
+      },
+      "brain_summary": {
+        "total_decisions": 53,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 53,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.5954293465614318,
+        "recent_mindfulness": 0.5080528050661087,
+        "recent_wisdom_influence": 0.09932219833135605,
+        "decision_consistency": 0.06773000372213059
+      }
+    },
+    {
+      "agent_id": 180586,
+      "x": 0,
+      "y": 2,
+      "energy": 0.4499999999999995,
+      "health": 1.0,
+      "age": 53,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3166745386835548,
+      "decisions_made": 53,
+      "ethical_decisions": 1,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 180586,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.7200000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 53,
+        "ethical_decisions": 1,
+        "ethical_ratio": 0.018867924528301886,
+        "recent_decisions": 53,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 0.5437699151039121,
+        "recent_mindfulness": 0.6314109146595002,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.05591218396792061
+      }
+    },
+    {
+      "agent_id": 741438,
+      "x": 38,
+      "y": 0,
+      "energy": 0.47999999999999954,
+      "health": 1.0,
+      "age": 52,
+      "generation": 12,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.29458853760871123,
+      "decisions_made": 52,
+      "ethical_decisions": 52,
+      "wisdom_insights_generated": 22,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 741438,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 0.7150000000000002,
+        "wisdom_insights_count": 19,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.8491962523506869
+      },
+      "brain_summary": {
+        "total_decisions": 52,
+        "ethical_decisions": 52,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 52,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 3.3126342678070073,
+        "recent_mindfulness": 0.5841578066349029,
+        "recent_wisdom_influence": 0.08991905376315117,
+        "decision_consistency": 0.020708712827073344
+      }
+    },
+    {
+      "agent_id": 904357,
+      "x": 14,
+      "y": 37,
+      "energy": 0.1899999999999995,
+      "health": 1.0,
+      "age": 51,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3051937335633704,
+      "decisions_made": 51,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 904357,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 0.7100000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 51,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 51,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -2.550135451555252,
+        "recent_mindfulness": 0.6085871517658233,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.010767892478623496
+      }
+    },
+    {
+      "agent_id": 884108,
+      "x": 3,
+      "y": 23,
+      "energy": 0.8882619713400867,
+      "health": 1.0,
+      "age": 51,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.31404154610767626,
+      "decisions_made": 51,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 884108,
+        "contemplative_state": "wisdom_integration",
+        "mindfulness_level": 0.7100000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 51,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 51,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -3.258641169667244,
+        "recent_mindfulness": 0.6227987408638,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.036770854880898554
+      }
+    },
+    {
+      "agent_id": 516520,
+      "x": 39,
+      "y": 27,
+      "energy": 0.8099999999999994,
+      "health": 1.0,
+      "age": 47,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2442866291987618,
+      "decisions_made": 47,
+      "ethical_decisions": 47,
+      "wisdom_insights_generated": 6,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 516520,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.6900000000000002,
+        "wisdom_insights_count": 4,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.8374197849747629
+      },
+      "brain_summary": {
+        "total_decisions": 47,
+        "ethical_decisions": 47,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 47,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 3.7392976921796803,
+        "recent_mindfulness": 0.5146070897579194,
+        "recent_wisdom_influence": 0.10099784582853318,
+        "decision_consistency": 0.0716548616919063
+      }
+    },
+    {
+      "agent_id": 531224,
+      "x": 14,
+      "y": 1,
+      "energy": 0.5499999999999996,
+      "health": 1.0,
+      "age": 45,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3051876027650168,
+      "decisions_made": 45,
+      "ethical_decisions": 5,
+      "wisdom_insights_generated": 6,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 531224,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6800000000000002,
+        "wisdom_insights_count": 6,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.9006343166529268
+      },
+      "brain_summary": {
+        "total_decisions": 45,
+        "ethical_decisions": 5,
+        "ethical_ratio": 0.1111111111111111,
+        "recent_decisions": 45,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.1052065896987916,
+        "recent_mindfulness": 0.6150804162025452,
+        "recent_wisdom_influence": 0.1303396373987198,
+        "decision_consistency": 0.05773406272970817
+      }
+    },
+    {
+      "agent_id": 904975,
+      "x": 0,
+      "y": 3,
+      "energy": 0.4599999999999995,
+      "health": 1.0,
+      "age": 44,
+      "generation": 11,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3716750888251649,
+      "decisions_made": 44,
+      "ethical_decisions": 44,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 904975,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6750000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 44,
+        "ethical_decisions": 44,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 44,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.0984917932748792,
+        "recent_mindfulness": 0.7358442842960358,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.03755345363764999
+      }
+    },
+    {
+      "agent_id": 814332,
+      "x": 16,
+      "y": 0,
+      "energy": 0.5599999999999996,
+      "health": 1.0,
+      "age": 44,
+      "generation": 12,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.33474670825041436,
+      "decisions_made": 44,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 814332,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6750000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 44,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 44,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -6.606690059900283,
+        "recent_mindfulness": 0.6710624158382416,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.0630231352459803
+      }
+    },
+    {
+      "agent_id": 501153,
+      "x": 5,
+      "y": 30,
+      "energy": 0.8286074006151285,
+      "health": 1.0,
+      "age": 43,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.31020405884947605,
+      "decisions_made": 43,
+      "ethical_decisions": 32,
+      "wisdom_insights_generated": 13,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 501153,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.6700000000000002,
+        "wisdom_insights_count": 10,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.8982365408183279
+      },
+      "brain_summary": {
+        "total_decisions": 43,
+        "ethical_decisions": 32,
+        "ethical_ratio": 0.7441860465116279,
+        "recent_decisions": 43,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.11184979677200287,
+        "recent_mindfulness": 0.6237079977989197,
+        "recent_wisdom_influence": 0.09365480095148086,
+        "decision_consistency": 0.35781247314111514
+      }
+    },
+    {
+      "agent_id": 833304,
+      "x": 35,
+      "y": 3,
+      "energy": 0.24999999999999956,
+      "health": 1.0,
+      "age": 43,
+      "generation": 5,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.2897480154011513,
+      "decisions_made": 43,
+      "ethical_decisions": 43,
+      "wisdom_insights_generated": 6,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 833304,
+        "contemplative_state": "deep_contemplation",
+        "mindfulness_level": 0.6700000000000002,
+        "wisdom_insights_count": 6,
+        "contemplation_depth": 1,
+        "average_wisdom_intensity": 0.9443447769700297
+      },
+      "brain_summary": {
+        "total_decisions": 43,
+        "ethical_decisions": 43,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 43,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 4.57420446395874,
+        "recent_mindfulness": 0.5892058670520782,
+        "recent_wisdom_influence": 0.06382424011826515,
+        "decision_consistency": 0.10787459705483493
+      }
+    },
+    {
+      "agent_id": 178332,
+      "x": 19,
+      "y": 37,
+      "energy": 0.22999999999999954,
+      "health": 1.0,
+      "age": 43,
+      "generation": 11,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.256856984810523,
+      "decisions_made": 43,
+      "ethical_decisions": 43,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 178332,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6700000000000002,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 43,
+        "ethical_decisions": 43,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 43,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 4.139722545146942,
+        "recent_mindfulness": 0.5166095912456512,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.034102032377422
+      }
+    },
+    {
+      "agent_id": 367417,
+      "x": 0,
+      "y": 4,
+      "energy": 0.6099999999999997,
+      "health": 1.0,
+      "age": 39,
+      "generation": 12,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3679695569864666,
+      "decisions_made": 39,
+      "ethical_decisions": 39,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 367417,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6500000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 39,
+        "ethical_decisions": 39,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 39,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 0.8843453353643419,
+        "recent_mindfulness": 0.7353719055652619,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.04581246382700055
+      }
+    },
+    {
+      "agent_id": 857413,
+      "x": 11,
+      "y": 12,
+      "energy": 0.6399999999999997,
+      "health": 1.0,
+      "age": 36,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3803432623287682,
+      "decisions_made": 36,
+      "ethical_decisions": 36,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 857413,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6350000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 36,
+        "ethical_decisions": 36,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 36,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.085993312597275,
+        "recent_mindfulness": 0.7594811677932739,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.14662743643551693
+      }
+    },
+    {
+      "agent_id": 474861,
+      "x": 15,
+      "y": 17,
+      "energy": 0.6999999999999997,
+      "health": 1.0,
+      "age": 30,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.21563205145074305,
+      "decisions_made": 30,
+      "ethical_decisions": 10,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 474861,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6050000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 30,
+        "ethical_decisions": 10,
+        "ethical_ratio": 0.3333333333333333,
+        "recent_decisions": 30,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 0.24380608677864074,
+        "recent_mindfulness": 0.44285965859889986,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.03190070576615501
+      }
+    },
+    {
+      "agent_id": 986292,
+      "x": 18,
+      "y": 26,
+      "energy": 0.5999999999999996,
+      "health": 1.0,
+      "age": 30,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3121347967346446,
+      "decisions_made": 30,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 986292,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.6050000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 30,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 30,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -2.1305090808868408,
+        "recent_mindfulness": 0.636435067653656,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.019094046009416363
+      }
+    },
+    {
+      "agent_id": 680144,
+      "x": 21,
+      "y": 3,
+      "energy": 0.7199999999999998,
+      "health": 1.0,
+      "age": 28,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3307789870362735,
+      "decisions_made": 28,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 680144,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5950000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 28,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 28,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.2464751410484314,
+        "recent_mindfulness": 0.6642986595630646,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.01772656013690987
+      }
+    },
+    {
+      "agent_id": 490575,
+      "x": 18,
+      "y": 24,
+      "energy": 0.23999999999999935,
+      "health": 1.0,
+      "age": 28,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3347307256788685,
+      "decisions_made": 28,
+      "ethical_decisions": 28,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 490575,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5950000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 28,
+        "ethical_decisions": 28,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 28,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 4.924065918922425,
+        "recent_mindfulness": 0.666307806968689,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.0024749404088595943
+      }
+    },
+    {
+      "agent_id": 426732,
+      "x": 9,
+      "y": 13,
+      "energy": 0.7399999999999998,
+      "health": 1.0,
+      "age": 26,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.25631802111231056,
+      "decisions_made": 26,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 426732,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5850000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 26,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 26,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.1717935240268707,
+        "recent_mindfulness": 0.5156412959098816,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.047446104802151556
+      }
+    },
+    {
+      "agent_id": 297577,
+      "x": 19,
+      "y": 16,
+      "energy": 0.9080845309831048,
+      "health": 1.0,
+      "age": 26,
+      "generation": 12,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3373876191344294,
+      "decisions_made": 26,
+      "ethical_decisions": 26,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 297577,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5850000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 26,
+        "ethical_decisions": 26,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 26,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 5.63637597322464,
+        "recent_mindfulness": 0.6723185479640961,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.046546447876315365
+      }
+    },
+    {
+      "agent_id": 281136,
+      "x": 31,
+      "y": 28,
+      "energy": 0.94,
+      "health": 1.0,
+      "age": 24,
+      "generation": 5,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.34990440816708157,
+      "decisions_made": 24,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 281136,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5750000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 24,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 24,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.3807951998710633,
+        "recent_mindfulness": 0.6998051166534424,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.09698608804699593
+      }
+    },
+    {
+      "agent_id": 578574,
+      "x": 10,
+      "y": 0,
+      "energy": 0.7599999999999998,
+      "health": 1.0,
+      "age": 24,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3212219554141525,
+      "decisions_made": 24,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 578574,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5750000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 24,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 24,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.250718951225281,
+        "recent_mindfulness": 0.6408276915550232,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.014341214918051107
+      }
+    },
+    {
+      "agent_id": 206309,
+      "x": 10,
+      "y": 0,
+      "energy": 0.7599999999999998,
+      "health": 1.0,
+      "age": 24,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.31340115102692384,
+      "decisions_made": 24,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 206309,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5750000000000001,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 24,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 24,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.9549734747409822,
+        "recent_mindfulness": 0.6217257142066955,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.02940799662276561
+      }
+    },
+    {
+      "agent_id": 572136,
+      "x": 0,
+      "y": 39,
+      "energy": 0.98,
+      "health": 1.0,
+      "age": 20,
+      "generation": 11,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3207594381781244,
+      "decisions_made": 20,
+      "ethical_decisions": 20,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 572136,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.555,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 20,
+        "ethical_decisions": 20,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 20,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 6.660299434661866,
+        "recent_mindfulness": 0.6563569843769074,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.006589578248268734
+      }
+    },
+    {
+      "agent_id": 241419,
+      "x": 5,
+      "y": 27,
+      "energy": 0.1599999999999996,
+      "health": 1.0,
+      "age": 20,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.311563525831965,
+      "decisions_made": 20,
+      "ethical_decisions": 20,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 241419,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.555,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 20,
+        "ethical_decisions": 20,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 20,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.638187410831452,
+        "recent_mindfulness": 0.618811160326004,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.019988731126823478
+      }
+    },
+    {
+      "agent_id": 526012,
+      "x": 17,
+      "y": 15,
+      "energy": 0.9932437561613521,
+      "health": 1.0,
+      "age": 18,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.35844269431089376,
+      "decisions_made": 18,
+      "ethical_decisions": 18,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 526012,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.545,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 18,
+        "ethical_decisions": 18,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 18,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.3037927389144897,
+        "recent_mindfulness": 0.7135116219520569,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.019371206146029742
+      }
+    },
+    {
+      "agent_id": 320544,
+      "x": 11,
+      "y": 1,
+      "energy": 0.5799999999999996,
+      "health": 1.0,
+      "age": 14,
+      "generation": 10,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3087851423458692,
+      "decisions_made": 14,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 320544,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.525,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 14,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 14,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -0.15070889234542845,
+        "recent_mindfulness": 0.6165684163570404,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.00551719372420044
+      }
+    },
+    {
+      "agent_id": 666104,
+      "x": 0,
+      "y": 29,
+      "energy": 0.5399999999999998,
+      "health": 1.0,
+      "age": 14,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.37346548492577236,
+      "decisions_made": 14,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 666104,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.525,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 14,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 14,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -4.897098565101624,
+        "recent_mindfulness": 0.7394560873508453,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.03689853268257774
+      }
+    },
+    {
+      "agent_id": 492120,
+      "x": 10,
+      "y": 28,
+      "energy": 0.9299999999999999,
+      "health": 1.0,
+      "age": 11,
+      "generation": 10,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.27199750348476803,
+      "decisions_made": 11,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 492120,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.51,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 11,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 11,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -2.9481719225645064,
+        "recent_mindfulness": 0.5369113624095917,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.045029885119684115
+      }
+    },
+    {
+      "agent_id": 558701,
+      "x": 6,
+      "y": 39,
+      "energy": 0.98,
+      "health": 1.0,
+      "age": 8,
+      "generation": 5,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.33113667011327796,
+      "decisions_made": 8,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 558701,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 8,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 8,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 0.6075493454933162,
+        "recent_mindfulness": 0.6469846740365028,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.04516338598342277
+      }
+    },
+    {
+      "agent_id": 859487,
+      "x": 29,
+      "y": 6,
+      "energy": 0.9199999999999999,
+      "health": 1.0,
+      "age": 8,
+      "generation": 9,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.32376481976777516,
+      "decisions_made": 8,
+      "ethical_decisions": 8,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 859487,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 8,
+        "ethical_decisions": 8,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 8,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 1.939951488375664,
+        "recent_mindfulness": 0.6145010069012642,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.2426889986938487
+      }
+    },
+    {
+      "agent_id": 115698,
+      "x": 38,
+      "y": 38,
+      "energy": 0.9743323372061805,
+      "health": 1.0,
+      "age": 5,
+      "generation": 2,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3775945302739739,
+      "decisions_made": 5,
+      "ethical_decisions": 5,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 115698,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 5,
+        "ethical_decisions": 5,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 5,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 4.709901008605956,
+        "recent_mindfulness": 0.7059802651405335,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.0324637725805762
+      }
+    },
+    {
+      "agent_id": 135346,
+      "x": 5,
+      "y": 26,
+      "energy": 0.95,
+      "health": 1.0,
+      "age": 5,
+      "generation": 3,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.32802299645334476,
+      "decisions_made": 5,
+      "ethical_decisions": 5,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 135346,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 5,
+        "ethical_decisions": 5,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 5,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 2.2145099735260017,
+        "recent_mindfulness": 0.5982133865356445,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.03515350077721714
+      }
+    },
+    {
+      "agent_id": 896081,
+      "x": 0,
+      "y": 32,
+      "energy": 0.95,
+      "health": 1.0,
+      "age": 5,
+      "generation": 8,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.3380782368344068,
+      "decisions_made": 5,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 896081,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 5,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 5,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -3.5411672830581664,
+        "recent_mindfulness": 0.6103583216667176,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.18308656508838025
+      }
+    },
+    {
+      "agent_id": 836734,
+      "x": 6,
+      "y": 5,
+      "energy": 0.99,
+      "health": 1.0,
+      "age": 1,
+      "generation": 7,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.43444313704967497,
+      "decisions_made": 1,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 836734,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 1,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 1,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -1.1449787378311156,
+        "recent_mindfulness": 0.5629542469978333,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.0
+      }
+    },
+    {
+      "agent_id": 648448,
+      "x": 5,
+      "y": 27,
+      "energy": 0.99,
+      "health": 1.0,
+      "age": 1,
+      "generation": 6,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.437800931930542,
+      "decisions_made": 1,
+      "ethical_decisions": 1,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 648448,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 1,
+        "ethical_decisions": 1,
+        "ethical_ratio": 1.0,
+        "recent_decisions": 1,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": 1.838166999816894,
+        "recent_mindfulness": 0.5853395462036133,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.0
+      }
+    },
+    {
+      "agent_id": 101297,
+      "x": 8,
+      "y": 18,
+      "energy": 0.99,
+      "health": 1.0,
+      "age": 1,
+      "generation": 10,
+      "alive": true,
+      "contemplative_state": "ordinary",
+      "collective_harmony_level": 0.4534992933273315,
+      "decisions_made": 1,
+      "ethical_decisions": 0,
+      "wisdom_insights_generated": 0,
+      "wisdom_insights_received": 0,
+      "contemplative_summary": {
+        "agent_id": 101297,
+        "contemplative_state": "ordinary",
+        "mindfulness_level": 0.5,
+        "wisdom_insights_count": 0,
+        "contemplation_depth": 0,
+        "average_wisdom_intensity": 0.0
+      },
+      "brain_summary": {
+        "total_decisions": 1,
+        "ethical_decisions": 0,
+        "ethical_ratio": 0.0,
+        "recent_decisions": 1,
+        "brain_config": {
+          "input_size": 16,
+          "hidden_size": 32,
+          "output_size": 8,
+          "contemplative_modules": {
+            "mindfulness": true,
+            "wisdom_integration": true,
+            "ethical_reasoning": true
+          }
+        },
+        "recent_ethical_score": -2.628986930847168,
+        "recent_mindfulness": 0.689995288848877,
+        "recent_wisdom_influence": 0.0,
+        "decision_consistency": 0.0
+      }
+    }
+  ],
+  "simulation_data": {
+    "steps": [],
+    "population_data": [
+      {
+        "step": 0,
+        "total_population": 20,
+        "average_energy": 0.9894999999999998,
+        "average_health": 1.0,
+        "average_age": 1.0,
+        "generation_diversity": 1
+      },
+      {
+        "step": 50,
+        "total_population": 61,
+        "average_energy": 0.6210149085202641,
+        "average_health": 1.0,
+        "average_age": 30.37704918032787,
+        "generation_diversity": 8
+      },
+      {
+        "step": 100,
+        "total_population": 77,
+        "average_energy": 0.5428737824251026,
+        "average_health": 1.0,
+        "average_age": 54.883116883116884,
+        "generation_diversity": 8
+      },
+      {
+        "step": 150,
+        "total_population": 78,
+        "average_energy": 0.5248742976435793,
+        "average_health": 1.0,
+        "average_age": 65.15384615384616,
+        "generation_diversity": 11
+      },
+      {
+        "step": 200,
+        "total_population": 79,
+        "average_energy": 0.5405122917116495,
+        "average_health": 1.0,
+        "average_age": 71.9620253164557,
+        "generation_diversity": 12
+      },
+      {
+        "step": 250,
+        "total_population": 82,
+        "average_energy": 0.6211871973199584,
+        "average_health": 1.0,
+        "average_age": 79.35365853658537,
+        "generation_diversity": 12
+      },
+      {
+        "step": 300,
+        "total_population": 78,
+        "average_energy": 0.5403443793262027,
+        "average_health": 1.0,
+        "average_age": 93.11538461538461,
+        "generation_diversity": 11
+      },
+      {
+        "step": 350,
+        "total_population": 78,
+        "average_energy": 0.5789177427005587,
+        "average_health": 1.0,
+        "average_age": 95.14102564102564,
+        "generation_diversity": 11
+      },
+      {
+        "step": 400,
+        "total_population": 80,
+        "average_energy": 0.5855047165091202,
+        "average_health": 1.0,
+        "average_age": 95.0,
+        "generation_diversity": 12
+      },
+      {
+        "step": 450,
+        "total_population": 82,
+        "average_energy": 0.6428713320624009,
+        "average_health": 1.0,
+        "average_age": 105.58536585365853,
+        "generation_diversity": 12
+      }
+    ],
+    "wisdom_data": [
+      {
+        "step": 0,
+        "total_wisdom_generated": 0,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.5
+      },
+      {
+        "step": 50,
+        "total_wisdom_generated": 38,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.6122950819672133
+      },
+      {
+        "step": 100,
+        "total_wisdom_generated": 924,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7314935064935068
+      },
+      {
+        "step": 150,
+        "total_wisdom_generated": 1362,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7582051282051283
+      },
+      {
+        "step": 200,
+        "total_wisdom_generated": 1756,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.767088607594937
+      },
+      {
+        "step": 250,
+        "total_wisdom_generated": 1971,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7677439024390246
+      },
+      {
+        "step": 300,
+        "total_wisdom_generated": 2473,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.814294871794872
+      },
+      {
+        "step": 350,
+        "total_wisdom_generated": 2167,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7789102564102565
+      },
+      {
+        "step": 400,
+        "total_wisdom_generated": 2160,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7847500000000001
+      },
+      {
+        "step": 450,
+        "total_wisdom_generated": 2022,
+        "total_wisdom_received": 0,
+        "agents_in_meditation": 0,
+        "average_mindfulness": 0.7821951219512195
+      }
+    ],
+    "ethical_data": [
+      {
+        "step": 0,
+        "total_ethical_decisions": 6,
+        "total_decisions": 20,
+        "ethical_decision_ratio": 0.3,
+        "collective_harmony": 0.4460130389779807
+      },
+      {
+        "step": 50,
+        "total_ethical_decisions": 508,
+        "total_decisions": 1853,
+        "ethical_decision_ratio": 0.27415002698327035,
+        "collective_harmony": 0.3204611874971687
+      },
+      {
+        "step": 100,
+        "total_ethical_decisions": 1680,
+        "total_decisions": 4226,
+        "ethical_decision_ratio": 0.3975390440132513,
+        "collective_harmony": 0.31130256555668867
+      },
+      {
+        "step": 150,
+        "total_ethical_decisions": 2011,
+        "total_decisions": 5082,
+        "ethical_decision_ratio": 0.3957103502558048,
+        "collective_harmony": 0.3180524519464499
+      },
+      {
+        "step": 200,
+        "total_ethical_decisions": 2279,
+        "total_decisions": 5685,
+        "ethical_decision_ratio": 0.4008795074758135,
+        "collective_harmony": 0.31835172253110067
+      },
+      {
+        "step": 250,
+        "total_ethical_decisions": 2513,
+        "total_decisions": 6507,
+        "ethical_decision_ratio": 0.38619947748578454,
+        "collective_harmony": 0.33045642918684004
+      },
+      {
+        "step": 300,
+        "total_ethical_decisions": 3429,
+        "total_decisions": 7263,
+        "ethical_decision_ratio": 0.4721189591078067,
+        "collective_harmony": 0.3196220443658167
+      },
+      {
+        "step": 350,
+        "total_ethical_decisions": 3339,
+        "total_decisions": 7421,
+        "ethical_decision_ratio": 0.44993936127206574,
+        "collective_harmony": 0.32225050533382044
+      },
+      {
+        "step": 400,
+        "total_ethical_decisions": 3584,
+        "total_decisions": 7600,
+        "ethical_decision_ratio": 0.47157894736842104,
+        "collective_harmony": 0.3229766065589169
+      },
+      {
+        "step": 450,
+        "total_ethical_decisions": 4162,
+        "total_decisions": 8658,
+        "ethical_decision_ratio": 0.48071148071148073,
+        "collective_harmony": 0.3269605133263201
+      }
+    ],
+    "overmind_data": [
+      {
+        "step": 0,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 50,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 100,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 150,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 200,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 250,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 300,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 350,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 400,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      },
+      {
+        "step": 450,
+        "decisions_made": 0,
+        "success_rate": 0.75,
+        "collective_meditations_triggered": 0,
+        "ethical_performance": {
+          "overall_ethical_score": 0.6
+        }
+      }
+    ],
+    "network_data": [
+      {
+        "step": 0,
+        "signal_diversity": 0.0,
+        "network_coherence": 0.0,
+        "wisdom_flow_efficiency": 0.0,
+        "total_signals": 0,
+        "active_signals": 0,
+        "signal_counts_by_type": {},
+        "average_signal_intensity": 0.0,
+        "total_signal_intensity": 0.0
+      },
+      {
+        "step": 50,
+        "signal_diversity": 0.125,
+        "network_coherence": "0.74180835",
+        "wisdom_flow_efficiency": 0.04375,
+        "total_signals": 7,
+        "active_signals": 7,
+        "signal_counts_by_type": {
+          "suffering_alert": 7
+        },
+        "average_signal_intensity": "0.74180835",
+        "total_signal_intensity": "5.1926584"
+      },
+      {
+        "step": 100,
+        "signal_diversity": 0.25,
+        "network_coherence": "0.43244448",
+        "wisdom_flow_efficiency": 1.0,
+        "total_signals": 189,
+        "active_signals": 189,
+        "signal_counts_by_type": {
+          "suffering_alert": 44,
+          "meditation_sync": 145
+        },
+        "average_signal_intensity": "0.43244448",
+        "total_signal_intensity": "81.73201"
+      },
+      {
+        "step": 150,
+        "signal_diversity": 0.125,
+        "network_coherence": "0.79336846",
+        "wisdom_flow_efficiency": 0.2125,
+        "total_signals": 34,
+        "active_signals": 34,
+        "signal_counts_by_type": {
+          "suffering_alert": 34
+        },
+        "average_signal_intensity": "0.79336846",
+        "total_signal_intensity": "26.974527"
+      },
+      {
+        "step": 200,
+        "signal_diversity": 0.25,
+        "network_coherence": "0.41947207",
+        "wisdom_flow_efficiency": 1.0,
+        "total_signals": 184,
+        "active_signals": 184,
+        "signal_counts_by_type": {
+          "suffering_alert": 39,
+          "meditation_sync": 145
+        },
+        "average_signal_intensity": "0.41947207",
+        "total_signal_intensity": "77.18286"
+      },
+      {
+        "step": 250,
+        "signal_diversity": 0.125,
+        "network_coherence": "0.6879701",
+        "wisdom_flow_efficiency": 0.3,
+        "total_signals": 48,
+        "active_signals": 48,
+        "signal_counts_by_type": {
+          "suffering_alert": 48
+        },
+        "average_signal_intensity": "0.6879701",
+        "total_signal_intensity": "33.022564"
+      },
+      {
+        "step": 300,
+        "signal_diversity": 0.125,
+        "network_coherence": "0.86607015",
+        "wisdom_flow_efficiency": 0.2,
+        "total_signals": 32,
+        "active_signals": 32,
+        "signal_counts_by_type": {
+          "suffering_alert": 32
+        },
+        "average_signal_intensity": "0.86607015",
+        "total_signal_intensity": "27.714245"
+      },
+      {
+        "step": 350,
+        "signal_diversity": 0.125,
+        "network_coherence": "0.8214541",
+        "wisdom_flow_efficiency": 0.21875,
+        "total_signals": 35,
+        "active_signals": 35,
+        "signal_counts_by_type": {
+          "suffering_alert": 35
+        },
+        "average_signal_intensity": "0.8214541",
+        "total_signal_intensity": "28.750895"
+      },
+      {
+        "step": 400,
+        "signal_diversity": 0.125,
+        "network_coherence": "0.8669505",
+        "wisdom_flow_efficiency": 0.19375,
+        "total_signals": 31,
+        "active_signals": 31,
+        "signal_counts_by_type": {
+          "suffering_alert": 31
+        },
+        "average_signal_intensity": "0.8669505",
+        "total_signal_intensity": "26.875465"
+      },
+      {
+        "step": 450,
+        "signal_diversity": 0.125,
+        "network_coherence": "0.7416524",
+        "wisdom_flow_efficiency": 0.18125,
+        "total_signals": 29,
+        "active_signals": 29,
+        "signal_counts_by_type": {
+          "suffering_alert": 29
+        },
+        "average_signal_intensity": "0.7416524",
+        "total_signal_intensity": "21.507921"
+      }
+    ]
+  },
+  "overmind_state": {
+    "decisions_made": 0,
+    "meditations_triggered": 0,
+    "last_intervention_step": 0
+  }
+}

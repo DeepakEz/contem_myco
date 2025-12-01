@@ -1,0 +1,102 @@
+{
+  "key_findings": [
+    "survival_rate: 'ablation_no_wisdom' outperforms 'ablation_no_ethics' by 5.4% (4.070 vs 3.860)",
+    "total_wisdom: 'ablation_no_ethics' outperforms 'baseline_no_contemplation' by 153.7% (3212.800 vs 1266.600)",
+    "average_mindfulness: 'ablation_no_wisdom' outperforms 'contemplative_full' by 7.7% (0.850 vs 0.789)",
+    "ethical_ratio: 'baseline_no_contemplation' outperforms 'ablation_no_wisdom' by 25.5% (0.412 vs 0.328)"
+  ],
+  "statistical_comparisons": {
+    "survival_rate": {
+      "contemplative_full": {
+        "mean": 4.01,
+        "std": 0.037416573867739285,
+        "count": 5
+      },
+      "baseline_no_contemplation": {
+        "mean": 4.029999999999999,
+        "std": 0.024494897427831695,
+        "count": 5
+      },
+      "ablation_no_wisdom": {
+        "mean": 4.07,
+        "std": 0.08717797887081359,
+        "count": 5
+      },
+      "ablation_no_ethics": {
+        "mean": 3.8600000000000003,
+        "std": 0.23323807579381203,
+        "count": 5
+      }
+    },
+    "total_wisdom": {
+      "contemplative_full": {
+        "mean": 3097.0,
+        "std": 293.5132024287834,
+        "count": 5
+      },
+      "baseline_no_contemplation": {
+        "mean": 1266.6,
+        "std": 102.97494840979529,
+        "count": 5
+      },
+      "ablation_no_wisdom": {
+        "mean": 1419.6,
+        "std": 79.18232125923058,
+        "count": 5
+      },
+      "ablation_no_ethics": {
+        "mean": 3212.8,
+        "std": 312.9015180532047,
+        "count": 5
+      }
+    },
+    "average_mindfulness": {
+      "contemplative_full": {
+        "mean": 0.78942211478356,
+        "std": 0.009894811664676057,
+        "count": 5
+      },
+      "baseline_no_contemplation": {
+        "mean": 0.8407032407407409,
+        "std": 0.025234228281414573,
+        "count": 5
+      },
+      "ablation_no_wisdom": {
+        "mean": 0.8501108505450373,
+        "std": 0.02870279974108616,
+        "count": 5
+      },
+      "ablation_no_ethics": {
+        "mean": 0.8260230015082957,
+        "std": 0.012179647417915886,
+        "count": 5
+      }
+    },
+    "ethical_ratio": {
+      "contemplative_full": {
+        "mean": 0.372214385549665,
+        "std": 0.09787382327224126,
+        "count": 5
+      },
+      "baseline_no_contemplation": {
+        "mean": 0.4119841711098525,
+        "std": 0.06671240560999668,
+        "count": 5
+      },
+      "ablation_no_wisdom": {
+        "mean": 0.3283214778310776,
+        "std": 0.043119767401271,
+        "count": 5
+      },
+      "ablation_no_ethics": {
+        "mean": 0.3731269564787278,
+        "std": 0.030886994875356108,
+        "count": 5
+      }
+    }
+  },
+  "metadata": {
+    "timestamp": 1752492526.532184,
+    "analysis_date": "2025-07-14 16:58:46"
+  }
+}
