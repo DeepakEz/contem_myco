@@ -134,43 +134,86 @@ class SimulationConfig:
     environment_height: int = 50
     initial_population: int = 20
     max_population: int = 100
-    
+
     # Simulation settings
     max_steps: int = 1000
     save_interval: int = 100
     visualization_interval: int = 50
-    
+
     # Contemplative settings
     contemplative_config: ContemplativeConfig = None
     wisdom_signal_config: WisdomSignalConfig = None
     visualization_config: VisualizationConfig = None
-    
+
     # Overmind settings
     enable_overmind: bool = True
     overmind_intervention_frequency: int = 10
-    
+
     # Agent brain settings
     brain_input_size: int = 16
     brain_hidden_size: int = 64
     brain_output_size: int = 8
-    
+
     # Experiment settings
     experiment_name: str = "contemplative_basic"
     output_directory: str = "contemplative_results"
-    
+
+    # Tracking settings
+    track_wisdom_propagation: bool = True
+    track_collective_behavior: bool = True
+    track_ethical_decisions: bool = True
+
     # Advanced features
     enable_advanced_analytics: bool = True
     enable_real_time_monitoring: bool = False
     enable_interactive_mode: bool = False
-    
-    def __post_init__(self):
-        """Initialize default configurations"""
+
+    def __init__(self, **kwargs):
+        """Initialize configuration from keyword arguments"""
+        # Set default values
+        self.environment_width = 50
+        self.environment_height = 50
+        self.initial_population = 20
+        self.max_population = 100
+        self.max_steps = 1000
+        self.save_interval = 100
+        self.visualization_interval = 50
+        self.contemplative_config = None
+        self.wisdom_signal_config = None
+        self.visualization_config = None
+        self.enable_overmind = True
+        self.overmind_intervention_frequency = 10
+        self.brain_input_size = 16
+        self.brain_hidden_size = 64
+        self.brain_output_size = 8
+        self.experiment_name = "contemplative_basic"
+        self.output_directory = "contemplative_results"
+        self.track_wisdom_propagation = True
+        self.track_collective_behavior = True
+        self.track_ethical_decisions = True
+        self.enable_advanced_analytics = True
+        self.enable_real_time_monitoring = False
+        self.enable_interactive_mode = False
+
+        # Override with kwargs
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        # Initialize nested configs
         if self.contemplative_config is None:
             self.contemplative_config = ContemplativeConfig()
+        elif isinstance(self.contemplative_config, dict):
+            self.contemplative_config = ContemplativeConfig(**self.contemplative_config)
+
         if self.wisdom_signal_config is None:
             self.wisdom_signal_config = WisdomSignalConfig()
+        elif isinstance(self.wisdom_signal_config, dict):
+            self.wisdom_signal_config = WisdomSignalConfig(**self.wisdom_signal_config)
+
         if self.visualization_config is None:
             self.visualization_config = VisualizationConfig()
+        elif isinstance(self.visualization_config, dict):
+            self.visualization_config = VisualizationConfig(**self.visualization_config)
 
 # ==============================================================================
 # FALLBACK IMPLEMENTATIONS
