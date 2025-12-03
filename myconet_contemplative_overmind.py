@@ -269,13 +269,7 @@ class TrulyCompletePhaseIIIContemplativeOvermind(CompletePhaseIIIContemplativeOv
         )
         
         logger.debug(f"Logged reflection {reflection_id}: regret={regret_score:.3f}")
-    
-    def _process_agent_feedback(seembedding,
-            'wisdom_boost_total': intensity * 2.0 * participants_affected,
-            'mindfulness_boost_average': intensity * 0.3,
-            'synchrony_achieved': min(1.0, participants_affected / len(agents))
-        }
-    
+
     def _generate_collective_insight(self, agents: List, intensity: float) -> str:
         """Generate collective wisdom insight based on agent states"""
         
