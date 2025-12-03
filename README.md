@@ -7,7 +7,7 @@ Enhanced MycoNet++ with contemplative AI capabilities, featuring mindfulness, wi
 ### 1. Setup
 Run the setup script to check dependencies and create example configurations:
 ```bash
-python setup_contemplative_myconet.py
+python setup_script.py
 ```
 
 ### 2. Run Experiments
@@ -168,3 +168,4 @@ contemplative_myconet/
 ---
 
 *"True intelligence is wise intelligence, and true wisdom is efficient wisdom."*
+
