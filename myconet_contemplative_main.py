@@ -122,6 +122,7 @@ class WisdomSignalConfig:
     propagation_distance: int = 5
     intensity_threshold: float = 0.1
     cross_signal_interference: bool = True
+    signal_amplification: dict = None
 
     def __post_init__(self):
         """Initialize defaults for list fields"""
@@ -135,6 +136,8 @@ class WisdomSignalConfig:
                 "cooperation_call",
                 "mindfulness_wave"
             ]
+        if self.signal_amplification is None:
+            self.signal_amplification = {}  # Empty dict by default
 
 @dataclass
 class VisualizationConfig:
