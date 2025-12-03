@@ -1177,55 +1177,7 @@ if __name__ == "__main__":
         print("Supports emergent collective intelligence and wisdom-based governance")
     else:
         print("⚠️  System needs additional development")
-    print("=" * 80)            optimized_thresholds = self.threshold_regulator.neural_threshold_optimization(
-                context['state_tensor']
-            )
-            
-            # 8. Check for mesh consensus on major decisions
-            mesh_decision = None
-            if context['colony_metrics'].crisis_level() > 0.7 and len(self.mesh_adapter.connected_overminds) > 0:
-                action_candidates = [
-                    OvermindActionType.INCREASE_RESOURCE_REGENERATION,
-                    OvermindActionType.PROMOTE_COOPERATION,
-                    OvermindActionType.REDUCE_ENVIRONMENTAL_HAZARDS
-                ]
-                
-                mesh_vote_result = self.mesh_adapter.request_mesh_vote(
-                    context, action_candidates, urgency=context['colony_metrics'].crisis_level()
-                )
-                
-                if mesh_vote_result.get('consensus') != 'no_consensus':
-                    mesh_decision = mesh_vote_result
-            
-            # 9. Enhanced decision making with all inputs
-            decision = self._make_complete_decision(
-                context, memory_influence, selected_proposal, 
-                scheduled_ritual_results, optimized_thresholds, mesh_decision, agents, step
-            )
-            
-            # 10. Apply agent-level feedback
-            if decision and decision.chosen_action != OvermindActionType.NO_ACTION:
-                feedback_results = self._apply_agent_feedback(decision, agents)
-                decision.agent_feedback_results = feedback_results
-            
-            # 11. Update insight evolution and memory systems
-            self._update_insight_evolution(decision, context, step)
-            
-            # 12. Record comprehensive metrics
-            self._record_complete_metrics(decision, context, step)
-            
-            processing_time = time.time() - start_time
-            logger.info(f"Complete Phase III decision made in {processing_time:.3f}s: "
-                       f"{decision.chosen_action.name if decision else 'NO_ACTION'}")
-            
-            return decision
-            
-        except Exception as e:
-            logger.error(f"Error in complete Phase III processing at step {step}: {e}")
-            return None
-    
-    def _build_complete_context(self, agents: List, step: int) -> Dict[str, Any]:
-        """Build comprehensive context with emotional tracking"""
+    print("=" * 80)
         
         # Base context
         context = {

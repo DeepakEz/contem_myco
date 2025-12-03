@@ -115,6 +115,26 @@ class WisdomSignalConfig:
     propagation_speed: float = 1.0
     max_intensity: float = 1.0
     signal_radius: float = 3.0
+    # Additional parameters from config file
+    signal_types: list = None
+    base_diffusion_rate: float = 0.1
+    base_decay_rate: float = 0.05
+    propagation_distance: int = 5
+    intensity_threshold: float = 0.1
+    cross_signal_interference: bool = True
+
+    def __post_init__(self):
+        """Initialize defaults for list fields"""
+        if self.signal_types is None:
+            self.signal_types = [
+                "ethical_insight",
+                "suffering_alert",
+                "compassion_gradient",
+                "wisdom_beacon",
+                "meditation_sync",
+                "cooperation_call",
+                "mindfulness_wave"
+            ]
 
 @dataclass
 class VisualizationConfig:
