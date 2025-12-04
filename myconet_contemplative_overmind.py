@@ -4764,10 +4764,16 @@ class ContemplativeOvermind:
     - OvermindVisualizer: NetworkX wisdom flow visualization
     """
 
-    def __init__(self, environment, wisdom_signal_grid, overmind_id: str = "overmind_1"):
-        self.environment = environment
-        self.wisdom_signal_grid = wisdom_signal_grid
+    def __init__(self, colony_size: int, environment_size: Tuple[int, int], config: Dict[str, Any], overmind_id: str = "overmind_1"):
+        # Store initialization parameters (matching FallbackContemplativeOvermind interface)
+        self.colony_size = colony_size
+        self.environment_size = environment_size
+        self.config = config
         self.overmind_id = overmind_id
+
+        # Runtime state (set during get_intervention_action calls)
+        self.environment = None
+        self.wisdom_signal_grid = None
 
         # Decision tracking
         self.decision_history = deque(maxlen=1000)
@@ -5095,7 +5101,12 @@ class ContemplativeOvermind:
         Called by main simulation loop - return intervention actions
         This replaces the old process_colony_state call
         """
+        # Update runtime state from call parameters
+        self.environment = environment
+        self.wisdom_signal_grid = wisdom_signal_grid
+
         # Process using Phase III stack
+        self.step_count += 1
         intervention = self.process_colony_state(agents, self.step_count)
 
         if intervention:
