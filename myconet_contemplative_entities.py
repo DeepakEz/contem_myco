@@ -81,10 +81,15 @@ class ActionType(Enum):
 class ContemplativeConfig:
     """Configuration for contemplative agent parameters - TYPE VALIDATED"""
     # Core contemplative parameters
+    enable_contemplative_processing: bool = field(default=True)
     compassion_sensitivity: float = field(default=0.6)
     ethical_reasoning_depth: int = field(default=1)
     mindfulness_update_frequency: int = field(default=20)
     wisdom_sharing_threshold: float = field(default=0.3)
+    collective_meditation_threshold: float = field(default=0.8)
+    contemplative_memory_capacity: int = field(default=100)
+    wisdom_sharing_radius: int = field(default=1)
+    wisdom_signal_strength: float = field(default=0.3)
     
     # Learning parameters
     ethical_learning_rate: float = field(default=0.01)
