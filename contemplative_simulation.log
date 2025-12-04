@@ -114,3 +114,120 @@
 2025-12-04 14:03:16,553 - __main__ - WARNING - Failed to get network stats: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
 2025-12-04 14:03:16,554 - __main__ - INFO - Final results saved: contemplative_results/minimal_test_seed42_results.json
 2025-12-04 14:03:16,554 - __main__ - INFO - Simulation completed in 0.0 seconds
+2025-12-04 14:07:22,933 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:07:23,938 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:07:23,941 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:07:23,977 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:07:35,973 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:07:37,004 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:07:37,006 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:07:37,045 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:07:37,049 - __main__ - INFO - Contemplative simulation initialized: basic_contemplative_seed42
+2025-12-04 14:07:37,049 - __main__ - INFO - Environment: 25x25
+2025-12-04 14:07:37,049 - __main__ - INFO - Population: 10 agents
+2025-12-04 14:07:37,050 - __main__ - INFO - Overmind: disabled
+2025-12-04 14:07:37,050 - __main__ - INFO - Starting simulation: basic_contemplative_seed42
+2025-12-04 14:07:37,058 - __main__ - WARNING - Step 0 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,058 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:07:37,059 - __main__ - INFO - Checkpoint saved: contemplative_results/checkpoint_step_0.json
+2025-12-04 14:07:37,059 - __main__ - INFO - Step 0/50 - Population: 10 - Time: 0.0s
+2025-12-04 14:07:37,063 - __main__ - WARNING - Step 1 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,067 - __main__ - WARNING - Step 2 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,070 - __main__ - WARNING - Step 3 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,076 - __main__ - WARNING - Step 4 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,081 - __main__ - WARNING - Step 5 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,089 - __main__ - WARNING - Step 6 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,096 - __main__ - WARNING - Step 7 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,100 - __main__ - WARNING - Step 8 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,103 - __main__ - WARNING - Step 9 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,107 - __main__ - WARNING - Step 10 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,110 - __main__ - WARNING - Step 11 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,114 - __main__ - WARNING - Step 12 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,120 - __main__ - WARNING - Step 13 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,124 - __main__ - WARNING - Step 14 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,128 - __main__ - WARNING - Step 15 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,131 - __main__ - WARNING - Step 16 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,135 - __main__ - WARNING - Step 17 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,138 - __main__ - WARNING - Step 18 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,142 - __main__ - WARNING - Step 19 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,146 - __main__ - WARNING - Step 20 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,149 - __main__ - WARNING - Step 21 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,154 - __main__ - WARNING - Step 22 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,157 - __main__ - WARNING - Step 23 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,161 - __main__ - WARNING - Step 24 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,165 - __main__ - WARNING - Step 25 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,168 - __main__ - WARNING - Step 26 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,172 - __main__ - WARNING - Step 27 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,175 - __main__ - WARNING - Step 28 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,179 - __main__ - WARNING - Step 29 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,182 - __main__ - WARNING - Step 30 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,186 - __main__ - WARNING - Step 31 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,193 - __main__ - WARNING - Step 32 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,197 - __main__ - WARNING - Step 33 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,201 - __main__ - WARNING - Step 34 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,204 - __main__ - WARNING - Step 35 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,208 - __main__ - WARNING - Step 36 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,211 - __main__ - WARNING - Step 37 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,216 - __main__ - WARNING - Step 38 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,219 - __main__ - WARNING - Step 39 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,223 - __main__ - WARNING - Step 40 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,227 - __main__ - WARNING - Step 41 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,230 - __main__ - WARNING - Step 42 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,234 - __main__ - WARNING - Step 43 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,237 - __main__ - WARNING - Step 44 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,241 - __main__ - WARNING - Step 45 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,244 - __main__ - WARNING - Step 46 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,247 - __main__ - WARNING - Step 47 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,251 - __main__ - WARNING - Step 48 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,254 - __main__ - WARNING - Step 49 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:37,254 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:07:37,255 - __main__ - INFO - Advanced analytics completed
+2025-12-04 14:07:37,256 - __main__ - WARNING - Failed to get network stats: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:07:37,257 - __main__ - INFO - Final results saved: contemplative_results/basic_contemplative_seed42_results.json
+2025-12-04 14:07:37,257 - __main__ - INFO - Simulation completed in 0.2 seconds
+2025-12-04 14:07:52,159 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:07:53,089 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:07:53,091 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:07:53,126 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:07:53,129 - __main__ - INFO - Contemplative simulation initialized: minimal_test_seed42
+2025-12-04 14:07:53,129 - __main__ - INFO - Environment: 15x15
+2025-12-04 14:07:53,129 - __main__ - INFO - Population: 5 agents
+2025-12-04 14:07:53,129 - __main__ - INFO - Overmind: disabled
+2025-12-04 14:07:53,129 - __main__ - INFO - Starting simulation: minimal_test_seed42
+2025-12-04 14:07:53,131 - __main__ - WARNING - Step 0 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:53,131 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:07:53,132 - __main__ - INFO - Checkpoint saved: contemplative_results/checkpoint_step_0.json
+2025-12-04 14:07:53,132 - __main__ - INFO - Step 0/5 - Population: 5 - Time: 0.0s
+2025-12-04 14:07:53,133 - __main__ - WARNING - Step 1 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:53,135 - __main__ - WARNING - Step 2 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:53,136 - __main__ - WARNING - Step 3 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:53,138 - __main__ - WARNING - Step 4 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:07:53,138 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:07:53,139 - __main__ - INFO - Advanced analytics completed
+2025-12-04 14:07:53,139 - __main__ - WARNING - Failed to get network stats: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:07:53,140 - __main__ - INFO - Final results saved: contemplative_results/minimal_test_seed42_results.json
+2025-12-04 14:07:53,140 - __main__ - INFO - Simulation completed in 0.0 seconds
+2025-12-04 14:08:03,270 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:08:04,256 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:08:04,258 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:08:04,294 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:08:04,297 - __main__ - INFO - Contemplative simulation initialized: minimal_test_seed42
+2025-12-04 14:08:04,297 - __main__ - INFO - Environment: 15x15
+2025-12-04 14:08:04,297 - __main__ - INFO - Population: 5 agents
+2025-12-04 14:08:04,297 - __main__ - INFO - Overmind: disabled
+2025-12-04 14:08:04,297 - __main__ - INFO - Starting simulation: minimal_test_seed42
+2025-12-04 14:08:04,299 - __main__ - WARNING - Step 0 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:08:04,299 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:08:04,300 - __main__ - INFO - Checkpoint saved: contemplative_results/checkpoint_step_0.json
+2025-12-04 14:08:04,300 - __main__ - INFO - Step 0/3 - Population: 5 - Time: 0.0s
+2025-12-04 14:08:04,302 - __main__ - WARNING - Step 1 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:08:04,304 - __main__ - WARNING - Step 2 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:08:04,304 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:08:04,305 - __main__ - INFO - Advanced analytics completed
+2025-12-04 14:08:04,305 - __main__ - WARNING - Failed to get network stats: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:08:04,306 - __main__ - INFO - Final results saved: contemplative_results/minimal_test_seed42_results.json
+2025-12-04 14:08:04,306 - __main__ - INFO - Simulation completed in 0.0 seconds
+2025-12-04 14:08:24,335 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:08:25,350 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:08:25,352 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:08:25,387 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)

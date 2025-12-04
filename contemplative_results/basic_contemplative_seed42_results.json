@@ -1,11 +1,11 @@
 {
   "config": {
-    "environment_width": 15,
-    "environment_height": 15,
-    "initial_population": 5,
-    "max_population": 20,
-    "max_steps": 3,
-    "save_interval": 25,
+    "environment_width": 25,
+    "environment_height": 25,
+    "initial_population": 10,
+    "max_population": 30,
+    "max_steps": 50,
+    "save_interval": 50,
     "visualization_interval": 50,
     "contemplative_config": {
       "enable_contemplative_processing": true,
@@ -49,10 +49,10 @@
     },
     "enable_overmind": false,
     "overmind_intervention_frequency": 10,
-    "brain_input_size": 12,
-    "brain_hidden_size": 24,
-    "brain_output_size": 6,
-    "experiment_name": "minimal_test_seed42",
+    "brain_input_size": 16,
+    "brain_hidden_size": 32,
+    "brain_output_size": 8,
+    "experiment_name": "basic_contemplative_seed42",
     "output_directory": "contemplative_results",
     "track_wisdom_propagation": true,
     "track_collective_behavior": true,
@@ -65,15 +65,15 @@
     "population_data": [
       {
         "step": 0,
-        "total_population": 5,
+        "total_population": 10,
         "average_energy": 1.0,
         "average_health": 1.0,
         "average_age": 0.0,
         "generation_diversity": 1
       },
       {
-        "step": 2,
-        "total_population": 5,
+        "step": 49,
+        "total_population": 10,
         "average_energy": 1.0,
         "average_health": 1.0,
         "average_age": 0.0,
@@ -89,7 +89,7 @@
         "average_mindfulness": 0.5
       },
       {
-        "step": 2,
+        "step": 49,
         "total_wisdom_generated": 0,
         "total_wisdom_received": 0,
         "agents_in_meditation": 0,
@@ -105,7 +105,7 @@
         "collective_harmony": 0.5
       },
       {
-        "step": 2,
+        "step": 49,
         "total_ethical_decisions": 0,
         "total_decisions": 0,
         "ethical_decision_ratio": 0.0,
@@ -122,7 +122,7 @@
         "active_signals": 0
       },
       {
-        "step": 2,
+        "step": 49,
         "signal_diversity": 0,
         "network_coherence": 0,
         "wisdom_flow_efficiency": 0,
@@ -135,18 +135,18 @@
         "step": 0
       },
       {
-        "step": 2
+        "step": 49
       }
     ]
   },
   "final_analysis": {
-    "experiment_name": "minimal_test_seed42",
-    "total_steps": 2,
-    "final_population": 5,
+    "experiment_name": "basic_contemplative_seed42",
+    "total_steps": 49,
+    "final_population": 10,
     "survival_rate": 1.0,
     "final_metrics": {
       "population": {
-        "population_size": 5,
+        "population_size": 10,
         "average_energy": 1.0,
         "average_health": 1.0,
         "average_age": 0.0

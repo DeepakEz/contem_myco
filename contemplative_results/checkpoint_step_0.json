@@ -5,7 +5,7 @@
     "environment_height": 15,
     "initial_population": 5,
     "max_population": 20,
-    "max_steps": 10,
+    "max_steps": 3,
     "save_interval": 25,
     "visualization_interval": 50,
     "contemplative_config": {
