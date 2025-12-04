@@ -64,3 +64,53 @@
 2025-07-30 12:58:59,840 - __main__ - INFO - Successfully imported real wisdom signals module
 2025-07-30 12:58:59,962 - __main__ - INFO - Successfully imported real contemplative entities module
 2025-07-30 12:58:59,985 - __main__ - WARNING - Real contemplative overmind not available: closing parenthesis '}' does not match opening parenthesis '(' on line 273 (myconet_contemplative_overmind.py, line 277)
+2025-12-03 15:20:54,790 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-03 15:20:55,908 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-03 15:20:55,931 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-03 15:24:05,209 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-03 15:24:06,261 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-03 15:24:06,263 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-03 15:24:06,298 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:02:03,652 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:02:04,701 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:02:04,703 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:02:04,744 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:02:14,653 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:02:15,704 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:02:15,707 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:02:15,742 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:02:31,583 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:02:32,652 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:02:32,655 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:02:32,693 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:02:42,166 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:02:43,254 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:02:43,257 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:02:43,295 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:03:15,471 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:03:16,490 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:03:16,492 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:03:16,530 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:03:16,534 - __main__ - INFO - Contemplative simulation initialized: minimal_test_seed42
+2025-12-04 14:03:16,534 - __main__ - INFO - Environment: 15x15
+2025-12-04 14:03:16,534 - __main__ - INFO - Population: 5 agents
+2025-12-04 14:03:16,534 - __main__ - INFO - Overmind: disabled
+2025-12-04 14:03:16,534 - __main__ - INFO - Starting simulation: minimal_test_seed42
+2025-12-04 14:03:16,536 - __main__ - WARNING - Step 0 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,536 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:03:16,537 - __main__ - INFO - Checkpoint saved: contemplative_results/checkpoint_step_0.json
+2025-12-04 14:03:16,537 - __main__ - INFO - Step 0/10 - Population: 5 - Time: 0.0s
+2025-12-04 14:03:16,539 - __main__ - WARNING - Step 1 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,541 - __main__ - WARNING - Step 2 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,542 - __main__ - WARNING - Step 3 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,544 - __main__ - WARNING - Step 4 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,546 - __main__ - WARNING - Step 5 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,547 - __main__ - WARNING - Step 6 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,549 - __main__ - WARNING - Step 7 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,550 - __main__ - WARNING - Step 8 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,552 - __main__ - WARNING - Step 9 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:03:16,552 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:03:16,553 - __main__ - INFO - Advanced analytics completed
+2025-12-04 14:03:16,553 - __main__ - WARNING - Failed to get network stats: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:03:16,554 - __main__ - INFO - Final results saved: contemplative_results/minimal_test_seed42_results.json
+2025-12-04 14:03:16,554 - __main__ - INFO - Simulation completed in 0.0 seconds

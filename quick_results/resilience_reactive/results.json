@@ -1,0 +1,45 @@
+{
+  "config": {
+    "experiment_name": "resilience_reactive",
+    "environment_type": "resilience",
+    "agent_type": "reactive",
+    "num_steps": 50,
+    "num_runs": 2,
+    "seed": 42,
+    "env_config": {
+      "num_agents": 10,
+      "grid_size": 20
+    },
+    "agent_config": {},
+    "output_dir": "quick_results"
+  },
+  "num_runs": 2,
+  "mean_metrics": {
+    "total_casualties": 10.0,
+    "avg_suffering": 0.02614411764705883,
+    "total_rescues": 0.0,
+    "survival_rate": 0.0
+  },
+  "std_metrics": {
+    "total_casualties": 0.0,
+    "avg_suffering": 0.0020558823529411765,
+    "total_rescues": 0.0,
+    "survival_rate": 0.0
+  },
+  "all_runs": [
+    {
+      "run_idx": 0,
+      "seed": 42,
+      "total_steps": 34,
+      "total_reward": 0.0,
+      "step_metrics": [
+        {
+          "step": 1,
+          "alive_agents": 10,
+          "casualties": 0,
+          "total_suffering": 0.0,
+          "avg_suffering": 0.0,
+          "avg_health": 1.0,
+          "avg_energy": 0.9700000000000001,
+          "total_rescues": 0,
+          "flooded_cells": 

@@ -123,6 +123,7 @@ class WisdomSignalConfig:
     intensity_threshold: float = 0.1
     cross_signal_interference: bool = True
     signal_amplification: dict = None
+    debug: bool = False
 
     def __post_init__(self):
         """Initialize defaults for list fields"""
