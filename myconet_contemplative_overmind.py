@@ -1284,21 +1284,29 @@ if __name__ == "__main__":
             self.fig.savefig(filename, dpi=300, bbox_inches='tight')
 
 # ENHANCED PHASE III OVERMIND WITH ALL MISSING FEATURES
+# NOTE: This is an older version kept for reference. The active implementation
+# is ContemplativeOvermind at the end of this file.
 
-class CompletePhaseIIIContemplativeOvermind(PhaseIIIContemplativeOvermind):
+class CompletePhaseIIIContemplativeOvermind:
     """
     Complete Phase III Overmind with all missing features integrated:
     - Agent feedback integration
-    - Temporal ritual scheduling  
+    - Temporal ritual scheduling
     - Multi-overmind collaboration
     - Insight evolution & memory reuse
     - Adaptive thresholds
     - Real-time visualization
+
+    NOTE: Legacy implementation. Use ContemplativeOvermind instead.
     """
-    
+
 
     def __init__(self, environment, wisdom_signal_grid, overmind_id: str = "overmind_1"):
-        super().__init__(environment, wisdom_signal_grid)
+        # Initialize base attributes
+        self.environment = environment
+        self.wisdom_signal_grid = wisdom_signal_grid
+        self.decision_history = deque(maxlen=1000)
+        self.step_count = 0
         
         # Initialize all missing components
         self.overmind_id = overmind_id
