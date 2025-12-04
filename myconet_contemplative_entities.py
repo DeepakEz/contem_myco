@@ -333,11 +333,17 @@ class ContemplativeNeuroAgent:
                 output_size=brain_config.get('output_size', 6),
                 contemplative_config=contemplative_config_dict  # <- FIXED: Always pass dict
             )
-            
+
             # Move brain to appropriate device if it has parameters
-            if hasattr(self.brain, 'parameters') and any(self.brain.parameters()):
-                self.brain = device_manager.to_device(self.brain)
-                self.agent_logger.debug(f"Brain moved to device: {device_manager.device}")
+            if hasattr(self.brain, 'parameters'):
+                try:
+                    # Check if model has any parameters by trying to get first one
+                    next(iter(self.brain.parameters()))
+                    self.brain = device_manager.to_device(self.brain)
+                    self.agent_logger.debug(f"Brain moved to device: {device_manager.device}")
+                except StopIteration:
+                    # No parameters, skip device move
+                    pass
         except Exception as e:
             logger.error(f"Failed to create brain for agent {self.agent_id}: {e}")
             self.brain = None
