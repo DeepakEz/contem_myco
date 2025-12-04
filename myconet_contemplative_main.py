@@ -2048,7 +2048,26 @@ class ContemplativeSimulation:
                         if resilience:
                             resilience_score = resilience.get('resilience_score', 0)
                             print(f"  System Resilience: {resilience_score:.2f}")
-            
+
+            # === PHASE III CONTEMPLATIVE OVERMIND STATUS ===
+            if self.overmind and hasattr(self.overmind, 'get_phase3_status'):
+                try:
+                    phase3 = self.overmind.get_phase3_status()
+                    print(f"\n🧠 Phase III Contemplative Overmind:")
+                    print(f"  Wisdom Archive: {phase3['wisdom_archive']['total_insights']} insights stored")
+                    print(f"  Rituals Executed: {phase3['scheduler']['executed']}")
+                    print(f"  Interventions: {phase3['decisions']['interventions']}")
+                    print(f"  Adaptive Thresholds: {len(phase3['threshold_regulator']['current_thresholds'])} active")
+
+                    # Show recent rituals
+                    recent_rituals = phase3['scheduler']['last_10_rituals']
+                    if recent_rituals:
+                        print(f"  Recent Rituals:")
+                        for ritual in recent_rituals[-3:]:  # Last 3
+                            print(f"    • {ritual['name']} @ step {ritual['step']} ({ritual['participants']} participants)")
+                except Exception as e:
+                    logger.debug(f"Could not display Phase III status: {e}")
+
             print("="*70)
             
         except Exception as e:
