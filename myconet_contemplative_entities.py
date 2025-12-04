@@ -81,10 +81,15 @@ class ActionType(Enum):
 class ContemplativeConfig:
     """Configuration for contemplative agent parameters - TYPE VALIDATED"""
     # Core contemplative parameters
+    enable_contemplative_processing: bool = field(default=True)
     compassion_sensitivity: float = field(default=0.6)
     ethical_reasoning_depth: int = field(default=1)
     mindfulness_update_frequency: int = field(default=20)
     wisdom_sharing_threshold: float = field(default=0.3)
+    collective_meditation_threshold: float = field(default=0.8)
+    contemplative_memory_capacity: int = field(default=100)
+    wisdom_sharing_radius: int = field(default=1)
+    wisdom_signal_strength: float = field(default=0.3)
     
     # Learning parameters
     ethical_learning_rate: float = field(default=0.01)
@@ -328,11 +333,17 @@ class ContemplativeNeuroAgent:
                 output_size=brain_config.get('output_size', 6),
                 contemplative_config=contemplative_config_dict  # <- FIXED: Always pass dict
             )
-            
+
             # Move brain to appropriate device if it has parameters
-            if hasattr(self.brain, 'parameters') and any(self.brain.parameters()):
-                self.brain = device_manager.to_device(self.brain)
-                self.agent_logger.debug(f"Brain moved to device: {device_manager.device}")
+            if hasattr(self.brain, 'parameters'):
+                try:
+                    # Check if model has any parameters by trying to get first one
+                    next(iter(self.brain.parameters()))
+                    self.brain = device_manager.to_device(self.brain)
+                    self.agent_logger.debug(f"Brain moved to device: {device_manager.device}")
+                except StopIteration:
+                    # No parameters, skip device move
+                    pass
         except Exception as e:
             logger.error(f"Failed to create brain for agent {self.agent_id}: {e}")
             self.brain = None

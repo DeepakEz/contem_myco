@@ -386,6 +386,29 @@ class WisdomSignalGrid:
             vis += layer.intensity_grid[:, :, np.newaxis] * color
         return np.clip(vis, 0.0, 1.0)
 
+    def get_network_stats(self) -> Dict[str, float]:
+        """Get statistics about the wisdom signal network."""
+        all_signals = []
+        for layer in self.signal_layers.values():
+            all_signals.append(layer.intensity_grid.flatten())
+
+        if all_signals:
+            combined = np.concatenate(all_signals)
+            return {
+                'signal_diversity': float(np.std(combined)),
+                'network_coherence': float(np.mean(combined)),
+                'total_signals': float(np.sum(combined > 0.1)),
+                'max_intensity': float(np.max(combined)),
+                'active_layers': sum(1 for layer in self.signal_layers.values() if np.any(layer.intensity_grid > 0.1))
+            }
+        return {
+            'signal_diversity': 0.0,
+            'network_coherence': 0.0,
+            'total_signals': 0.0,
+            'max_intensity': 0.0,
+            'active_layers': 0
+        }
+
 
 # =====================================================================
 # AGENT-LEVEL SIGNAL PROCESSOR (RESTORED AND INTEGRATED)
