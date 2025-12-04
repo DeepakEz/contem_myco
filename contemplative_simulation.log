@@ -231,3 +231,40 @@
 2025-12-04 14:08:25,350 - __main__ - INFO - Successfully imported real wisdom signals module
 2025-12-04 14:08:25,352 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
 2025-12-04 14:08:25,387 - __main__ - WARNING - Real contemplative overmind not available: unexpected indent (myconet_contemplative_overmind.py, line 2227)
+2025-12-04 14:21:05,491 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:21:06,521 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:21:06,524 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:22:46,068 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:22:47,155 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:22:47,157 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:23:09,443 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:23:10,485 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:23:10,487 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:23:10,491 - __main__ - WARNING - Real contemplative overmind not available: name 'PhaseIIIContemplativeOvermind' is not defined
+2025-12-04 14:23:24,616 - __main__ - WARNING - Real contemplative core not available: No module named 'torch'
+2025-12-04 14:23:25,651 - __main__ - INFO - Successfully imported real wisdom signals module
+2025-12-04 14:23:25,654 - __main__ - WARNING - Real contemplative entities not available: No module named 'torch'
+2025-12-04 14:23:25,657 - __main__ - WARNING - Real contemplative overmind not available: name 'PhaseIIIContemplativeOvermind' is not defined
+2025-12-04 14:23:25,660 - __main__ - INFO - Contemplative simulation initialized: minimal_test_seed42
+2025-12-04 14:23:25,661 - __main__ - INFO - Environment: 15x15
+2025-12-04 14:23:25,661 - __main__ - INFO - Population: 5 agents
+2025-12-04 14:23:25,661 - __main__ - INFO - Overmind: disabled
+2025-12-04 14:23:25,661 - __main__ - INFO - Starting simulation: minimal_test_seed42
+2025-12-04 14:23:25,663 - __main__ - WARNING - Step 0 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,663 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:23:25,664 - __main__ - INFO - Checkpoint saved: contemplative_results/checkpoint_step_0.json
+2025-12-04 14:23:25,664 - __main__ - INFO - Step 0/10 - Population: 5 - Time: 0.0s
+2025-12-04 14:23:25,665 - __main__ - WARNING - Step 1 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,667 - __main__ - WARNING - Step 2 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,668 - __main__ - WARNING - Step 3 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,670 - __main__ - WARNING - Step 4 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,671 - __main__ - WARNING - Step 5 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,673 - __main__ - WARNING - Step 6 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,674 - __main__ - WARNING - Step 7 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,676 - __main__ - WARNING - Step 8 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,677 - __main__ - WARNING - Step 9 error: <WisdomSignalType.MEDITATION_SYNC: 'meditation_sync'>
+2025-12-04 14:23:25,678 - __main__ - WARNING - Failed to collect network metrics: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:23:25,678 - __main__ - INFO - Advanced analytics completed
+2025-12-04 14:23:25,679 - __main__ - WARNING - Failed to get network stats: 'WisdomSignalGrid' object has no attribute 'get_network_stats'
+2025-12-04 14:23:25,679 - __main__ - INFO - Final results saved: contemplative_results/minimal_test_seed42_results.json
+2025-12-04 14:23:25,680 - __main__ - INFO - Simulation completed in 0.0 seconds

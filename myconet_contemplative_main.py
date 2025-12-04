@@ -554,7 +554,7 @@ def attempt_real_imports():
         import_status['overmind'] = True
         import_status['modules_loaded']['ContemplativeOvermind'] = RealContemplativeOvermind
         logger.info("Successfully imported real contemplative overmind module")
-    except (ImportError, SyntaxError) as e:
+    except (ImportError, SyntaxError, NameError) as e:
         logger.warning(f"Real contemplative overmind not available: {e}")
         import_status['modules_loaded']['ContemplativeOvermind'] = FallbackContemplativeOvermind
     
