@@ -323,6 +323,7 @@ class ContemplativeNeuroAgent:
         self.ethical_decisions = 0
         self.wisdom_insights_generated = 0
         self.wisdom_insights_received = 0
+        self.action_counts = {action.name: 0 for action in ActionType}  # Track action distribution
         
         # Performance tracking for logging
         self.performance_history = []
@@ -377,6 +378,10 @@ class ContemplativeNeuroAgent:
             
             # Step 4: Execute action in environment
             decision_logger.debug(f"Agent {self.agent_id}: Executing action {decision.chosen_action.name}")
+
+            # Track action distribution
+            self.action_counts[decision.chosen_action.name] += 1
+
             action_outcome = self._execute_action(decision.chosen_action, environment, other_agents)
             
             # Step 5: Update internal state based on decision and outcome
@@ -574,21 +579,24 @@ class ContemplativeNeuroAgent:
     
     def _make_contemplative_decision(self, observations: Dict[str, Any]) -> ContemplativeDecision:
         """Make a decision using contemplative processing - TYPE VALIDATED"""
-        
+
         try:
             # Enhanced decision making with proper brain integration
             if hasattr(self.brain, 'make_contemplative_decision') and self.brain is not None:
-                decision_logger.debug(f"Agent {self.agent_id}: Using enhanced brain decision making")
-                
+                # Log decision path every 100 steps
+                if self.age % 100 == 0:
+                    logger.info(f"Agent {self.agent_id}: Using enhanced brain decision making (age {self.age})")
+
                 # Ensure observations are on correct device if needed
                 if isinstance(observations, torch.Tensor):
                     observations = device_manager.ensure_tensor_device(observations)
-                
+
                 brain_decision = self.brain.make_contemplative_decision(observations)
-                
+
                 # Validate and convert to our decision format
                 if isinstance(brain_decision, ContemplativeDecision):
-                    decision_logger.debug(f"Agent {self.agent_id}: Brain returned valid ContemplativeDecision")
+                    if self.age % 100 == 0:
+                        logger.info(f"Agent {self.agent_id}: Brain chose action {brain_decision.chosen_action.name}")
                     return brain_decision
                 elif hasattr(brain_decision, 'chosen_action'):
                     # Convert from brain-specific format
@@ -604,10 +612,11 @@ class ContemplativeNeuroAgent:
                         reasoning_trace=getattr(brain_decision, 'reasoning_trace', ['Brain decision made'])
                     )
                 else:
-                    decision_logger.warning(f"Agent {self.agent_id}: Brain returned unexpected format, using fallback")
+                    logger.warning(f"Agent {self.agent_id}: Brain returned unexpected format, using fallback")
                     return self._create_fallback_decision()
             else:
-                decision_logger.debug(f"Agent {self.agent_id}: Using simple decision making (no enhanced brain)")
+                if self.age % 100 == 0:
+                    logger.info(f"Agent {self.agent_id}: No brain available, using simple heuristic decision making")
                 return self._create_simple_decision(observations)
                 
         except Exception as e:
@@ -827,14 +836,18 @@ class ContemplativeNeuroAgent:
                 # Meditation increases mindfulness and may generate wisdom insights
                 self.mindfulness_level = min(1.0, self.mindfulness_level + 0.15)
 
+                # Log meditation action every time it happens
+                if self.age % 50 == 0 or random.random() < 0.1:  # Log 10% of meditations
+                    logger.info(f"Agent {self.agent_id}: Executing MEDITATE action (age {self.age})")
+
                 # Chance to gain wisdom insight during meditation
                 if random.random() < 0.3:
                     insight = self._generate_meditation_insight()
                     self.contemplative_insights.append(insight)
                     self.wisdom_insights_generated += 1  # Track wisdom generation
                     outcome['wisdom_insight'] = insight
-                    decision_logger.debug(f"Agent {self.agent_id}: Generated meditation insight")
-                
+                    logger.info(f"Agent {self.agent_id}: Generated wisdom insight #{self.wisdom_insights_generated}: {insight[:50]}...")
+
                 outcome['success'] = True
                 outcome['details'] = f"Meditated: mindfulness now {self.mindfulness_level:.2f}"
                 outcome['energy_cost'] = 0.01
