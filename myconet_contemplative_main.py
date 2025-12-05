@@ -1263,25 +1263,48 @@ class ContemplativeSimulation:
     def _process_agent_actions(self):
         """Process actions for all living agents"""
         living_agents = [agent for agent in self.agents if getattr(agent, 'alive', True)]
-        
+
         for agent in living_agents:
             try:
-                # Get observations
-                env_obs = self.environment.get_local_observations(agent.x, agent.y)
-                agent_obs = self._build_agent_observations(agent, env_obs)
-                
-                # Agent decision
-                available_actions = [
-                    'move_north', 'move_south', 'move_east', 'move_west',
-                    'eat_food', 'drink_water', 'rest', 'contemplate'
-                ]
-                chosen_action = agent.update(agent_obs, available_actions)
-                
-                # Execute action
-                self._execute_agent_action(agent, chosen_action)
-                
+                # API BRANCH: Real ContemplativeNeuroAgent vs Legacy Simple Agent
+                # Real agents have wisdom_insights_generated attribute and use new API
+                if hasattr(agent, 'wisdom_insights_generated') and hasattr(agent, 'update'):
+                    # ===== NEW CONTEMPLATIVE AGENT API =====
+                    # Agent handles entire action loop internally:
+                    # - Gathers observations
+                    # - Makes contemplative decision
+                    # - Executes action in environment
+                    # - Updates internal state, wisdom, ethics
+                    # - Emits wisdom signals
+                    # - Handles reproduction, learning, social state
+
+                    result = agent.update(self.environment, living_agents)
+
+                    # Optional: Log result for debugging
+                    if self.step_count % 100 == 0 and agent == living_agents[0]:
+                        action_taken = result.get('action_taken', 'unknown')
+                        success = result.get('success', False)
+                        logger.debug(f"Agent {getattr(agent, 'agent_id', '?')}: {action_taken} (success={success})")
+
+                else:
+                    # ===== LEGACY SIMPLE AGENT API =====
+                    # Build observations and action list for simple agents
+                    env_obs = self.environment.get_local_observations(agent.x, agent.y)
+                    agent_obs = self._build_agent_observations(agent, env_obs)
+
+                    available_actions = [
+                        'move_north', 'move_south', 'move_east', 'move_west',
+                        'eat_food', 'drink_water', 'rest', 'contemplate'
+                    ]
+                    chosen_action = agent.update(agent_obs, available_actions)
+
+                    # Execute action through simulation (not agent)
+                    self._execute_agent_action(agent, chosen_action)
+
             except Exception as e:
                 logger.warning(f"Agent {getattr(agent, 'agent_id', 'unknown')} action failed: {e}")
+                import traceback
+                logger.debug(f"Traceback: {traceback.format_exc()}")
                 # Emergency survival behavior
                 if hasattr(agent, 'energy'):
                     agent.energy = max(0.0, agent.energy - 0.01)
