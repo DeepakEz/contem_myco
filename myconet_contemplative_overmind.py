@@ -5,8 +5,9 @@ import time
 import random
 import logging
 from collections import deque, defaultdict
-from typing import List, Dict, Any, Optional, Tuple, TYPE_CHECKING
+from typing import List, Dict, Any, Optional, Tuple, TYPE_CHECKING, Callable
 from dataclasses import dataclass
+from enum import Enum
 import numpy as np
 
 # Try to import torch - if not available, classes will use fallbacks
@@ -3203,6 +3204,15 @@ class AgentFeedbackInterface:
         }
 
 # 2. CONTEMPLATIVE RITUAL SCHEDULING (TEMPORAL STRUCTURING)
+
+class RitualType(Enum):
+    """Types of contemplative rituals"""
+    SYNCHRONIZED_MEDITATION = "synchronized_meditation"
+    CONFLICT_RESOLUTION_CIRCLE = "conflict_resolution_circle"
+    WISDOM_CIRCLE = "wisdom_circle"
+    GRATITUDE_WAVE = "gratitude_wave"
+    HARMONY_RESONANCE = "harmony_resonance"
+    EMERGENCY_REFLECTION = "emergency_reflection"
 
 @dataclass
 class ScheduledRitual:
