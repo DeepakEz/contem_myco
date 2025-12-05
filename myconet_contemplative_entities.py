@@ -412,6 +412,10 @@ class ContemplativeNeuroAgent:
                     f"ethical_ratio={self.ethical_decisions/max(1, self.decisions_made):.3f}"
                 )
             
+            # Step 10: Emit wisdom signals to environment
+            decision_logger.debug(f"Agent {self.agent_id}: Emitting wisdom signals")
+            self._emit_wisdom_signals(decision, action_outcome, observations)
+
             result = {
                 'action_taken': decision.chosen_action.name,
                 'confidence': decision.confidence,
@@ -426,7 +430,7 @@ class ContemplativeNeuroAgent:
                 'performance_metrics': performance_metrics,
                 'update_time': update_time
             }
-            
+
             self.agent_logger.debug(f"Update cycle completed successfully in {update_time:.4f}s")
             return result
             
@@ -1043,7 +1047,87 @@ class ContemplativeNeuroAgent:
                     
         except Exception as e:
             logger.error(f"Error updating social state for agent {self.agent_id}: {e}")
-    
+
+    def _emit_wisdom_signals(self, decision: ContemplativeDecision,
+                             action_outcome: Dict, observations: Dict):
+        """
+        Emit wisdom signals to the environment grid based on agent state and actions.
+        Implements Section 2 Phase 2: Agent → Grid Interaction
+        """
+        if not hasattr(self, 'wisdom_signal_processor') or self.wisdom_signal_processor is None:
+            return  # No signal processor available
+
+        try:
+            wisdom_grid = self.wisdom_signal_processor.signal_grid
+
+            # 1. SUFFERING_DETECTION: Emit when agent is suffering or detects hazards
+            if self.energy < 0.3 or self.health < 0.4:
+                suffering_intensity = 1.0 - min(self.energy, self.health)
+                wisdom_grid.add_signal(
+                    WisdomSignalType.SUFFERING_ALERT,
+                    self.x, self.y,
+                    suffering_intensity,
+                    agent_id=self.agent_id
+                )
+
+            # 2. ETHICAL_INSIGHT: Emit when making ethical decisions
+            ethical_alignment = decision.ethical_evaluation.get('overall_alignment', 0.5)
+            if ethical_alignment > 0.7 and decision.confidence > 0.6:
+                wisdom_grid.add_signal(
+                    WisdomSignalType.ETHICAL_INSIGHT,
+                    self.x, self.y,
+                    ethical_alignment * decision.confidence,
+                    agent_id=self.agent_id
+                )
+
+            # 3. COMPASSION_GRADIENT: Emit when helping others
+            if decision.chosen_action == ActionType.HELP_OTHER and action_outcome.get('success', False):
+                compassion_intensity = min(1.0, self.collective_harmony_level * 1.5)
+                # Emit around helped location
+                for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    emit_x, emit_y = self.x + dx, self.y + dy
+                    if 0 <= emit_x < wisdom_grid.width and 0 <= emit_y < wisdom_grid.height:
+                        wisdom_grid.add_signal(
+                            WisdomSignalType.COMPASSION_GRADIENT,
+                            emit_x, emit_y,
+                            compassion_intensity * 0.7,  # Slightly weaker in adjacent cells
+                            agent_id=self.agent_id
+                        )
+
+            # 4. MEDITATION_SYNC: Emit when in high mindfulness state
+            if self.mindfulness_level > 0.7:
+                meditation_intensity = (self.mindfulness_level - 0.7) / 0.3  # Scale 0.7-1.0 to 0-1
+                wisdom_grid.add_signal(
+                    WisdomSignalType.MEDITATION_SYNC,
+                    self.x, self.y,
+                    meditation_intensity,
+                    agent_id=self.agent_id
+                )
+
+            # 5. WISDOM_BEACON: Emit when sharing wisdom
+            if decision.chosen_action == ActionType.SHARE_WISDOM and action_outcome.get('success', False):
+                wisdom_intensity = min(1.0, self.wisdom_accumulated / 10.0)
+                wisdom_grid.add_signal(
+                    WisdomSignalType.WISDOM_BEACON,
+                    self.x, self.y,
+                    wisdom_intensity,
+                    agent_id=self.agent_id
+                )
+
+            # 6. CONTEMPLATIVE_DEPTH: Emit based on contemplative state
+            if hasattr(self, 'contemplative_state') and hasattr(self.contemplative_state, 'value'):
+                if self.contemplative_state.value in ['DEEP_CONTEMPLATION', 'ETHICAL_DELIBERATION']:
+                    depth_intensity = 0.8  # High intensity for deep states
+                    wisdom_grid.add_signal(
+                        WisdomSignalType.CONTEMPLATIVE_DEPTH,
+                        self.x, self.y,
+                        depth_intensity,
+                        agent_id=self.agent_id
+                    )
+
+        except Exception as e:
+            decision_logger.debug(f"Agent {self.agent_id}: Error emitting wisdom signals: {e}")
+
     def _handle_reproduction(self, decision: ContemplativeDecision, 
                            environment, other_agents: List) -> Optional[Dict]:
         """
