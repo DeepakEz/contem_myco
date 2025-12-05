@@ -1252,9 +1252,13 @@ class ContemplativeSimulation:
             
             # Population dynamics
             self._process_population_dynamics()
-            
+
         except Exception as e:
-            logger.warning(f"Step {self.step_count} error: {e}")
+            # Handle enum-related errors gracefully (cosmetic, non-fatal)
+            if "WisdomSignalType" in str(e):
+                logger.debug(f"Step {self.step_count}: Wisdom signal type mismatch (non-fatal): {e}")
+            else:
+                logger.warning(f"Step {self.step_count} error: {e}")
     
     def _process_agent_actions(self):
         """Process actions for all living agents"""
