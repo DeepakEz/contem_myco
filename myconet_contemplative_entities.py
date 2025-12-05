@@ -25,6 +25,7 @@ from myconet_wisdom_signals import (
     WisdomSignalGrid, WisdomSignalProcessor, WisdomSignalType
 )
 from myconet_contemplative_brains import ContemplativeBrain, create_contemplative_brain
+from myconet_contemplative_config import ContemplativeConfig  # Unified configuration
 
 # Enhanced logging setup
 logger = logging.getLogger(__name__)
@@ -77,101 +78,10 @@ class ActionType(Enum):
             logger.warning(f"Invalid action type: {type(action)}, defaulting to NO_ACTION")
             return cls.NO_ACTION
 
-@dataclass
-class ContemplativeConfig:
-    """Configuration for contemplative agent parameters - TYPE VALIDATED"""
-    # Core contemplative parameters
-    enable_contemplative_processing: bool = field(default=True)
-    compassion_sensitivity: float = field(default=0.6)
-    ethical_reasoning_depth: int = field(default=1)
-    mindfulness_update_frequency: int = field(default=20)
-    wisdom_sharing_threshold: float = field(default=0.3)
-    collective_meditation_threshold: float = field(default=0.8)
-    contemplative_memory_capacity: int = field(default=100)
-    wisdom_sharing_radius: int = field(default=1)
-    wisdom_signal_strength: float = field(default=0.3)
-    
-    # Learning parameters
-    ethical_learning_rate: float = field(default=0.01)
-    mindfulness_decay_rate: float = field(default=0.02)
-    wisdom_accumulation_rate: float = field(default=0.05)
-    
-    # Behavioral parameters
-    cooperation_tendency: float = field(default=0.5)
-    exploration_bias: float = field(default=0.3)
-    risk_tolerance: float = field(default=0.4)
-    
-    # Genetic parameters (for evolution)
-    mutation_rate: float = field(default=0.1)
-    mutation_strength: float = field(default=0.05)
-    
-    def __post_init__(self):
-        """Validate configuration parameters after initialization"""
-        self._validate_parameters()
-    
-    def _validate_parameters(self):
-        """Validate all configuration parameters"""
-        # Validate float parameters (0.0 to 1.0)
-        float_params_0_1 = [
-            'compassion_sensitivity', 'wisdom_sharing_threshold', 'ethical_learning_rate',
-            'mindfulness_decay_rate', 'wisdom_accumulation_rate', 'cooperation_tendency',
-            'exploration_bias', 'risk_tolerance', 'mutation_rate', 'mutation_strength'
-        ]
-        
-        for param in float_params_0_1:
-            value = getattr(self, param)
-            if not isinstance(value, (int, float)):
-                logger.warning(f"Parameter {param} should be numeric, got {type(value)}")
-                setattr(self, param, 0.5)  # Default fallback
-            elif not 0.0 <= value <= 1.0:
-                logger.warning(f"Parameter {param} should be between 0.0 and 1.0, got {value}")
-                setattr(self, param, np.clip(value, 0.0, 1.0))
-        
-        # Validate integer parameters
-        int_params = ['ethical_reasoning_depth', 'mindfulness_update_frequency']
-        for param in int_params:
-            value = getattr(self, param)
-            if not isinstance(value, int):
-                logger.warning(f"Parameter {param} should be integer, got {type(value)}")
-                setattr(self, param, int(value) if isinstance(value, (int, float)) else 1)
-            elif value < 1:
-                logger.warning(f"Parameter {param} should be positive, got {value}")
-                setattr(self, param, max(1, value))
-    
-    def mutate(self) -> 'ContemplativeConfig':
-        """Create a mutated copy of this configuration - TYPE SAFE"""
-        new_config = deepcopy(self)
-        
-        # List of mutable parameters with their types and bounds
-        mutable_params = {
-            'compassion_sensitivity': ('float', 0.0, 1.0),
-            'wisdom_sharing_threshold': ('float', 0.0, 1.0),
-            'ethical_learning_rate': ('float', 0.001, 0.1),
-            'mindfulness_decay_rate': ('float', 0.001, 0.1),
-            'wisdom_accumulation_rate': ('float', 0.001, 0.1),
-            'cooperation_tendency': ('float', 0.0, 1.0),
-            'exploration_bias': ('float', 0.0, 1.0),
-            'risk_tolerance': ('float', 0.0, 1.0),
-            'mindfulness_update_frequency': ('int', 1, 100)
-        }
-        
-        for param, (param_type, min_val, max_val) in mutable_params.items():
-            if random.random() < self.mutation_rate:
-                current_value = getattr(new_config, param)
-                
-                if param_type == 'float':
-                    mutation = np.random.normal(0, self.mutation_strength)
-                    new_value = np.clip(current_value + mutation, min_val, max_val)
-                    setattr(new_config, param, float(new_value))
-                
-                elif param_type == 'int':
-                    mutation = int(np.random.normal(0, 2))
-                    new_value = np.clip(current_value + mutation, min_val, max_val)
-                    setattr(new_config, param, int(new_value))
-        
-        # Re-validate after mutation
-        new_config._validate_parameters()
-        return new_config
+# ==============================================================================
+# NOTE: ContemplativeConfig now imported from myconet_contemplative_config.py
+# Unified configuration module provides single source of truth for all config
+# ==============================================================================
 
 @dataclass
 class ContemplativeDecision:
