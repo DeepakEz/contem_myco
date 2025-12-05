@@ -2030,7 +2030,26 @@ class ContemplativeSimulation:
             print(f"\nNetwork Metrics:")
             print(f"  Network Coherence: {net_metrics.get('network_coherence', 0):.3f}")
             print(f"  Total Signals: {net_metrics.get('total_signals', 0):.1f}")
-            
+
+            # Action distribution statistics
+            living_agents = [agent for agent in self.agents if getattr(agent, 'alive', True)]
+            if living_agents and hasattr(living_agents[0], 'action_counts'):
+                # Aggregate action counts across all agents
+                total_action_counts = {}
+                for agent in living_agents:
+                    if hasattr(agent, 'action_counts'):
+                        for action_name, count in agent.action_counts.items():
+                            total_action_counts[action_name] = total_action_counts.get(action_name, 0) + count
+
+                total_actions = sum(total_action_counts.values())
+                if total_actions > 0:
+                    print(f"\nAction Distribution ({total_actions} total actions):")
+                    # Sort by count
+                    sorted_actions = sorted(total_action_counts.items(), key=lambda x: x[1], reverse=True)
+                    for action_name, count in sorted_actions:
+                        percentage = (count / total_actions) * 100
+                        print(f"  {action_name:20s}: {count:5d} ({percentage:5.1f}%)")
+
             # Advanced analytics insights
             if hasattr(self, 'advanced_analysis') and self.advanced_analysis:
                 insights = self.advanced_analysis.get('insights', [])
