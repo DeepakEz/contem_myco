@@ -1264,6 +1264,16 @@ class ContemplativeSimulation:
         """Process actions for all living agents"""
         living_agents = [agent for agent in self.agents if getattr(agent, 'alive', True)]
 
+        # DIAGNOSTIC: Log agent type on first call
+        if self.step_count == 1 and living_agents:
+            first_agent = living_agents[0]
+            agent_type = type(first_agent).__name__
+            has_wisdom = hasattr(first_agent, 'wisdom_insights_generated')
+            has_update = hasattr(first_agent, 'update')
+            logger.warning(f"🔍 AGENT DIAGNOSTIC: type={agent_type}, has_wisdom_attr={has_wisdom}, has_update={has_update}")
+            if has_wisdom:
+                logger.warning(f"🔍 wisdom_insights_generated = {getattr(first_agent, 'wisdom_insights_generated', 'N/A')}")
+
         for agent in living_agents:
             try:
                 # API BRANCH: Real ContemplativeNeuroAgent vs Legacy Simple Agent
@@ -1278,16 +1288,27 @@ class ContemplativeSimulation:
                     # - Emits wisdom signals
                     # - Handles reproduction, learning, social state
 
+                    # DIAGNOSTIC: Log API path on first call
+                    if self.step_count == 1:
+                        logger.warning(f"✅ Agent {getattr(agent, 'agent_id', '?')}: Using NEW contemplative API")
+
                     result = agent.update(self.environment, living_agents)
 
-                    # Optional: Log result for debugging
+                    # DIAGNOSTIC: Log result periodically
                     if self.step_count % 100 == 0 and agent == living_agents[0]:
                         action_taken = result.get('action_taken', 'unknown')
                         success = result.get('success', False)
-                        logger.debug(f"Agent {getattr(agent, 'agent_id', '?')}: {action_taken} (success={success})")
+                        age = getattr(agent, 'age', 'N/A')
+                        energy = getattr(agent, 'energy', 'N/A')
+                        wisdom = getattr(agent, 'wisdom_insights_generated', 'N/A')
+                        logger.warning(f"📊 Agent {getattr(agent, 'agent_id', '?')} @ step {self.step_count}: action={action_taken}, age={age}, energy={energy:.3f}, wisdom={wisdom}")
 
                 else:
                     # ===== LEGACY SIMPLE AGENT API =====
+                    # DIAGNOSTIC: Log legacy path on first call
+                    if self.step_count == 1:
+                        logger.warning(f"⚠️ Agent {getattr(agent, 'agent_id', '?')}: Using LEGACY simple API (not contemplative!)")
+
                     # Build observations and action list for simple agents
                     env_obs = self.environment.get_local_observations(agent.x, agent.y)
                     agent_obs = self._build_agent_observations(agent, env_obs)
