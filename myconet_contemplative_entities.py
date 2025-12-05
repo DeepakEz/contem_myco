@@ -912,11 +912,12 @@ class ContemplativeNeuroAgent:
             elif action == ActionType.MEDITATE:
                 # Meditation increases mindfulness and may generate wisdom insights
                 self.mindfulness_level = min(1.0, self.mindfulness_level + 0.15)
-                
+
                 # Chance to gain wisdom insight during meditation
                 if random.random() < 0.3:
                     insight = self._generate_meditation_insight()
                     self.contemplative_insights.append(insight)
+                    self.wisdom_insights_generated += 1  # Track wisdom generation
                     outcome['wisdom_insight'] = insight
                     decision_logger.debug(f"Agent {self.agent_id}: Generated meditation insight")
                 
@@ -1399,11 +1400,12 @@ class ContemplativeNeuroAgent:
     
     def receive_wisdom_insight(self, insight: str, from_agent_id: Union[str, int]):
         """Receive wisdom insight from another agent - TYPE VALIDATED"""
-        
+
         try:
             enriched_insight = f"From {str(from_agent_id)}: {str(insight)}"
             self.contemplative_insights.append(enriched_insight)
-            
+            self.wisdom_insights_received += 1  # Track wisdom reception
+
             # Increase relationship with sharing agent
             agent_id_str = str(from_agent_id)
             current_relationship = self.relationships.get(agent_id_str, 0.5)
