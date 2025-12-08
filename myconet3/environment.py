@@ -262,9 +262,13 @@ class Environment:
     - Environmental stochasticity for testing RX
     """
 
-    def __init__(self, config: EnvironmentConfig):
-        self.config = config
-        self.width, self.height = config.grid_size
+    def __init__(self, config):
+        # Accept either MycoNetConfig or EnvironmentConfig
+        if hasattr(config, 'environment'):
+            self.config = config.environment
+        else:
+            self.config = config
+        self.width, self.height = self.config.grid_size
         self.time_step = 0
 
         # Initialize grids
@@ -274,8 +278,8 @@ class Environment:
         # Signal system
         self.signal_grid = WisdomSignalGrid(
             self.width, self.height,
-            base_diffusion=config.signal_diffusion_rate,
-            base_decay=config.signal_decay_rate
+            base_diffusion=self.config.signal_diffusion_rate,
+            base_decay=self.config.signal_decay_rate
         )
 
         # Resource patches
