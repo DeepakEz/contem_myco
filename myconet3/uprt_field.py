@@ -101,6 +101,9 @@ class UPRTField:
         self.g = self.config.coupling_constant  # Gauge coupling
         self.m = self.config.field_mass  # Field mass
         self.lambda_4 = self.config.potential_quartic  # Quartic coupling
+        self.g = config.coupling_constant  # Gauge coupling
+        self.m = config.field_mass  # Field mass
+        self.lambda_4 = config.potential_quartic  # Quartic coupling
 
         logger.info(f"UPRT Field initialized: {self.resolution}x{self.resolution} lattice")
 

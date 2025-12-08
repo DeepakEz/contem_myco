@@ -262,6 +262,9 @@ class Overmind:
         self.intervention_threshold = self.config.intervention_threshold
         self.meditation_threshold = self.config.meditation_threshold
         self.rx_threshold = self.config.rx_threshold
+        self.intervention_threshold = config.intervention_threshold
+        self.meditation_threshold = config.meditation_threshold
+        self.rx_threshold = config.rx_threshold
 
         # State tracking
         self.time_step = 0
