@@ -570,6 +570,48 @@ class PatchGate:
         # Validation history
         self.validation_history: List[PatchValidationResult] = []
 
+    def validate(self, patch, current_system_state: Optional[Dict[str, Any]] = None) -> PatchValidationResult:
+        """Convenience wrapper to validate simple patch dictionaries in tests."""
+        if current_system_state is None:
+            current_system_state = {}
+
+        # If a full ParameterPatch is provided, use the rich validator
+        if isinstance(patch, ParameterPatch):
+            return self.validate_patch(patch, current_system_state)
+
+        # Minimal validation for dictionary-style patches
+        magnitude = float(abs(patch.get('magnitude', 0.0)))
+        reversible = bool(patch.get('reversible', False))
+
+        risk_assessment = {
+            'magnitude': min(1.0, magnitude / self.max_weight_change),
+            'reversibility': 0.0 if not reversible else 0.5,
+        }
+
+        warnings = []
+        blocking_issues = []
+
+        if magnitude > self.max_weight_change:
+            blocking_issues.append("Modification magnitude too high")
+        elif magnitude > self.max_weight_change * 0.5:
+            warnings.append("High modification magnitude")
+
+        if not reversible:
+            warnings.append("Patch is not reversible")
+
+        safe = len(blocking_issues) == 0
+
+        result = PatchValidationResult(
+            safe=safe,
+            risk_assessment=risk_assessment,
+            warnings=warnings,
+            blocking_issues=blocking_issues,
+            suggested_modifications=None
+        )
+
+        self.validation_history.append(result)
+        return result
+
     def validate_patch(self, patch: ParameterPatch,
                        current_system_state: Dict[str, Any]) -> PatchValidationResult:
         """

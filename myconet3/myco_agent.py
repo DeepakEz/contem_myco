@@ -358,6 +358,8 @@ class MycoAgent:
         # Neural networks (if PyTorch available)
         self.policy_net = None
         self.world_model = None
+        self.optimizer = None
+        self.world_model_optimizer = None
         if TORCH_AVAILABLE:
             self.policy_net = AgentPolicyNet(
                 input_dim=64,
@@ -368,6 +370,16 @@ class MycoAgent:
                 state_dim=64,
                 action_dim=len(ActionType),
                 hidden_dim=self.config.hidden_dim
+            )
+
+            # Optimizers for policy and world model
+            self.optimizer = torch.optim.Adam(
+                self.policy_net.parameters(),
+                lr=self.config.learning_rate
+            )
+            self.world_model_optimizer = torch.optim.Adam(
+                self.world_model.parameters(),
+                lr=self.config.learning_rate
             )
 
         # Cognitive monitoring
@@ -385,6 +397,7 @@ class MycoAgent:
         self.last_action: Optional[ActionType] = None
         self.last_decision_time: int = 0
         self.decision_period: int = 10
+        self.last_signal: Optional[str] = None
 
         # Social state
         self.is_cooperating = False
@@ -660,6 +673,9 @@ class MycoAgent:
         Args:
             signal_grid: WisdomSignalGrid to emit signals to
         """
+        # Reset last emitted signal tracker
+        self.last_signal = None
+
         # Suffering signal if low on resources
         if self.energy < 0.2 or self.health < 0.2:
             signal_grid.add_signal(
@@ -668,6 +684,7 @@ class MycoAgent:
                 intensity=0.8,
                 content={'agent_id': self.id, 'type': 'resource_need'}
             )
+            self.last_signal = 'SUFFERING_ALERT'
 
         # Meditation signal if meditating
         if self.last_action == ActionType.MEDITATE:
@@ -677,6 +694,7 @@ class MycoAgent:
                 intensity=0.6,
                 content={'agent_id': self.id}
             )
+            self.last_signal = 'MEDITATION_SYNC'
 
         # Wisdom beacon if high wisdom
         if len(self.wisdom_memory) > 10:
@@ -686,6 +704,7 @@ class MycoAgent:
                 intensity=min(1.0, len(self.wisdom_memory) / 50),
                 content={'agent_id': self.id, 'wisdom_count': len(self.wisdom_memory)}
             )
+            self.last_signal = 'WISDOM_BEACON'
 
     def reflect_and_store(self):
         """
@@ -916,6 +935,7 @@ class MycoAgent:
         self.prediction_error = 0.0
         self.cumulative_reward = 0.0
         self.last_action = None
+        self.last_signal = None
         self.is_cooperating = False
         self.in_conflict = False
         self.resources_consumed = 0.0

@@ -27,7 +27,12 @@ except ImportError:
 from .config import MycoNetConfig, TrainingConfig
 from .environment import Environment
 from .myco_agent import MycoAgent
-from .hypernetwork import GenomeHyperNet, EvolutionEngine, TargetArchitecture
+from .hypernetwork import (
+    GenomeHyperNet,
+    EvolutionEngine,
+    TargetArchitecture,
+    create_hypernetwork,
+)
 from .uprt_field import UPRTField, FieldSurrogateModel
 from .field_metrics import MetricsComputer, ColonyMetrics
 from .overmind import Overmind
@@ -342,22 +347,25 @@ class TrainingPipeline:
         self.overmind = Overmind(config)
 
         # Initialize hypernetwork and evolution
-        self.target_arch = TargetArchitecture(
+        self.target_arch = TargetArchitecture.from_dims(
             input_dim=self._compute_observation_dim(),
             hidden_dim=config.agent.hidden_dim,
             output_dim=self._compute_action_dim()
         )
 
         if config.qrea.use_hypernetwork:
-            self.hypernetwork = GenomeHyperNet(
+            self.hypernetwork = create_hypernetwork(
                 genome_dim=config.agent.genome_dim,
-                target_architecture=self.target_arch,
+                architecture=self.target_arch,
                 hidden_dim=config.qrea.hypernetwork_hidden_dim
             )
         else:
             self.hypernetwork = None
 
-        self.evolution_engine = EvolutionEngine(config)
+        self.evolution_engine = EvolutionEngine(
+            config.qrea,
+            genome_dim=config.agent.genome_dim
+        )
 
         # Initialize surrogate calibrator
         self.surrogate_calibrator = SurrogateCalibrator(config)
@@ -774,10 +782,18 @@ class TrainingPipeline:
                 logger.debug(f"Genome {genome_idx}: fitness={fitness:.2f}")
 
             # Evolve population
-            population = self.evolution_engine.evolve(
-                population,
-                np.array(generation_fitness)
-            )
+            if TORCH_AVAILABLE:
+                fitness_tensor = torch.tensor(generation_fitness,
+                                             dtype=torch.float32)
+                population = self.evolution_engine.evolve_population(
+                    population,
+                    fitness_tensor
+                )
+            else:
+                population = self.evolution_engine.evolve_population(
+                    population,
+                    np.array(generation_fitness)
+                )
 
             # Track best fitness
             best_gen_fitness = max(generation_fitness)
