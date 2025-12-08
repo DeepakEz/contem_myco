@@ -325,17 +325,33 @@ class MycoAgent:
     4. Multi-tier memory system
     """
 
-    def __init__(self, agent_id: int, config: AgentConfig,
+    def __init__(self, config, agent_id: int = 0,
                  initial_position: Tuple[int, int] = (0, 0)):
         self.id = agent_id
-        self.config = config
+        self.agent_id = agent_id  # Alias for compatibility
+        # Accept either MycoNetConfig or AgentConfig
+        if hasattr(config, 'agent'):
+            self.config = config.agent
+            self.full_config = config
+        else:
+            self.config = config
+            self.full_config = None
 
         # Position
         self.x, self.y = initial_position
+        self._position = initial_position
+
+        # State
+        self.alive = True
+        self.mindfulness_state = {
+            'focus_coherence': 0.5,
+            'attention_stability': 0.5,
+            'distraction_level': 0.0
+        }
 
         # Vital stats
-        self.energy = config.initial_energy
-        self.health = config.initial_health
+        self.energy = self.config.initial_energy
+        self.health = self.config.initial_health
         self.water = 1.0
         self.age = 0
 
@@ -873,3 +889,114 @@ class MycoAgent:
             with open(filepath, 'r') as f:
                 data = json.load(f)
             return cls(data['agent_id'], config, (data['x'], data['y']))
+
+    @property
+    def position(self) -> Tuple[int, int]:
+        """Get agent position."""
+        return (self.x, self.y)
+
+    @position.setter
+    def position(self, value: Tuple[int, int]):
+        """Set agent position."""
+        self.x, self.y = value
+        self._position = value
+
+    def reset(self, position: Tuple[int, int] = None):
+        """Reset agent to initial state."""
+        if position is not None:
+            self.x, self.y = position
+            self._position = position
+
+        self.energy = self.config.initial_energy
+        self.health = self.config.initial_health
+        self.water = 1.0
+        self.age = 0
+        self.alive = True
+
+        self.prediction_error = 0.0
+        self.cumulative_reward = 0.0
+        self.last_action = None
+        self.is_cooperating = False
+        self.in_conflict = False
+        self.resources_consumed = 0.0
+        self.resources_produced = 0.0
+
+        self.short_term_memory.clear()
+        self.working_memory.clear()
+
+    def select_action(self, observation: np.ndarray,
+                     deterministic: bool = False) -> Tuple[int, float, float]:
+        """
+        Select action given observation.
+
+        Args:
+            observation: Observation array
+            deterministic: If True, select greedy action
+
+        Returns:
+            action: Selected action index
+            value: Value estimate
+            log_prob: Log probability of action
+        """
+        if self.policy_net is not None and TORCH_AVAILABLE:
+            with torch.no_grad():
+                obs_tensor = torch.FloatTensor(observation).unsqueeze(0)
+                logits, value = self.policy_net(obs_tensor)
+
+                if deterministic:
+                    action = logits.argmax(dim=-1).item()
+                    log_prob = 0.0
+                else:
+                    dist = torch.distributions.Categorical(logits=logits)
+                    action_tensor = dist.sample()
+                    action = action_tensor.item()
+                    log_prob = dist.log_prob(action_tensor).item()
+
+                return action, value.item(), log_prob
+        else:
+            # Random action if no neural network
+            action = np.random.randint(0, len(ActionType))
+            return action, 0.0, 0.0
+
+    def get_state_vector(self) -> np.ndarray:
+        """Get agent state as numpy array."""
+        return np.array([
+            self.energy,
+            self.health,
+            self.mindfulness_monitor.get_mindfulness_level() if self.mindfulness_monitor else 0.5,
+            self.x,
+            self.y,
+            self.water,
+            self.age / 10000.0,  # Normalized age
+            self.prediction_error,
+            1.0 if self.is_cooperating else 0.0,
+            1.0 if self.in_conflict else 0.0
+        ], dtype=np.float32)
+
+    def load_state_vector(self, state: np.ndarray):
+        """Load agent state from numpy array."""
+        if len(state) >= 10:
+            self.energy = float(state[0])
+            self.health = float(state[1])
+            self.x = int(state[3])
+            self.y = int(state[4])
+            self.water = float(state[5])
+            self.age = int(state[6] * 10000)
+            self.prediction_error = float(state[7])
+            self.is_cooperating = bool(state[8] > 0.5)
+            self.in_conflict = bool(state[9] > 0.5)
+
+    def load_weights_from_dict(self, weights: Dict[str, Any]):
+        """Load network weights from dictionary (e.g., from hypernetwork)."""
+        if not TORCH_AVAILABLE or self.policy_net is None:
+            return
+
+        # Load weights into policy network
+        for name, param in self.policy_net.named_parameters():
+            if name in weights:
+                param.data.copy_(weights[name])
+
+        if self.world_model is not None:
+            for name, param in self.world_model.named_parameters():
+                if name in weights:
+                    param.data.copy_(weights[name])

@@ -196,10 +196,20 @@ class Overmind:
     and plans ethical interventions when needed.
     """
 
-    def __init__(self, config: OvermindConfig, dharma_config: Optional[DharmaConfig] = None,
+    def __init__(self, config, dharma_config: Optional[DharmaConfig] = None,
                  qrea_config: Optional[QREAConfig] = None, field_resolution: int = 64):
-        self.config = config
-        self.enabled = config.enabled
+        # Accept either MycoNetConfig or OvermindConfig
+        if hasattr(config, 'overmind'):
+            self.full_config = config
+            self.config = config.overmind
+            dharma_config = dharma_config or config.dharma
+            qrea_config = qrea_config or config.qrea
+            field_resolution = config.uprt_field.field_resolution
+        else:
+            self.full_config = None
+            self.config = config
+
+        self.enabled = self.config.enabled
         self.field_resolution = field_resolution
 
         # UPRT Field
@@ -209,9 +219,9 @@ class Overmind:
 
         # Field surrogate model
         self.field_surrogate = None
-        if config.use_surrogate and TORCH_AVAILABLE:
+        if self.config.use_surrogate and TORCH_AVAILABLE:
             self.field_surrogate = create_field_surrogate(
-                'fno', field_resolution, config.surrogate_hidden_dim
+                'fno', field_resolution, self.config.surrogate_hidden_dim
             )
 
         # Metrics computer
@@ -224,7 +234,7 @@ class Overmind:
 
         # Symbolic bridge
         self.symbolic_bridge = None
-        if config.use_symbolic_bridge:
+        if self.config.use_symbolic_bridge:
             self.symbolic_bridge = SymbolicParametricBridge(
                 dharma_config, reasoning_mode='hybrid'
             )

@@ -69,9 +69,13 @@ class UPRTField:
     - Energy functional E = ∫ L_UPRT d³x
     """
 
-    def __init__(self, config: UPRTFieldConfig):
-        self.config = config
-        self.resolution = config.field_resolution
+    def __init__(self, config):
+        # Accept either MycoNetConfig or UPRTFieldConfig
+        if hasattr(config, 'uprt_field'):
+            self.config = config.uprt_field
+        else:
+            self.config = config
+        self.resolution = self.config.field_resolution
 
         # Initialize complex field Φ(x,y)
         self.field = np.zeros((self.resolution, self.resolution), dtype=np.complex128)

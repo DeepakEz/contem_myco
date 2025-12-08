@@ -55,6 +55,22 @@ class ColonyMetrics:
     # Metadata
     timestamp: int = 0
 
+    # Aliases for compatibility
+    @property
+    def mutual_information(self) -> float:
+        """Alias for information."""
+        return self.information
+
+    @property
+    def recoverability_index(self) -> float:
+        """Alias for recoverability."""
+        return self.recoverability
+
+    @property
+    def resonance_half_life(self) -> float:
+        """Alias for resonance_halflife."""
+        return self.resonance_halflife
+
     def overall_wellbeing(self) -> float:
         """Compute overall wellbeing score."""
         return (
@@ -141,6 +157,45 @@ class MetricsComputer:
         self._update_baseline(metrics)
 
         return metrics
+
+    def compute_all(self, state_history: np.ndarray, field_state: np.ndarray) -> ColonyMetrics:
+        """
+        Simplified interface for computing metrics from numpy arrays.
+
+        Args:
+            state_history: Array of shape [T, N, state_dim] or [N, state_dim]
+            field_state: Array of shape [H, W] for the UPRT field
+
+        Returns:
+            ColonyMetrics with all computed values
+        """
+        # Handle different input shapes
+        if state_history.ndim == 3:
+            # [T, N, state_dim] - use latest timestep
+            current_states = state_history[-1]
+        else:
+            current_states = state_history
+
+        # Convert numpy arrays to list of dicts for compatibility
+        agent_states = []
+        for i, state in enumerate(current_states):
+            agent_state = {
+                'id': i,
+                'energy': float(state[0]) if len(state) > 0 else 0.5,
+                'health': float(state[1]) if len(state) > 1 else 1.0,
+                'mindfulness': float(state[2]) if len(state) > 2 else 0.5,
+                'position': (float(state[3]), float(state[4])) if len(state) > 4 else (0.0, 0.0),
+                'alive': True,
+                'full_state': state
+            }
+            agent_states.append(agent_state)
+
+        return self.compute_all_metrics(
+            agent_states=agent_states,
+            signal_grid=None,
+            field_state=field_state,
+            time_step=len(self.state_history)
+        )
 
     def _compute_colony_stats(self, metrics: ColonyMetrics,
                               agent_states: List[Dict[str, Any]]) -> ColonyMetrics:
