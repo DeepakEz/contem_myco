@@ -41,13 +41,26 @@ class LayerSpec:
 @dataclass
 class TargetArchitecture:
     """Specification of the target agent network architecture."""
-    layers: List[LayerSpec]
+    layers: Optional[List[LayerSpec]] = None
+    input_dim: Optional[int] = None
+    hidden_dim: Optional[int] = None
+    output_dim: Optional[int] = None
+
+    def __post_init__(self):
+        # Allow callers to pass dimensions directly (tests construct this way)
+        if self.layers is None and None not in (self.input_dim, self.hidden_dim, self.output_dim):
+            self.layers = [
+                LayerSpec('input', self.input_dim, self.hidden_dim),
+                LayerSpec('hidden1', self.hidden_dim, self.hidden_dim),
+                LayerSpec('hidden2', self.hidden_dim, self.hidden_dim),
+                LayerSpec('output', self.hidden_dim, self.output_dim),
+            ]
 
     @property
     def total_params(self) -> int:
         """Total number of parameters in target network."""
         total = 0
-        for layer in self.layers:
+        for layer in self.layers or []:
             total += layer.input_dim * layer.output_dim
             if layer.has_bias:
                 total += layer.output_dim
@@ -64,6 +77,16 @@ class TargetArchitecture:
             LayerSpec('world_model.predictor', 128, 64),
             LayerSpec('value.fc1', 64, 64),
             LayerSpec('value.fc2', 64, 1),
+        ])
+
+    @classmethod
+    def from_dims(cls, input_dim: int, hidden_dim: int, output_dim: int) -> 'TargetArchitecture':
+        """Construct architecture from basic dimensional parameters."""
+        return cls(layers=[
+            LayerSpec('input', input_dim, hidden_dim),
+            LayerSpec('hidden1', hidden_dim, hidden_dim),
+            LayerSpec('hidden2', hidden_dim, hidden_dim),
+            LayerSpec('output', hidden_dim, output_dim),
         ])
 
 
@@ -205,9 +228,13 @@ if TORCH_AVAILABLE:
         - Elitism (preserve top K individuals)
         """
 
-        def __init__(self, config: QREAConfig, genome_dim: int):
+        def __init__(self, config: QREAConfig, genome_dim: Optional[int] = None):
+            # Accept either direct QREA config or full system config
+            if hasattr(config, 'qrea'):
+                config = config.qrea
+
             self.config = config
-            self.genome_dim = genome_dim
+            self.genome_dim = genome_dim or getattr(getattr(config, 'agent', None), 'genome_dim', None) or 256
             self.population_size = config.population_size
             self.mutation_rate = config.mutation_rate
             self.mutation_strength = config.mutation_strength
@@ -237,24 +264,32 @@ if TORCH_AVAILABLE:
 
             return self.population
 
-        def evolve_population(self, genomes: torch.Tensor,
-                              fitness_scores: torch.Tensor) -> torch.Tensor:
+        def evolve_population(self, genomes,
+                              fitness_scores) -> torch.Tensor:
             """
             Run one generation of evolution.
 
             Args:
-                genomes: Population tensor [population_size, genome_dim]
+                genomes: Population tensor/array [population_size, genome_dim]
                 fitness_scores: Fitness for each genome [population_size]
 
             Returns:
                 New population of genome vectors
             """
             self.generation += 1
-            population_size = genomes.size(0)
+            is_tensor_input = isinstance(genomes, torch.Tensor)
 
             # Convert to numpy for easier manipulation
-            genomes_np = genomes.detach().cpu().numpy()
-            fitness_np = fitness_scores.detach().cpu().numpy()
+            if is_tensor_input:
+                genomes_np = genomes.detach().cpu().numpy()
+                fitness_np = (fitness_scores.detach().cpu().numpy()
+                              if isinstance(fitness_scores, torch.Tensor)
+                              else np.array(fitness_scores))
+            else:
+                genomes_np = np.array(genomes)
+                fitness_np = np.array(fitness_scores)
+
+            population_size = genomes_np.shape[0]
 
             # Track fitness history
             self.fitness_history.append(fitness_np.tolist())
@@ -263,7 +298,10 @@ if TORCH_AVAILABLE:
             best_idx = np.argmax(fitness_np)
             if fitness_np[best_idx] > self.best_fitness:
                 self.best_fitness = fitness_np[best_idx]
-                self.best_genome = genomes[best_idx].clone()
+                if is_tensor_input:
+                    self.best_genome = genomes[best_idx].detach().clone()
+                else:
+                    self.best_genome = torch.from_numpy(genomes_np[best_idx]).float()
 
             # 1. Elitism - preserve top individuals
             elite_count = max(1, int(population_size * self.elite_fraction))
@@ -283,14 +321,28 @@ if TORCH_AVAILABLE:
             num_offspring = population_size - elite_count
             new_population = np.vstack([elites, offspring[:num_offspring]])
 
-            # Convert back to tensor
-            new_genomes = torch.from_numpy(new_population).float()
-            self.population = new_genomes
+            # Convert back to tensor if necessary
+            if is_tensor_input:
+                new_genomes = torch.from_numpy(new_population).float()
+                self.population = new_genomes
+                logger.debug(
+                    f"Generation {self.generation}: best_fitness={self.best_fitness:.4f}, "
+                    f"mean_fitness={np.mean(fitness_np):.4f}"
+                )
+                return new_genomes
 
-            logger.debug(f"Generation {self.generation}: best_fitness={self.best_fitness:.4f}, "
-                         f"mean_fitness={np.mean(fitness_np):.4f}")
+            self.population = new_population
 
-            return new_genomes
+            logger.debug(
+                f"Generation {self.generation}: best_fitness={self.best_fitness:.4f}, "
+                f"mean_fitness={np.mean(fitness_np):.4f}"
+            )
+
+            return new_population
+
+        def evolve(self, genomes, fitness_scores):
+            """Backward-compatible alias for evolution step."""
+            return self.evolve_population(genomes, fitness_scores)
 
         def _tournament_selection(self, genomes: np.ndarray, fitness: np.ndarray,
                                   num_parents: int) -> np.ndarray:
@@ -485,9 +537,11 @@ else:
     class EvolutionEngine:
         """Placeholder for EvolutionEngine when PyTorch is unavailable."""
 
-        def __init__(self, config, genome_dim):
+        def __init__(self, config, genome_dim: Optional[int] = None):
+            if hasattr(config, 'qrea'):
+                config = config.qrea
             self.config = config
-            self.genome_dim = genome_dim
+            self.genome_dim = genome_dim or getattr(getattr(config, 'agent', None), 'genome_dim', None) or 256
             self.population = None
             self.generation = 0
             logger.warning("PyTorch not available. Using NumPy-based EvolutionEngine.")
@@ -512,6 +566,9 @@ else:
 
             self.generation += 1
             return new_pop[:len(genomes)]
+
+        def evolve(self, genomes, fitness_scores):
+            return self.evolve_population(genomes, fitness_scores)
 
 
     class HierarchicalMERA:
