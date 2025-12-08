@@ -643,3 +643,138 @@ class Environment:
         self._initialize_resources()
 
         logger.info("Environment reset")
+
+    def is_valid_position(self, pos: Tuple[int, int]) -> bool:
+        """Check if a position is valid and passable."""
+        x, y = pos
+        if x < 0 or x >= self.width or y < 0 or y >= self.height:
+            return False
+        return self.is_passable(x, y)
+
+    def get_random_valid_position(self) -> Tuple[int, int]:
+        """Get a random valid position in the environment."""
+        for _ in range(100):  # Max attempts
+            x = np.random.randint(0, self.width)
+            y = np.random.randint(0, self.height)
+            if self.is_passable(x, y):
+                return (x, y)
+        # Fallback to center if no valid position found
+        return (self.width // 2, self.height // 2)
+
+    @property
+    def grid_size(self) -> Tuple[int, int]:
+        """Get the grid size as (width, height)."""
+        return (self.width, self.height)
+
+    def get_local_view(self, position: Tuple[int, int], radius: int = 2) -> np.ndarray:
+        """Get local terrain view around a position."""
+        x, y = position
+        size = 2 * radius + 1
+        view = np.zeros((size, size, 3), dtype=np.float32)
+
+        for dx in range(-radius, radius + 1):
+            for dy in range(-radius, radius + 1):
+                nx, ny = x + dx, y + dy
+                vx, vy = dx + radius, dy + radius
+
+                if 0 <= nx < self.width and 0 <= ny < self.height:
+                    view[vx, vy, 0] = self.terrain_grid[ny, nx] / 4.0  # Normalized terrain
+                    view[vx, vy, 1] = self.resource_grid[ny, nx]  # Resource amount
+                    view[vx, vy, 2] = 1.0 if self.is_passable(nx, ny) else 0.0
+
+        return view
+
+    def get_local_signals(self, position: Tuple[int, int], radius: int = 2) -> np.ndarray:
+        """Get local signal values around a position."""
+        x, y = position
+        size = 2 * radius + 1
+        num_signals = len(WisdomSignalType)
+        signals = np.zeros((size, size, num_signals), dtype=np.float32)
+
+        for dx in range(-radius, radius + 1):
+            for dy in range(-radius, radius + 1):
+                nx, ny = x + dx, y + dy
+                vx, vy = dx + radius, dy + radius
+
+                if 0 <= nx < self.width and 0 <= ny < self.height:
+                    local_signals = self.signal_grid.get_local(nx, ny, radius=0)
+                    for i, signal_type in enumerate(WisdomSignalType):
+                        signals[vx, vy, i] = local_signals.get(signal_type, 0.0)
+
+        return signals
+
+    def emit_signal(self, position: Tuple[int, int], signal_type: int, intensity: float):
+        """Emit a wisdom signal at a position."""
+        x, y = position
+        if 0 <= signal_type < len(WisdomSignalType):
+            signal = list(WisdomSignalType)[signal_type]
+            self.signal_grid.add_signal(signal, x, y, intensity)
+
+    def propagate_signals(self):
+        """Propagate all signals one time step."""
+        self.signal_grid.propagate()
+
+    def get_resource_at(self, position: Tuple[int, int]) -> float:
+        """Get resource amount at a position."""
+        x, y = position
+        if 0 <= x < self.width and 0 <= y < self.height:
+            return float(self.resource_grid[y, x])
+        return 0.0
+
+    def harvest_resource(self, position: Tuple[int, int]) -> float:
+        """Harvest resource at a position."""
+        x, y = position
+        if 0 <= x < self.width and 0 <= y < self.height:
+            amount = float(self.resource_grid[y, x])
+            self.resource_grid[y, x] = 0.0
+            return amount
+        return 0.0
+
+    def regenerate_resources(self):
+        """Regenerate resources based on configuration."""
+        for patch in self.resource_patches:
+            self._apply_resource_patch(patch)
+
+    def count_resources(self) -> int:
+        """Count total resources in environment."""
+        return int(np.sum(self.resource_grid > 0))
+
+    def mark_entity(self, position: Tuple[int, int], entity_type: str):
+        """Mark a position with an entity type (for scenarios)."""
+        # Store entity markers for scenario use
+        if not hasattr(self, 'entity_markers'):
+            self.entity_markers = {}
+        self.entity_markers[position] = entity_type
+
+    def apply_damage(self, position: Tuple[int, int], severity: float):
+        """Apply damage to a cell (for disaster scenarios)."""
+        x, y = position
+        if 0 <= x < self.width and 0 <= y < self.height:
+            self.resource_grid[y, x] *= (1.0 - severity)
+
+    def restore_cell(self, position: Tuple[int, int]):
+        """Restore a damaged cell."""
+        x, y = position
+        if 0 <= x < self.width and 0 <= y < self.height:
+            self.resource_grid[y, x] = min(1.0, self.resource_grid[y, x] + 0.5)
+
+    def place_pattern(self, x: int, y: int, pattern: np.ndarray, pattern_id: int):
+        """Place a pattern in the environment (for concept emergence)."""
+        if not hasattr(self, 'patterns'):
+            self.patterns = {}
+        self.patterns[pattern_id] = {'position': (x, y), 'pattern': pattern}
+
+        # Apply pattern to resource grid
+        h, w = pattern.shape
+        for dx in range(w):
+            for dy in range(h):
+                px, py = x + dx, y + dy
+                if 0 <= px < self.width and 0 <= py < self.height:
+                    if pattern[dy, dx] > 0:
+                        self.resource_grid[py, px] = pattern[dy, dx]
+
+    def get_pattern_position(self, pattern_id: int) -> Optional[Tuple[int, int]]:
+        """Get position of a placed pattern."""
+        if hasattr(self, 'patterns') and pattern_id in self.patterns:
+            return self.patterns[pattern_id]['position']
+        return None

@@ -259,6 +259,9 @@ class Overmind:
         self.pending_interventions: List[OvermindDecision] = []
 
         # Intervention thresholds
+        self.intervention_threshold = self.config.intervention_threshold
+        self.meditation_threshold = self.config.meditation_threshold
+        self.rx_threshold = self.config.rx_threshold
         self.intervention_threshold = config.intervention_threshold
         self.meditation_threshold = config.meditation_threshold
         self.rx_threshold = config.rx_threshold
@@ -656,3 +659,63 @@ class Overmind:
             self.evolution_engine.generation = 0
 
         logger.info("Overmind reset")
+
+    def step(self, agent_states: List[Any], field_state: np.ndarray = None):
+        """
+        Perform one step of Overmind coordination.
+
+        Args:
+            agent_states: List of agent state vectors (numpy arrays)
+            field_state: Current field state (optional)
+        """
+        if not self.enabled:
+            return
+
+        # Convert numpy arrays to dicts if needed
+        agent_dicts = []
+        for i, state in enumerate(agent_states):
+            if isinstance(state, np.ndarray):
+                agent_dict = {
+                    'id': i,
+                    'energy': float(state[0]) if len(state) > 0 else 0.5,
+                    'health': float(state[1]) if len(state) > 1 else 1.0,
+                    'mindfulness_level': float(state[2]) if len(state) > 2 else 0.5,
+                    'x': float(state[3]) if len(state) > 3 else 0,
+                    'y': float(state[4]) if len(state) > 4 else 0,
+                    'alive': True
+                }
+            else:
+                agent_dict = state
+            agent_dicts.append(agent_dict)
+
+        # Update internal state
+        self.sense_agents(agent_dicts)
+        self.update_field(agent_dicts)
+
+        # Compute metrics
+        self.current_metrics = self.compute_metrics()
+
+        # Detect symbols in field
+        self.detected_symbols = self.detect_symbols()
+
+        # Plan interventions if needed
+        decision = self.plan_intervention(self.current_metrics)
+        if decision is not None:
+            self.pending_interventions.append(decision)
+
+        self.time_step += 1
+
+    def get_intervention_history(self) -> List[Dict[str, Any]]:
+        """Get history of interventions."""
+        return [
+            {
+                'type': d.intervention_type.name if hasattr(d, 'intervention_type') else 'UNKNOWN',
+                'time': d.timestamp if hasattr(d, 'timestamp') else 0,
+                'priority': d.priority if hasattr(d, 'priority') else 0
+            }
+            for d in self.decision_history
+        ]
+
+    def get_surrogate_model(self):
+        """Get the field surrogate model if available."""
+        return self.field_surrogate

@@ -361,13 +361,13 @@ class MycoAgent:
         if TORCH_AVAILABLE:
             self.policy_net = AgentPolicyNet(
                 input_dim=64,
-                hidden_dim=config.hidden_dim,
+                hidden_dim=self.config.hidden_dim,
                 num_actions=len(ActionType)
             )
             self.world_model = AgentWorldModel(
                 state_dim=64,
                 action_dim=len(ActionType),
-                hidden_dim=config.hidden_dim
+                hidden_dim=self.config.hidden_dim
             )
 
         # Cognitive monitoring
@@ -376,7 +376,7 @@ class MycoAgent:
         self.phenomenal_curvature = 0.0
 
         # Memory systems
-        self.short_term_memory: deque = deque(maxlen=config.short_term_memory_size)
+        self.short_term_memory: deque = deque(maxlen=self.config.short_term_memory_size)
         self.working_memory: Dict[str, Any] = {}
         self.wisdom_memory: List[WisdomInsight] = []
 

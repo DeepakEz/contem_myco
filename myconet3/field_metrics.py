@@ -103,8 +103,12 @@ class MetricsComputer:
     Computes all Field Architecture metrics from system state.
     """
 
-    def __init__(self, config: MetricsConfig):
-        self.config = config
+    def __init__(self, config):
+        # Accept either MycoNetConfig or MetricsConfig
+        if hasattr(config, 'metrics'):
+            self.config = config.metrics
+        else:
+            self.config = config
 
         # History buffers for temporal metrics
         self.coherence_history: deque = deque(maxlen=1000)

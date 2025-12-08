@@ -98,6 +98,9 @@ class UPRTField:
         self.time_step = 0
 
         # Lagrangian parameters
+        self.g = self.config.coupling_constant  # Gauge coupling
+        self.m = self.config.field_mass  # Field mass
+        self.lambda_4 = self.config.potential_quartic  # Quartic coupling
         self.g = config.coupling_constant  # Gauge coupling
         self.m = config.field_mass  # Field mass
         self.lambda_4 = config.potential_quartic  # Quartic coupling
@@ -387,6 +390,36 @@ class UPRTField:
         self.defects = []
         self.defect_history = []
         self._update_derived_quantities()
+
+    def step(self, agent_states: np.ndarray = None, dt: float = None):
+        """Alias for step_dynamics for compatibility."""
+        # Convert agent_states array to agent_sources dict if provided
+        agent_sources = None
+        if agent_states is not None and len(agent_states) > 0:
+            agent_sources = {}
+            for i, state in enumerate(agent_states):
+                if len(state) >= 5:
+                    x = int(state[3] * self.resolution / 64) % self.resolution
+                    y = int(state[4] * self.resolution / 64) % self.resolution
+                    intensity = complex(state[0], state[1]) if len(state) > 1 else complex(1.0, 0.0)
+                    agent_sources[i] = (x, y, intensity)
+        self.step_dynamics(agent_sources, dt)
+
+    def get_field_state(self) -> np.ndarray:
+        """Get field values as numpy array."""
+        return np.abs(self.field)
+
+    def set_field_state(self, state: np.ndarray):
+        """Set field values from numpy array."""
+        if state.shape == self.field.shape:
+            self.field = state.astype(np.complex128)
+        elif len(state.shape) == 2:
+            self.field = state.astype(np.complex128)
+        self._update_derived_quantities()
+
+    def detect_defects(self) -> List[TopologicalDefect]:
+        """Alias for detect_topological_defects."""
+        return self.detect_topological_defects()
 
 
 if TORCH_AVAILABLE:
