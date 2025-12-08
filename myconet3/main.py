@@ -170,13 +170,14 @@ class MycoNetSimulation:
             self.overmind.step([a.get_state_vector() for a in self.agents], field_state)
 
         # Compute metrics
-        if len(self.state_history) >= 10:
-            recent_states = np.array(self.state_history[-10:])
+        if len(self.state_history) >= 2:
+            window = min(10, len(self.state_history))
+            recent_states = np.array(self.state_history[-window:])
             field_state = self.uprt_field.get_field_state()
             metrics = self.metrics_computer.compute_all(recent_states, field_state)
             self.metrics_history.append(metrics)
         else:
-            metrics = None
+            metrics = ColonyMetrics()
 
         self.step_count += 1
         step_time = time.time() - step_start

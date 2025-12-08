@@ -17,6 +17,7 @@ from enum import Enum, auto
 import logging
 
 from .config import MycoNetConfig, WisdomSignalType
+from .myco_agent import ActionType
 
 logger = logging.getLogger(__name__)
 
@@ -143,7 +144,7 @@ class ResourceForagingScenario(ScenarioBase):
 
         # Generate resource positions
         num_resources = self.scenario_config.num_resources
-        clustering = self.scenario_config.clustering if hasattr(self.scenario_config, 'clustering') else 0.5
+        clustering = getattr(self.scenario_config, 'resource_clustering', 0.5)
 
         if clustering > 0.5:
             # Clustered resources around random centers
@@ -291,7 +292,11 @@ class TrolleyDilemmaScenario(ScenarioBase):
 
         # Check if any agent is at lever position and taking action
         for agent in agents:
-            if self._is_at_lever(agent) and agent.last_action == 'interact':
+            if (
+                self._is_at_lever(agent)
+                and hasattr(agent, 'last_action')
+                and agent.last_action in [ActionType.HELP_OTHER, ActionType.SHARE_WISDOM]
+            ):
                 self.decision_made = True
                 self.decision = 'switch'  # Switched to track B
                 self.decision_step = step_num
@@ -437,7 +442,10 @@ class DisasterRecoveryScenario(ScenarioBase):
             if hasattr(agent, 'position') and hasattr(agent, 'last_action'):
                 pos = agent.position
                 if pos in self.affected_cells and pos not in self.recovered_cells:
-                    if agent.last_action in ['help', 'interact', 'share_wisdom']:
+                    if (
+                        hasattr(agent, 'last_action')
+                        and agent.last_action in [ActionType.HELP_OTHER, ActionType.SHARE_WISDOM]
+                    ):
                         self.recovered_cells.append(pos)
                         environment.restore_cell(pos)
 
@@ -731,9 +739,98 @@ class ScalabilityStressScenario(ScenarioBase):
             }
         )
 
+
+class CooperationEmergenceScenario(ScenarioBase):
+    """Simple placeholder scenario to exercise cooperation behaviors."""
+
+    def __init__(self, config: MycoNetConfig, scenario_config: Any = None):
+        super().__init__(config)
+        self.scenario_type = ScenarioType.COOPERATION_EMERGENCE
+        self.max_steps = 50
+        self.steps = 0
+
+    def setup(self, environment, agents: List) -> bool:
+        self.initialized = True
+        self.steps = 0
+        return True
+
+    def step(self, environment, agents: List, step_num: int) -> Dict[str, Any]:
+        self.steps += 1
+        return {'coordination_score': float(len(agents))}
+
+    def evaluate(self, environment, agents: List, history: List) -> ScenarioResult:
+        return ScenarioResult(
+            self.scenario_type,
+            success=True,
+            score=1.0,
+            metrics={'cooperation': 1.0},
+            duration_steps=self.steps
+        )
+
     def is_complete(self, environment, agents: List, step_num: int) -> bool:
-        """Complete after fixed number of steps."""
-        return step_num >= self.scenario_config.time_per_scale
+        return step_num >= self.max_steps
+
+
+class AdversarialRobustnessScenario(ScenarioBase):
+    """Placeholder scenario for adversarial robustness checks."""
+
+    def __init__(self, config: MycoNetConfig, scenario_config: Any = None):
+        super().__init__(config)
+        self.scenario_type = ScenarioType.ADVERSARIAL_ROBUSTNESS
+        self.max_steps = 30
+        self.steps = 0
+
+    def setup(self, environment, agents: List) -> bool:
+        self.initialized = True
+        self.steps = 0
+        return True
+
+    def step(self, environment, agents: List, step_num: int) -> Dict[str, Any]:
+        self.steps += 1
+        return {'robustness_score': 1.0}
+
+    def evaluate(self, environment, agents: List, history: List) -> ScenarioResult:
+        return ScenarioResult(
+            self.scenario_type,
+            success=True,
+            score=1.0,
+            metrics={'robustness': 1.0},
+            duration_steps=self.steps
+        )
+
+    def is_complete(self, environment, agents: List, step_num: int) -> bool:
+        return step_num >= self.max_steps
+
+
+class LongHorizonPlanningScenario(ScenarioBase):
+    """Placeholder long-horizon planning scenario."""
+
+    def __init__(self, config: MycoNetConfig, scenario_config: Any = None):
+        super().__init__(config)
+        self.scenario_type = ScenarioType.LONG_HORIZON_PLANNING
+        self.max_steps = 100
+        self.steps = 0
+
+    def setup(self, environment, agents: List) -> bool:
+        self.initialized = True
+        self.steps = 0
+        return True
+
+    def step(self, environment, agents: List, step_num: int) -> Dict[str, Any]:
+        self.steps += 1
+        return {'planning_progress': step_num / self.max_steps}
+
+    def evaluate(self, environment, agents: List, history: List) -> ScenarioResult:
+        return ScenarioResult(
+            self.scenario_type,
+            success=True,
+            score=1.0,
+            metrics={'planning': 1.0},
+            duration_steps=self.steps
+        )
+
+    def is_complete(self, environment, agents: List, step_num: int) -> bool:
+        return step_num >= self.max_steps
 
 
 class ScenarioRunner:
@@ -746,7 +843,10 @@ class ScenarioRunner:
             ScenarioType.ETHICAL_DILEMMA_TROLLEY: TrolleyDilemmaScenario,
             ScenarioType.DISASTER_RECOVERY: DisasterRecoveryScenario,
             ScenarioType.NOVEL_CONCEPT_EMERGENCE: NovelConceptEmergenceScenario,
-            ScenarioType.SCALABILITY_STRESS: ScalabilityStressScenario
+            ScenarioType.SCALABILITY_STRESS: ScalabilityStressScenario,
+            ScenarioType.COOPERATION_EMERGENCE: CooperationEmergenceScenario,
+            ScenarioType.ADVERSARIAL_ROBUSTNESS: AdversarialRobustnessScenario,
+            ScenarioType.LONG_HORIZON_PLANNING: LongHorizonPlanningScenario
         }
 
     def create_scenario(self, scenario_type: ScenarioType,

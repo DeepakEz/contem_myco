@@ -90,10 +90,15 @@ class DharmaCompiler:
     """
 
     def __init__(self, config: DharmaConfig):
-        self.config = config
-        self.rx_threshold = config.rx_moral_threshold
-        self.max_entropy_export = config.max_entropy_export
-        self.gini_threshold = config.gini_threshold
+        # Allow callers to pass either the full system config or the Dharma sub-config
+        if hasattr(config, 'dharma'):
+            self.config = config.dharma
+        else:
+            self.config = config
+
+        self.rx_threshold = self.config.rx_moral_threshold
+        self.max_entropy_export = self.config.max_entropy_export
+        self.gini_threshold = self.config.gini_threshold
 
         self.violation_log: List[Dict[str, Any]] = []
         self.evaluation_count = 0
@@ -262,9 +267,6 @@ class Overmind:
         self.intervention_threshold = self.config.intervention_threshold
         self.meditation_threshold = self.config.meditation_threshold
         self.rx_threshold = self.config.rx_threshold
-        self.intervention_threshold = config.intervention_threshold
-        self.meditation_threshold = config.meditation_threshold
-        self.rx_threshold = config.rx_threshold
 
         # State tracking
         self.time_step = 0

@@ -552,10 +552,21 @@ class Environment:
             'active_events': [e.name for e in self.active_events]
         }
 
-    def add_resource(self, x: int, y: int, amount: float):
-        """Add resources at a specific location."""
-        if 0 <= x < self.width and 0 <= y < self.height:
-            self.resource_grid[y, x] = min(1.0, self.resource_grid[y, x] + amount)
+    def add_resource(self, position, y: Optional[int] = None, amount: float = 0.0):
+        """Add resources at a specific location.
+
+        Accepts either separate coordinates (x, y, amount) or a ``(x, y)`` tuple
+        plus ``amount`` for convenience.
+        """
+        if isinstance(position, tuple) and len(position) == 2:
+            x, y_coord = position
+            amt = amount
+        else:
+            x, y_coord = position, y if y is not None else 0
+            amt = amount if y is not None else 0
+
+        if 0 <= x < self.width and 0 <= y_coord < self.height:
+            self.resource_grid[y_coord, x] = min(1.0, self.resource_grid[y_coord, x] + amt)
 
     def trigger_event(self, event_type: StochasticEvent, x: Optional[int] = None, y: Optional[int] = None):
         """Manually trigger an environmental event."""
