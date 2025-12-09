@@ -144,7 +144,7 @@ class ResourceForagingScenario(ScenarioBase):
 
         # Generate resource positions
         num_resources = self.scenario_config.num_resources
-        clustering = getattr(self.scenario_config, 'resource_clustering', 0.5)
+        clustering = self.scenario_config.resource_clustering
 
         if clustering > 0.5:
             # Clustered resources around random centers
@@ -442,10 +442,7 @@ class DisasterRecoveryScenario(ScenarioBase):
             if hasattr(agent, 'position') and hasattr(agent, 'last_action'):
                 pos = agent.position
                 if pos in self.affected_cells and pos not in self.recovered_cells:
-                    if (
-                        hasattr(agent, 'last_action')
-                        and agent.last_action in [ActionType.HELP_OTHER, ActionType.SHARE_WISDOM]
-                    ):
+                    if agent.last_action in [ActionType.HELP_OTHER, ActionType.SHARE_WISDOM]:
                         self.recovered_cells.append(pos)
                         environment.restore_cell(pos)
 

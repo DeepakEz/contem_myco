@@ -170,12 +170,17 @@ class MycoNetSimulation:
             self.overmind.step([a.get_state_vector() for a in self.agents], field_state)
 
         # Compute metrics
+        field_state = self.uprt_field.get_field_state()
         if len(self.state_history) >= 2:
-            window = min(10, len(self.state_history))
-            recent_states = np.array(self.state_history[-window:])
-            field_state = self.uprt_field.get_field_state()
-            metrics = self.metrics_computer.compute_all(recent_states, field_state)
-            self.metrics_history.append(metrics)
+            # Use available history (minimum 2 steps for temporal metrics)
+            history_len = min(10, len(self.state_history))
+            recent_states = np.array(self.state_history[-history_len:])
+            try:
+                metrics = self.metrics_computer.compute_all(recent_states, field_state)
+                self.metrics_history.append(metrics)
+            except Exception as e:
+                logger.debug(f"Metrics computation failed: {e}")
+                metrics = ColonyMetrics()
         else:
             metrics = ColonyMetrics()
 
