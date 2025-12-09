@@ -382,6 +382,18 @@ class MycoAgent:
                 lr=self.config.learning_rate
             )
 
+            # Initialize optimizer for training
+            self.optimizer = torch.optim.Adam(
+                self.policy_net.parameters(),
+                lr=self.config.learning_rate
+            )
+
+            if self.world_model is not None:
+                self.world_model_optimizer = torch.optim.Adam(
+                    self.world_model.parameters(),
+                    lr=self.config.learning_rate
+                )
+
         # Cognitive monitoring
         self.mindfulness_monitor = MindfulnessMonitor() if TORCH_AVAILABLE else None
         self.prediction_error = 0.0
@@ -395,9 +407,9 @@ class MycoAgent:
         # Current state
         self.last_observation: Optional[Dict[str, Any]] = None
         self.last_action: Optional[ActionType] = None
+        self.last_signal: Optional[str] = None  # Track last emitted signal
         self.last_decision_time: int = 0
         self.decision_period: int = 10
-        self.last_signal: Optional[str] = None
 
         # Social state
         self.is_cooperating = False

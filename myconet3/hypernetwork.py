@@ -41,19 +41,22 @@ class LayerSpec:
 @dataclass
 class TargetArchitecture:
     """Specification of the target agent network architecture."""
-    layers: Optional[List[LayerSpec]] = None
-    input_dim: Optional[int] = None
-    hidden_dim: Optional[int] = None
-    output_dim: Optional[int] = None
+    layers: List[LayerSpec] = None
+    input_dim: int = 64
+    hidden_dim: int = 128
+    output_dim: int = 15
 
     def __post_init__(self):
-        # Allow callers to pass dimensions directly (tests construct this way)
-        if self.layers is None and None not in (self.input_dim, self.hidden_dim, self.output_dim):
+        """Initialize layers if not provided."""
+        if self.layers is None:
             self.layers = [
-                LayerSpec('input', self.input_dim, self.hidden_dim),
-                LayerSpec('hidden1', self.hidden_dim, self.hidden_dim),
-                LayerSpec('hidden2', self.hidden_dim, self.hidden_dim),
-                LayerSpec('output', self.hidden_dim, self.output_dim),
+                LayerSpec('policy.encoder.0', self.input_dim, self.hidden_dim),
+                LayerSpec('policy.encoder.2', self.hidden_dim, self.hidden_dim),
+                LayerSpec('policy.action_head', self.hidden_dim, self.output_dim),
+                LayerSpec('world_model.encoder', self.input_dim, self.hidden_dim),
+                LayerSpec('world_model.predictor', self.hidden_dim, self.input_dim),
+                LayerSpec('value.fc1', self.input_dim, self.hidden_dim // 2),
+                LayerSpec('value.fc2', self.hidden_dim // 2, 1),
             ]
 
     @property
@@ -67,6 +70,24 @@ class TargetArchitecture:
         return total
 
     @classmethod
+    def from_dims(cls, input_dim: int, hidden_dim: int, output_dim: int) -> 'TargetArchitecture':
+        """Create architecture from input/hidden/output dimensions."""
+        return cls(
+            input_dim=input_dim,
+            hidden_dim=hidden_dim,
+            output_dim=output_dim,
+            layers=[
+                LayerSpec('policy.encoder.0', input_dim, hidden_dim),
+                LayerSpec('policy.encoder.2', hidden_dim, hidden_dim),
+                LayerSpec('policy.action_head', hidden_dim, output_dim),
+                LayerSpec('world_model.encoder', input_dim, hidden_dim),
+                LayerSpec('world_model.predictor', hidden_dim, input_dim),
+                LayerSpec('value.fc1', input_dim, hidden_dim // 2),
+                LayerSpec('value.fc2', hidden_dim // 2, 1),
+            ]
+        )
+
+    @classmethod
     def default_agent_architecture(cls) -> 'TargetArchitecture':
         """Create default agent network architecture."""
         return cls(layers=[
@@ -77,16 +98,6 @@ class TargetArchitecture:
             LayerSpec('world_model.predictor', 128, 64),
             LayerSpec('value.fc1', 64, 64),
             LayerSpec('value.fc2', 64, 1),
-        ])
-
-    @classmethod
-    def from_dims(cls, input_dim: int, hidden_dim: int, output_dim: int) -> 'TargetArchitecture':
-        """Construct architecture from basic dimensional parameters."""
-        return cls(layers=[
-            LayerSpec('input', input_dim, hidden_dim),
-            LayerSpec('hidden1', hidden_dim, hidden_dim),
-            LayerSpec('hidden2', hidden_dim, hidden_dim),
-            LayerSpec('output', hidden_dim, output_dim),
         ])
 
 
