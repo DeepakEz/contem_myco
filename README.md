@@ -29,7 +29,7 @@ git log --oneline -1  # Should show: aeb8d69 Add explicit diagnostic logging...
 ### 1. Setup
 Run the setup script to check dependencies and create example configurations:
 ```bash
-python setup_contemplative_myconet.py
+python setup_script.py
 ```
 
 ### 2. Run Experiments
