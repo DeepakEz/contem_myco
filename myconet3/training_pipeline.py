@@ -204,31 +204,62 @@ class PPOTrainer:
 
 
 class SACTrainer:
-    """Soft Actor-Critic trainer (placeholder for alternative RL algorithm)."""
+    """Soft Actor-Critic trainer.
+
+    WARNING: This is a stub implementation. For actual SAC training, use a
+    dedicated RL library (stable-baselines3, RLlib, etc.) or implement the
+    full algorithm with twin Q-networks, target networks, and entropy tuning.
+
+    This class exists to define the interface but will raise NotImplementedError
+    if used for training. Use PPOTrainer for actual training in this codebase.
+    """
 
     def __init__(self, config: MycoNetConfig):
         self.config = config
         self.tau = 0.005  # Target network update rate
         self.alpha = 0.2  # Entropy coefficient
+        logger.warning("SACTrainer is not implemented. Use PPOTrainer instead.")
 
     def train_step(self, agent: MycoAgent, transitions: List[Tuple]) -> Dict[str, float]:
-        """Perform SAC update step."""
-        # Simplified implementation - would need full SAC with Q-networks
-        return {"q_loss": 0.0, "policy_loss": 0.0, "alpha_loss": 0.0}
+        """Perform SAC update step.
+
+        Raises:
+            NotImplementedError: SAC training is not implemented in this codebase.
+        """
+        raise NotImplementedError(
+            "SAC training is not implemented. Use PPOTrainer for training, "
+            "or integrate a dedicated RL library (stable-baselines3, RLlib)."
+        )
 
 
 class DQNTrainer:
-    """DQN trainer (placeholder for alternative RL algorithm)."""
+    """DQN (Deep Q-Network) trainer.
+
+    WARNING: This is a stub implementation. For actual DQN training, use a
+    dedicated RL library or implement the full algorithm with replay buffer,
+    target network, and epsilon-greedy exploration.
+
+    This class exists to define the interface but will raise NotImplementedError
+    if used for training. Use PPOTrainer for actual training in this codebase.
+    """
 
     def __init__(self, config: MycoNetConfig):
         self.config = config
         self.epsilon = 1.0
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
+        logger.warning("DQNTrainer is not implemented. Use PPOTrainer instead.")
 
     def train_step(self, agent: MycoAgent, batch: List[Tuple]) -> Dict[str, float]:
-        """Perform DQN update step."""
-        return {"q_loss": 0.0}
+        """Perform DQN update step.
+
+        Raises:
+            NotImplementedError: DQN training is not implemented in this codebase.
+        """
+        raise NotImplementedError(
+            "DQN training is not implemented. Use PPOTrainer for training, "
+            "or integrate a dedicated RL library (stable-baselines3, RLlib)."
+        )
 
 
 class SurrogateCalibrator:

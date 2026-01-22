@@ -645,9 +645,35 @@ class DistributedOvermindMesh:
         best_score = -1
         
         for action in action_candidates:
-            # Score action based on overmind's preferences and specialization
-            base_score = random.uniform(0.3, 0.8)  # Simplified scoring
-            
+            # Score action based on context relevance and overmind state
+            crisis_level = decision_context.get('crisis_level', 0.5)
+            cooperation_rate = decision_context.get('cooperation_rate', 0.5)
+            mindfulness_level = decision_context.get('mindfulness_level', 0.5)
+
+            # Compute base score from action-context relevance
+            base_score = 0.5  # Neutral starting point
+
+            # Crisis-responsive actions score higher during crisis
+            if action in [OvermindActionType.TRIGGER_COLLECTIVE_MEDITATION,
+                         OvermindActionType.INITIATE_HEALING_PROTOCOL]:
+                base_score += crisis_level * 0.3
+
+            # Cooperation actions score higher when cooperation is low
+            if action in [OvermindActionType.PROMOTE_COOPERATION,
+                         OvermindActionType.IMPROVE_COMMUNICATION]:
+                base_score += (1.0 - cooperation_rate) * 0.3
+
+            # Wisdom actions score higher when mindfulness allows
+            if action in [OvermindActionType.ENHANCE_WISDOM_PROPAGATION,
+                         OvermindActionType.FACILITATE_KNOWLEDGE_TRANSFER]:
+                base_score += mindfulness_level * 0.2
+
+            # Resource actions based on resource scarcity
+            resource_scarcity = decision_context.get('resource_scarcity', 0.5)
+            if action in [OvermindActionType.INCREASE_RESOURCE_REGENERATION,
+                         OvermindActionType.REDISTRIBUTE_RESOURCES]:
+                base_score += resource_scarcity * 0.3
+
             # Specialization bonus
             if specialization == "contemplative_specialist" and action in [
                 OvermindActionType.TRIGGER_COLLECTIVE_MEDITATION,
@@ -851,12 +877,26 @@ class TrulyCompletePhaseIIIContemplativeOvermind(CompletePhaseIIIContemplativeOv
             if current_step >= delay_steps:
                 # Get current state for comparison
                 current_metrics = self._analyze_colony_state(agents)
-                
-                # Create mock actual outcomes (in practice, would track real outcomes)
+
+                # Compute actual outcomes from measured colony state
+                # Implementation success: based on overall wellbeing improvement
+                wellbeing = current_metrics.get('overall_wellbeing', 0.5)
+                implementation_success = min(1.0, wellbeing * 1.2)  # Scale wellbeing to success
+
+                # Agent response rate: based on cooperation and mindfulness levels
+                cooperation = current_metrics.get('cooperation_rate', 0.5)
+                mindfulness = current_metrics.get('collective_mindfulness', 0.5)
+                agent_response_rate = (cooperation + mindfulness) / 2.0
+
+                # Sustained impact: based on stability indicators
+                health = current_metrics.get('average_health', 0.5)
+                energy = current_metrics.get('average_energy', 0.5)
+                sustained_impact = (health + energy + wellbeing) / 3.0
+
                 actual_outcomes = {
-                    'implementation_success': random.uniform(0.6, 0.9),
-                    'agent_response_rate': random.uniform(0.5, 0.8),
-                    'sustained_impact': random.uniform(0.4, 0.7)
+                    'implementation_success': implementation_success,
+                    'agent_response_rate': agent_response_rate,
+                    'sustained_impact': sustained_impact
                 }
                 
                 # Complete evaluation

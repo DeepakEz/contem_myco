@@ -294,9 +294,29 @@ class ContemplativeOvermindPolicy:
         return directive_to_action.get(top_directive.directive_type, 0)
 
     def update(self, observation, action, reward, next_observation, done):
-        """Update policy (placeholder for RL training)"""
-        # Will be implemented with actual RL algorithm (PPO, SAC, etc.)
-        pass
+        """Record experience for potential policy refinement.
+
+        Note: The DharmaCompiler uses rule-based ethical directives rather than
+        learned policies. This method stores experience data that could be used
+        for offline analysis of directive effectiveness or future hybrid approaches.
+
+        For neural-network-based policy learning, use the training modules in
+        myconet_contemplative_training.py or myconet3/training_pipeline.py.
+        """
+        # Store experience for offline analysis (not real-time training)
+        if not hasattr(self, '_experience_log'):
+            self._experience_log = []
+
+        self._experience_log.append({
+            'observation': observation.to_array() if hasattr(observation, 'to_array') else observation,
+            'action': action,
+            'reward': reward,
+            'done': done
+        })
+
+        # Keep log bounded
+        if len(self._experience_log) > 1000:
+            self._experience_log = self._experience_log[-500:]
 
 
 if __name__ == "__main__":

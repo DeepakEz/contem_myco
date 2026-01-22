@@ -113,7 +113,9 @@ class WisdomArchive:
             return insight_id
             
         except Exception as e:
-            logger.error(f"Failed to archive insight with significance: {e}")
+            logger.error(f"Failed to archive insight with significance: {e}", exc_info=True)
+            # Return None to indicate failure - caller should handle this case
+            # Common causes: embedding issues, storage overflow, significance calculation error
             return None
     
     def store_insight(self, insight: WisdomInsightEmbedding, context: Dict[str, Any], 
@@ -605,11 +607,21 @@ class MemoryAttentionMechanism:
         self.memory_embeddings[memory_key] = full_embedding
     
     def compute_weighted_memory_influence(self, current_context) -> Dict[str, float]:
-        """Compute weighted influence of memories on current decision"""
-        
+        """Compute weighted influence of memories on current decision.
+
+        Uses both rule-based attention weights and neural attention network
+        (when sufficient data is available) to compute memory influence.
+        """
         if not self.intervention_memories:
             return {'memory_influence': 0.0, 'confidence_boost': 0.0}
-        
+
+        # Try neural attention if we have embeddings
+        neural_attention_used = False
+        neural_influence = 0.0
+        if len(self.memory_embeddings) >= 5:
+            neural_influence = self._compute_neural_attention_influence(current_context)
+            neural_attention_used = neural_influence > 0
+
         # Categorize memories by age
         recent_memories = list(self.intervention_memories)[-10:]
         medium_memories = list(self.intervention_memories)[-50:-10] if len(self.intervention_memories) > 10 else []
@@ -638,18 +650,79 @@ class MemoryAttentionMechanism:
             influences['crisis'] = 0.0
         
         total_influence = sum(influences.values())
+
+        # Blend with neural attention if available
+        if neural_attention_used:
+            # 70% rule-based, 30% neural
+            total_influence = total_influence * 0.7 + neural_influence * 0.3
+
         confidence_boost = min(0.3, total_influence * 0.5)  # Cap confidence boost
-        
+
         return {
             'memory_influence': total_influence,
             'confidence_boost': confidence_boost,
-            'category_influences': influences
+            'category_influences': influences,
+            'neural_attention_used': neural_attention_used
         }
     
-    def _compute_category_influence(self, memories: List[Dict[str, Any]], 
+    def _compute_neural_attention_influence(self, current_context) -> float:
+        """Compute memory influence using the neural attention network.
+
+        Args:
+            current_context: Current decision context
+
+        Returns:
+            Neural attention-weighted influence score
+        """
+        try:
+            # Extract context features
+            context_features = self._extract_context_features_for_attention(current_context)
+
+            # Get recent memory embeddings
+            recent_keys = list(self.memory_embeddings.keys())[-10:]
+            if not recent_keys:
+                return 0.0
+
+            # Average memory features
+            memory_tensors = [self.memory_embeddings[k] for k in recent_keys]
+            avg_memory = torch.stack(memory_tensors).mean(dim=0)
+
+            # Pad/truncate to expected size
+            memory_features = torch.zeros(15)
+            memory_features[:min(15, avg_memory.shape[0])] = avg_memory[:15]
+
+            # Compute attention
+            with torch.no_grad():
+                attention_score, _ = self.attention_network(context_features, memory_features)
+
+            return float(attention_score.item())
+
+        except Exception as e:
+            logger.debug(f"Neural attention computation failed: {e}")
+            return 0.0
+
+    def _extract_context_features_for_attention(self, current_context) -> torch.Tensor:
+        """Extract features from context for attention network."""
+        features = torch.zeros(20)
+
+        if isinstance(current_context, dict):
+            colony_metrics = current_context.get('colony_metrics')
+            if colony_metrics:
+                features[0] = getattr(colony_metrics, 'crisis_level', lambda: 0.5)()
+                features[1] = getattr(colony_metrics, 'cooperation_rate', 0.5)
+                features[2] = getattr(colony_metrics, 'collective_mindfulness', 0.5)
+                features[3] = getattr(colony_metrics, 'average_health', 0.5)
+                features[4] = getattr(colony_metrics, 'average_energy', 0.5)
+
+            features[5] = current_context.get('step', 0) / 1000.0
+            features[6] = current_context.get('urgency', 0.5)
+
+        return features
+
+    def _compute_category_influence(self, memories: List[Dict[str, Any]],
                                   current_context) -> float:
         """Compute influence of a category of memories"""
-        
+
         if not memories:
             return 0.0
         

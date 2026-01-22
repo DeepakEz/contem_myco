@@ -78,9 +78,13 @@ class ThresholdRegulator:
         self.outcome_history = defaultdict(deque)    # Track intervention outcomes
         self.performance_metrics = defaultdict(list) # Performance tracking
         
-        # Adaptation neural network
+        # Adaptation neural network with optimizer for online learning
         self.adaptation_network = self._create_adaptation_network()
-        
+        self.adaptation_optimizer = torch.optim.Adam(
+            self.adaptation_network.parameters(), lr=0.001
+        )
+        self.training_buffer = deque(maxlen=500)  # Buffer for training samples
+
         # Environmental state tracking
         self.environmental_volatility = deque(maxlen=50)
         self.context_stability = deque(maxlen=100)
@@ -208,7 +212,71 @@ class ThresholdRegulator:
             logger.warning(f"Failed to adapt threshold {threshold_type}: {e}")
             # Fallback to simple rule-based adaptation
             self._simple_threshold_adaptation(threshold_type, outcome_record)
-    
+
+        # Store sample for training and periodically train
+        self._store_training_sample(threshold_type, outcome_record)
+        if len(self.training_buffer) >= 32 and len(self.training_buffer) % 16 == 0:
+            self._train_adaptation_network()
+
+    def _store_training_sample(self, threshold_type: str, outcome_record: Dict[str, Any]):
+        """Store a sample for training the adaptation network."""
+        try:
+            outcome_features = self._extract_outcome_features(threshold_type)
+            context_features = self._extract_context_features(outcome_record['context'])
+
+            # Target: if success, current adjustment was good; if not, opposite direction needed
+            success = outcome_record.get('success', False)
+            target_direction = 1.0 if success else -1.0
+
+            self.training_buffer.append({
+                'outcome_features': outcome_features,
+                'context_features': context_features,
+                'target': target_direction,
+                'threshold_type': threshold_type
+            })
+        except Exception as e:
+            logger.debug(f"Failed to store training sample: {e}")
+
+    def _train_adaptation_network(self):
+        """Train the adaptation network on collected samples.
+
+        Uses a simple supervised approach where successful outcomes reinforce
+        the network's predictions and failures push in the opposite direction.
+        """
+        if len(self.training_buffer) < 32:
+            return
+
+        try:
+            # Sample batch from buffer
+            batch_indices = np.random.choice(len(self.training_buffer), size=min(32, len(self.training_buffer)), replace=False)
+            batch = [self.training_buffer[i] for i in batch_indices]
+
+            self.adaptation_optimizer.zero_grad()
+            total_loss = 0.0
+
+            for sample in batch:
+                prediction = self.adaptation_network(
+                    sample['outcome_features'],
+                    sample['context_features']
+                )
+                target = torch.tensor([sample['target']], dtype=torch.float32)
+
+                # MSE loss to push predictions toward successful directions
+                loss = F.mse_loss(prediction, target)
+                total_loss += loss
+
+            avg_loss = total_loss / len(batch)
+            avg_loss.backward()
+
+            # Gradient clipping for stability
+            torch.nn.utils.clip_grad_norm_(self.adaptation_network.parameters(), max_norm=1.0)
+            self.adaptation_optimizer.step()
+
+            logger.debug(f"Trained adaptation network, loss: {avg_loss.item():.4f}")
+
+        except Exception as e:
+            logger.warning(f"Failed to train adaptation network: {e}")
+
     def _extract_outcome_features(self, threshold_type: str) -> torch.Tensor:
         """Extract features from outcome history"""
         
