@@ -333,10 +333,22 @@ class WisdomIntegrationLayer(nn.Module):
             content_hash = hash(str(insight.content)) % (self.wisdom_dim // 4)
             embedding[content_start + content_hash] = 0.5
         
-        # Add some diversity
+        # Add deterministic diversity based on content hash for reproducibility
         noise_start = 3 * self.wisdom_dim // 4
-        embedding[noise_start:] = torch.randn(self.wisdom_dim - noise_start) * 0.1
-        
+        noise_length = self.wisdom_dim - noise_start
+        if hasattr(insight, 'content') and insight.content:
+            # Use content hash to generate deterministic "diversity" values
+            content_str = str(insight.content)
+            for i in range(noise_length):
+                hash_val = hash(content_str + str(i)) % 1000 / 1000.0
+                embedding[noise_start + i] = (hash_val - 0.5) * 0.2  # Scale similar to randn * 0.1
+        else:
+            # Fallback: use type hash if no content
+            type_str = str(getattr(insight, 'wisdom_type', 'default'))
+            for i in range(noise_length):
+                hash_val = hash(type_str + str(i)) % 1000 / 1000.0
+                embedding[noise_start + i] = (hash_val - 0.5) * 0.2
+
         return embedding
 
 class EthicalReasoningModule(nn.Module):

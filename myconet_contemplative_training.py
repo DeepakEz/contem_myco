@@ -141,6 +141,8 @@ class ContemplativeGymEnvironment:
         """Reset the environment for a new episode"""
         if seed is not None:
             np.random.seed(seed)
+            if TORCH_AVAILABLE:
+                torch.manual_seed(seed)
         
         # Create new simulation
         self.simulation = ContemplativeSimulation(self.sim_config)
