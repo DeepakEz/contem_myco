@@ -594,7 +594,7 @@ class NeuralAlignment:
             context.get('resource_abundance', 0.7),
             context.get('hazard_level', 0.2),
             context.get('environmental_stability', 0.5),
-            context.get('season_factor', 0.5),  # Would be computed from season
+            context.get('season_factor', 0.5),  # Provided by caller from environment state
             context.get('weather_volatility', 0.1),
             context.get('resource_regeneration_rate', 0.1),
             context.get('ecosystem_health', 0.7)
@@ -644,9 +644,12 @@ class NeuralAlignment:
         recent_alignments = list(self.alignment_history)[-20:]
         
         if len(recent_alignments) >= 10:
+            # Compute prediction accuracy from alignment trend vs significance outcomes
+            prediction_accuracy = self._compute_prediction_accuracy(recent_alignments)
+
             metrics = NeuralAlignmentMetrics(
                 alignment_score=np.mean([r['neural_alignment'] for r in recent_alignments]),
-                prediction_accuracy=0.0,  # Would be computed from actual outcomes
+                prediction_accuracy=prediction_accuracy,
                 adaptation_velocity=self._calculate_adaptation_velocity(recent_alignments),
                 coherence_index=np.mean([r['coherence_score'] for r in recent_alignments])
             )
@@ -666,9 +669,33 @@ class NeuralAlignment:
         for i in range(1, len(alignment_scores)):
             velocity = abs(alignment_scores[i] - alignment_scores[i-1])
             velocities.append(velocity)
-        
+
         return float(np.mean(velocities))
-    
+
+    def _compute_prediction_accuracy(self, recent_alignments: List[Dict[str, Any]]) -> float:
+        """Compute prediction accuracy from alignment history.
+
+        Measures how well previous alignment predictions (high alignment = good outcome)
+        correlate with subsequent coherence improvements.
+        """
+        if len(recent_alignments) < 5:
+            return 0.5  # Neutral when insufficient data
+
+        # Compare predicted alignment with subsequent coherence changes
+        accuracies = []
+        for i in range(len(recent_alignments) - 1):
+            current = recent_alignments[i]
+            next_record = recent_alignments[i + 1]
+
+            # High alignment score should predict improved coherence
+            predicted_improvement = current['neural_alignment'] > 0.5
+            actual_improvement = next_record['coherence_score'] >= current['coherence_score']
+
+            # Count correct predictions
+            accuracies.append(1.0 if predicted_improvement == actual_improvement else 0.0)
+
+        return float(np.mean(accuracies)) if accuracies else 0.5
+
     def _create_fallback_encoding(self, insight_text: str, context: Dict[str, Any]) -> Dict[str, Any]:
         """Create fallback encoding when neural processing fails"""
         

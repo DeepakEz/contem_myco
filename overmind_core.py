@@ -280,16 +280,26 @@ class ProductionReadyContemplativeOvermind:
                                if d.get('decision') and d['decision'].chosen_action != OvermindActionType.NO_ACTION)
                 evaluation['decision_accuracy'] = successful / len(recent_decisions)
                 
-                # Intervention timing (based on urgency vs actual need)
+                # Intervention timing (based on urgency vs actual need from recorded outcomes)
                 timing_scores = []
                 for d in recent_decisions:
                     if d.get('decision'):
                         predicted_urgency = d['decision'].urgency
-                        # Simulate actual urgency (would be measured from outcomes)
-                        actual_urgency = predicted_urgency + np.random.uniform(-0.2, 0.2)
+                        # Compute actual urgency from recorded outcome data
+                        outcome_data = d.get('outcome_data', {})
+                        if outcome_data:
+                            # Actual urgency derived from state changes post-intervention
+                            crisis_change = outcome_data.get('crisis_change', 0.0)
+                            wellbeing_change = outcome_data.get('wellbeing_change', 0.0)
+                            # High urgency justified if intervention improved state significantly
+                            actual_urgency = max(0.0, min(1.0,
+                                abs(crisis_change) + abs(wellbeing_change)))
+                        else:
+                            # Fall back to confidence-weighted predicted urgency when no outcome data
+                            actual_urgency = predicted_urgency * d['decision'].confidence
                         timing_score = 1.0 - abs(predicted_urgency - actual_urgency)
                         timing_scores.append(max(0, timing_score))
-                
+
                 evaluation['intervention_timing'] = np.mean(timing_scores) if timing_scores else 0.5
                 
                 # Resource efficiency (processing time vs decision quality)
@@ -302,19 +312,31 @@ class ProductionReadyContemplativeOvermind:
                 
                 evaluation['resource_efficiency'] = np.mean(efficiency_scores) if efficiency_scores else 0.5
                 
-                # Agent satisfaction (simulated based on feedback effectiveness)
+                # Agent satisfaction (computed from feedback effectiveness)
                 satisfaction_scores = []
                 for d in recent_decisions:
                     feedback_results = getattr(d.get('decision'), 'feedback_results', {})
                     if feedback_results:
                         effectiveness = feedback_results.get('overall_effectiveness', 0.5)
                         satisfaction_scores.append(effectiveness)
-                
+
                 evaluation['agent_satisfaction'] = np.mean(satisfaction_scores) if satisfaction_scores else 0.5
-                
-                # Emergence facilitation (growth in collective metrics)
-                evaluation['emergence_facilitation'] = 0.6  # Placeholder - would measure actual emergence
-                
+
+                # Emergence facilitation (growth in collective metrics from decision outcomes)
+                emergence_scores = []
+                for i, d in enumerate(recent_decisions):
+                    outcome_data = d.get('outcome_data', {})
+                    if outcome_data and i > 0:
+                        # Compute emergence from actual improvements in collective metrics
+                        cooperation_growth = outcome_data.get('cooperation_change', 0.0)
+                        mindfulness_growth = outcome_data.get('mindfulness_change', 0.0)
+                        wisdom_growth = outcome_data.get('wisdom_growth', 0.0)
+                        # Emergence is positive collective metric changes
+                        emergence = max(0.0, cooperation_growth + mindfulness_growth + wisdom_growth)
+                        emergence_scores.append(min(1.0, emergence))
+
+                evaluation['emergence_facilitation'] = np.mean(emergence_scores) if emergence_scores else 0.5
+
                 return evaluation
             
             def generate_self_corrections(self, evaluation: Dict[str, float]) -> List[str]:

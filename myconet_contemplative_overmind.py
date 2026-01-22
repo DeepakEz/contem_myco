@@ -29,6 +29,76 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+
+def create_text_embedding(text: str, embedding_dim: int = 256) -> 'torch.Tensor':
+    """Create a deterministic embedding from text content.
+
+    Uses a hash-based approach with semantic features to create reproducible
+    embeddings. This replaces random torch.randn() calls to ensure:
+    1. Same text always produces same embedding
+    2. Different texts produce meaningfully different embeddings
+    3. Semantic features (keywords) influence the embedding structure
+
+    Args:
+        text: The insight text to embed
+        embedding_dim: Dimension of output embedding vector (default 256)
+
+    Returns:
+        Deterministic torch.Tensor embedding of the given dimension
+    """
+    if not TORCH_AVAILABLE:
+        return None
+
+    import hashlib
+
+    # Semantic keyword categories with associated features
+    keyword_categories = {
+        'wisdom': ['wisdom', 'insight', 'understanding', 'knowledge', 'awareness'],
+        'compassion': ['compassion', 'empathy', 'kindness', 'care', 'support'],
+        'mindfulness': ['mindful', 'present', 'attention', 'focus', 'awareness'],
+        'harmony': ['harmony', 'balance', 'peace', 'unity', 'cooperation'],
+        'growth': ['grow', 'evolve', 'develop', 'emerge', 'improve'],
+        'collective': ['collective', 'together', 'community', 'shared', 'group'],
+    }
+
+    text_lower = text.lower()
+
+    # Compute semantic feature scores
+    semantic_features = []
+    for category, keywords in keyword_categories.items():
+        score = sum(1 for kw in keywords if kw in text_lower) / len(keywords)
+        semantic_features.append(score)
+
+    # Create hash-based base embedding (deterministic from text)
+    text_hash = hashlib.sha256(text.encode()).digest()
+    hash_values = [b / 255.0 for b in text_hash]  # Normalize to [0, 1]
+
+    # Extend hash to embedding dimension
+    base_embedding = []
+    for i in range(embedding_dim):
+        # Combine hash values cyclically with position-based variation
+        hash_idx = i % len(hash_values)
+        base_val = hash_values[hash_idx]
+        # Add position-based variation
+        position_factor = (i / embedding_dim) * 0.2
+        base_embedding.append(base_val - 0.5 + position_factor)
+
+    # Blend semantic features into the embedding
+    embedding = np.array(base_embedding, dtype=np.float32)
+    for i, feature_score in enumerate(semantic_features):
+        # Modulate parts of embedding based on semantic features
+        start_idx = i * (embedding_dim // len(semantic_features))
+        end_idx = (i + 1) * (embedding_dim // len(semantic_features))
+        embedding[start_idx:end_idx] += feature_score * 0.3
+
+    # Normalize embedding
+    norm = np.linalg.norm(embedding)
+    if norm > 0:
+        embedding = embedding / norm
+
+    return torch.tensor(embedding, dtype=torch.float32)
+
+
 class OvermindReflectionLog:
     """Self-evaluation system for overmind decision effectiveness"""
     
@@ -1061,9 +1131,10 @@ def test_truly_complete_system():
             'overmind_decision': random.choice(['cooperation', 'meditation', 'resource'])
         }
         
+        insight_text = f"Insight {i}: Balance emerges through mindful collective action"
         insight = WisdomInsightEmbedding(
-            insight_text=f"Insight {i}: Balance emerges through mindful collective action",
-            embedding_vector=torch.randn(256),
+            insight_text=insight_text,
+            embedding_vector=create_text_embedding(insight_text, 256),
             dharma_alignment=random.uniform(0.4, 0.9),
             emergence_context=context,
             impact_metrics={},
@@ -2093,9 +2164,10 @@ def test_complete_phase3_system():
             'agent_count': len(agents)
         }
         
+        test_insight_text = f"Test insight {i}: Wisdom grows through collective practice"
         test_insight = WisdomInsightEmbedding(
-            insight_text=f"Test insight {i}: Wisdom grows through collective practice",
-            embedding_vector=torch.randn(256),
+            insight_text=test_insight_text,
+            embedding_vector=create_text_embedding(test_insight_text, 256),
             dharma_alignment=random.uniform(0.3, 0.9),
             emergence_context=test_context,
             impact_metrics={},

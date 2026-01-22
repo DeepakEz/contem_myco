@@ -28,6 +28,8 @@ from collections import defaultdict
 from enum import Enum
 
 import numpy as np
+import random
+import torch
 
 # ==============================================================================
 # LOGGING CONFIGURATION
@@ -2375,8 +2377,12 @@ def main() -> int:
     global logger
     logger = setup_logging(args.verbose)
     
-    # Set random seed
+    # Set random seed for all random sources (critical for reproducibility)
     np.random.seed(args.seed)
+    random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(args.seed)
     
     # Handle utility commands
     if args.list_configs:
