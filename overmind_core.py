@@ -369,10 +369,12 @@ class ProductionReadyContemplativeOvermind:
         return MetaEvaluator(self)
     
     def _initialize_fallback_components(self):
-        """Initialize basic fallback components if enhanced modules unavailable"""
-        from overmind_core import (BasicWisdomArchive, BasicMemoryAttention, 
-                                   BasicAgentFeedback, BasicRitualLayer, BasicThresholdRegulator)
-        
+        """Initialize basic fallback components if enhanced modules unavailable.
+
+        Note: Uses fallback classes defined at module level (below) instead of
+        full-featured implementations. These provide minimal functionality.
+        """
+        # Classes are defined in this module - no import needed
         self.wisdom_archive = BasicWisdomArchive()
         self.memory_attention = BasicMemoryAttention()
         self.agent_feedback = BasicAgentFeedback()
@@ -489,10 +491,12 @@ class ProductionReadyContemplativeOvermind:
                 })
             
         except Exception as e:
-            logger.warning(f"Insight generation stream error: {e}")
+            logger.error(f"Insight generation stream error: {e}", exc_info=True)
+            # Fallback insight indicates error occurred - caller should check 'source'
             insights.append({
                 'text': "Insight generation encountered challenges, maintaining awareness",
-                'source': 'system_fallback'
+                'source': 'system_fallback',
+                'error': str(e)
             })
         
         return insights
@@ -552,8 +556,9 @@ class ProductionReadyContemplativeOvermind:
             feedback_analysis['agent_responsiveness']['responsive_rate'] = responsive_agents / len(agents)
             
         except Exception as e:
-            logger.warning(f"Feedback processing stream error: {e}")
+            logger.error(f"Feedback processing stream error: {e}", exc_info=True)
             feedback_analysis['error'] = str(e)
+            feedback_analysis['fallback_used'] = True
         
         return feedback_analysis
     
@@ -577,13 +582,31 @@ class ProductionReadyContemplativeOvermind:
             if hasattr(self.ritual_layer, 'active_rituals'):
                 ritual_analysis['active_rituals'] = len(self.ritual_layer.active_rituals)
             
-            # Predict effectiveness
+            # Predict effectiveness based on colony readiness and ritual type
             for opportunity in ritual_analysis['opportunities'][:3]:
-                ritual_analysis['effectiveness_predictions'][opportunity] = np.random.uniform(0.4, 0.9)
+                # Base effectiveness from colony mindfulness and cooperation
+                base_effectiveness = (colony_metrics.collective_mindfulness +
+                                     colony_metrics.cooperation_rate) / 2.0
+
+                # Ritual-specific adjustments based on colony state
+                if opportunity == 'synchronized_meditation':
+                    # More effective when mindfulness is already moderate
+                    effectiveness = base_effectiveness * (0.8 + colony_metrics.collective_mindfulness * 0.4)
+                elif opportunity == 'wisdom_circle':
+                    # More effective when cooperation is high
+                    effectiveness = base_effectiveness * (0.7 + colony_metrics.cooperation_rate * 0.5)
+                elif opportunity == 'harmony_resonance':
+                    # More effective when conflict is low
+                    effectiveness = base_effectiveness * (1.2 - colony_metrics.conflict_rate * 0.6)
+                else:
+                    effectiveness = base_effectiveness
+
+                ritual_analysis['effectiveness_predictions'][opportunity] = min(1.0, max(0.0, effectiveness))
             
         except Exception as e:
-            logger.warning(f"Ritual coordination stream error: {e}")
+            logger.error(f"Ritual coordination stream error: {e}", exc_info=True)
             ritual_analysis['error'] = str(e)
+            ritual_analysis['fallback_used'] = True
         
         return ritual_analysis
     
@@ -613,8 +636,9 @@ class ProductionReadyContemplativeOvermind:
                 env_analysis['adaptation_requirements'].append('hazard_mitigation_strategies')
             
         except Exception as e:
-            logger.warning(f"Environmental analysis stream error: {e}")
+            logger.error(f"Environmental analysis stream error: {e}", exc_info=True)
             env_analysis['error'] = str(e)
+            env_analysis['fallback_used'] = True
         
         return env_analysis
     

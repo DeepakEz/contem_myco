@@ -710,15 +710,59 @@ class SimpleContemplativeAgent:
             self.experience_buffer = self.experience_buffer[-5000:]
     
     def update(self):
-        """Update policy (simplified placeholder)"""
+        """Update policy using REINFORCE policy gradient algorithm.
+
+        Computes discounted returns and updates policy to increase probability
+        of actions that led to higher returns.
+        """
         if not TORCH_AVAILABLE or len(self.experience_buffer) < 32:
             return
-        
-        # Simple policy gradient update (placeholder)
-        batch = np.random.choice(self.experience_buffer, size=32, replace=False)
-        
-        # This would be replaced with proper RL algorithm updates
-        pass
+
+        # Sample batch from experience buffer
+        batch_indices = np.random.choice(len(self.experience_buffer), size=32, replace=False)
+        batch = [self.experience_buffer[i] for i in batch_indices]
+
+        # Compute discounted returns for each experience
+        gamma = 0.99
+        returns = []
+        running_return = 0
+
+        # Process in reverse to compute returns
+        for exp in reversed(batch):
+            if exp['done']:
+                running_return = 0
+            running_return = exp['reward'] + gamma * running_return
+            returns.insert(0, running_return)
+
+        returns = torch.FloatTensor(returns)
+        # Normalize returns for stability
+        if returns.std() > 0:
+            returns = (returns - returns.mean()) / (returns.std() + 1e-8)
+
+        # Compute policy gradient loss
+        self.optimizer.zero_grad()
+        policy_loss = 0.0
+
+        for exp, ret in zip(batch, returns):
+            obs_tensor = torch.FloatTensor(exp['observation']).unsqueeze(0)
+            action_probs = self.policy_net(obs_tensor)
+            action = exp['action']
+
+            # Log probability of taken action
+            log_prob = torch.log(action_probs[0, action] + 1e-8)
+
+            # REINFORCE: loss = -log_prob * return
+            policy_loss -= log_prob * ret
+
+        policy_loss = policy_loss / len(batch)
+        policy_loss.backward()
+
+        # Gradient clipping for stability
+        torch.nn.utils.clip_grad_norm_(self.policy_net.parameters(), max_norm=1.0)
+        self.optimizer.step()
+
+        # Decay exploration rate
+        self.epsilon = max(0.01, self.epsilon * 0.999)
     
     def save_model(self, path):
         """Save model to file"""

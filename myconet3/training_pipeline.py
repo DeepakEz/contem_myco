@@ -204,31 +204,469 @@ class PPOTrainer:
 
 
 class SACTrainer:
-    """Soft Actor-Critic trainer (placeholder for alternative RL algorithm)."""
+    """Soft Actor-Critic trainer for discrete action spaces.
 
-    def __init__(self, config: MycoNetConfig):
+    Implements SAC with:
+    - Twin Q-networks to mitigate overestimation bias
+    - Target networks with soft updates
+    - Automatic entropy temperature tuning
+    - Experience replay buffer
+
+    Reference: Christodoulou, P. (2019). Soft Actor-Critic for Discrete Action Settings.
+    """
+
+    def __init__(self, config: MycoNetConfig, state_dim: int = 64, action_dim: int = 13):
         self.config = config
-        self.tau = 0.005  # Target network update rate
-        self.alpha = 0.2  # Entropy coefficient
+        self.state_dim = state_dim
+        self.action_dim = action_dim
 
-    def train_step(self, agent: MycoAgent, transitions: List[Tuple]) -> Dict[str, float]:
-        """Perform SAC update step."""
-        # Simplified implementation - would need full SAC with Q-networks
-        return {"q_loss": 0.0, "policy_loss": 0.0, "alpha_loss": 0.0}
+        # SAC hyperparameters
+        self.tau = 0.005  # Target network soft update rate
+        self.gamma = 0.99  # Discount factor
+        self.lr_actor = 3e-4
+        self.lr_critic = 3e-4
+        self.lr_alpha = 3e-4
+        self.batch_size = 256
+        self.buffer_size = 100000
+        self.min_buffer_size = 1000  # Minimum samples before training starts
+
+        # Target entropy for automatic temperature tuning
+        # For discrete actions: -log(1/|A|) * target_entropy_ratio
+        self.target_entropy = -np.log(1.0 / action_dim) * 0.98
+
+        if TORCH_AVAILABLE:
+            self._initialize_networks()
+            self._initialize_replay_buffer()
+        else:
+            logger.warning("PyTorch not available, SAC trainer will not function")
+
+    def _initialize_networks(self):
+        """Initialize actor, critic, and target networks."""
+        hidden_dim = 256
+
+        # Actor network (policy)
+        self.actor = self._create_actor_network(hidden_dim)
+        self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=self.lr_actor)
+
+        # Twin Q-networks
+        self.q1 = self._create_critic_network(hidden_dim)
+        self.q2 = self._create_critic_network(hidden_dim)
+        self.q1_optimizer = optim.Adam(self.q1.parameters(), lr=self.lr_critic)
+        self.q2_optimizer = optim.Adam(self.q2.parameters(), lr=self.lr_critic)
+
+        # Target Q-networks
+        self.q1_target = self._create_critic_network(hidden_dim)
+        self.q2_target = self._create_critic_network(hidden_dim)
+        self._hard_update(self.q1_target, self.q1)
+        self._hard_update(self.q2_target, self.q2)
+
+        # Automatic entropy tuning
+        self.log_alpha = torch.zeros(1, requires_grad=True)
+        self.alpha_optimizer = optim.Adam([self.log_alpha], lr=self.lr_alpha)
+        self.alpha = self.log_alpha.exp().item()
+
+    def _create_actor_network(self, hidden_dim: int) -> nn.Module:
+        """Create stochastic policy network."""
+        return nn.Sequential(
+            nn.Linear(self.state_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, self.action_dim),
+            nn.Softmax(dim=-1)
+        )
+
+    def _create_critic_network(self, hidden_dim: int) -> nn.Module:
+        """Create Q-value network that outputs Q-values for all actions."""
+        return nn.Sequential(
+            nn.Linear(self.state_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, self.action_dim)
+        )
+
+    def _initialize_replay_buffer(self):
+        """Initialize experience replay buffer."""
+        self.replay_buffer = deque(maxlen=self.buffer_size)
+
+    def store_transition(self, state: np.ndarray, action: int, reward: float,
+                        next_state: np.ndarray, done: bool):
+        """Store transition in replay buffer."""
+        self.replay_buffer.append((state, action, reward, next_state, done))
+
+    def _sample_batch(self) -> Tuple[torch.Tensor, ...]:
+        """Sample a batch from replay buffer."""
+        indices = np.random.choice(len(self.replay_buffer), self.batch_size, replace=False)
+        batch = [self.replay_buffer[i] for i in indices]
+
+        states = torch.FloatTensor(np.array([t[0] for t in batch]))
+        actions = torch.LongTensor([t[1] for t in batch])
+        rewards = torch.FloatTensor([t[2] for t in batch]).unsqueeze(1)
+        next_states = torch.FloatTensor(np.array([t[3] for t in batch]))
+        dones = torch.FloatTensor([t[4] for t in batch]).unsqueeze(1)
+
+        return states, actions, rewards, next_states, dones
+
+    def _hard_update(self, target: nn.Module, source: nn.Module):
+        """Copy parameters from source to target network."""
+        target.load_state_dict(source.state_dict())
+
+    def _soft_update(self, target: nn.Module, source: nn.Module):
+        """Soft update target network parameters."""
+        for target_param, source_param in zip(target.parameters(), source.parameters()):
+            target_param.data.copy_(
+                self.tau * source_param.data + (1.0 - self.tau) * target_param.data
+            )
+
+    def get_action(self, state: np.ndarray, deterministic: bool = False) -> int:
+        """Select action using current policy."""
+        if not TORCH_AVAILABLE:
+            return np.random.randint(0, self.action_dim)
+
+        with torch.no_grad():
+            state_tensor = torch.FloatTensor(state).unsqueeze(0)
+            action_probs = self.actor(state_tensor)
+
+            if deterministic:
+                action = torch.argmax(action_probs, dim=-1).item()
+            else:
+                dist = Categorical(action_probs)
+                action = dist.sample().item()
+
+        return action
+
+    def train_step(self, agent: MycoAgent = None,
+                   transitions: List[Tuple] = None) -> Dict[str, float]:
+        """Perform SAC update step.
+
+        Args:
+            agent: Optional MycoAgent (for compatibility, not used in SAC)
+            transitions: Optional list of transitions to add to buffer
+
+        Returns:
+            Dictionary of training metrics
+        """
+        if not TORCH_AVAILABLE:
+            return {"q_loss": 0.0, "policy_loss": 0.0, "alpha_loss": 0.0, "alpha": 0.0}
+
+        # Add transitions to buffer if provided
+        if transitions:
+            for t in transitions:
+                self.store_transition(*t)
+
+        # Check if enough samples in buffer
+        if len(self.replay_buffer) < self.min_buffer_size:
+            return {"q_loss": 0.0, "policy_loss": 0.0, "alpha_loss": 0.0,
+                    "alpha": self.alpha, "buffer_size": len(self.replay_buffer)}
+
+        # Sample batch
+        states, actions, rewards, next_states, dones = self._sample_batch()
+
+        # ===== Update Critics =====
+        with torch.no_grad():
+            # Get next action probabilities
+            next_action_probs = self.actor(next_states)
+
+            # Compute next Q-values for all actions
+            next_q1 = self.q1_target(next_states)
+            next_q2 = self.q2_target(next_states)
+            next_q = torch.min(next_q1, next_q2)
+
+            # Compute expected Q-value (expectation over actions)
+            # V(s') = sum_a pi(a|s') * (Q(s',a) - alpha * log(pi(a|s')))
+            log_probs = torch.log(next_action_probs + 1e-8)
+            next_v = (next_action_probs * (next_q - self.alpha * log_probs)).sum(dim=1, keepdim=True)
+
+            # Target Q-value
+            target_q = rewards + (1 - dones) * self.gamma * next_v
+
+        # Current Q-values for taken actions
+        current_q1 = self.q1(states).gather(1, actions.unsqueeze(1))
+        current_q2 = self.q2(states).gather(1, actions.unsqueeze(1))
+
+        # Critic losses
+        q1_loss = nn.MSELoss()(current_q1, target_q)
+        q2_loss = nn.MSELoss()(current_q2, target_q)
+
+        # Update Q1
+        self.q1_optimizer.zero_grad()
+        q1_loss.backward()
+        nn.utils.clip_grad_norm_(self.q1.parameters(), 1.0)
+        self.q1_optimizer.step()
+
+        # Update Q2
+        self.q2_optimizer.zero_grad()
+        q2_loss.backward()
+        nn.utils.clip_grad_norm_(self.q2.parameters(), 1.0)
+        self.q2_optimizer.step()
+
+        # ===== Update Actor =====
+        action_probs = self.actor(states)
+        log_probs = torch.log(action_probs + 1e-8)
+
+        # Q-values for all actions
+        q1_values = self.q1(states)
+        q2_values = self.q2(states)
+        min_q = torch.min(q1_values, q2_values)
+
+        # Policy loss: maximize expected Q - alpha * entropy
+        # = minimize -sum_a pi(a|s) * (Q(s,a) - alpha * log(pi(a|s)))
+        policy_loss = (action_probs * (self.alpha * log_probs - min_q)).sum(dim=1).mean()
+
+        self.actor_optimizer.zero_grad()
+        policy_loss.backward()
+        nn.utils.clip_grad_norm_(self.actor.parameters(), 1.0)
+        self.actor_optimizer.step()
+
+        # ===== Update Temperature =====
+        # Entropy of current policy
+        entropy = -(action_probs * log_probs).sum(dim=1).mean()
+
+        # Alpha loss: minimize alpha * (entropy - target_entropy)
+        alpha_loss = (self.log_alpha * (entropy - self.target_entropy).detach()).mean()
+
+        self.alpha_optimizer.zero_grad()
+        alpha_loss.backward()
+        self.alpha_optimizer.step()
+
+        self.alpha = self.log_alpha.exp().item()
+
+        # ===== Soft Update Target Networks =====
+        self._soft_update(self.q1_target, self.q1)
+        self._soft_update(self.q2_target, self.q2)
+
+        return {
+            "q1_loss": q1_loss.item(),
+            "q2_loss": q2_loss.item(),
+            "policy_loss": policy_loss.item(),
+            "alpha_loss": alpha_loss.item(),
+            "alpha": self.alpha,
+            "entropy": entropy.item(),
+            "buffer_size": len(self.replay_buffer)
+        }
+
+    def save(self, path: str):
+        """Save SAC networks to file."""
+        if not TORCH_AVAILABLE:
+            return
+
+        torch.save({
+            'actor': self.actor.state_dict(),
+            'q1': self.q1.state_dict(),
+            'q2': self.q2.state_dict(),
+            'q1_target': self.q1_target.state_dict(),
+            'q2_target': self.q2_target.state_dict(),
+            'log_alpha': self.log_alpha,
+            'actor_optimizer': self.actor_optimizer.state_dict(),
+            'q1_optimizer': self.q1_optimizer.state_dict(),
+            'q2_optimizer': self.q2_optimizer.state_dict(),
+            'alpha_optimizer': self.alpha_optimizer.state_dict(),
+        }, path)
+        logger.info(f"SAC model saved to {path}")
+
+    def load(self, path: str):
+        """Load SAC networks from file."""
+        if not TORCH_AVAILABLE:
+            return
+
+        checkpoint = torch.load(path)
+        self.actor.load_state_dict(checkpoint['actor'])
+        self.q1.load_state_dict(checkpoint['q1'])
+        self.q2.load_state_dict(checkpoint['q2'])
+        self.q1_target.load_state_dict(checkpoint['q1_target'])
+        self.q2_target.load_state_dict(checkpoint['q2_target'])
+        self.log_alpha = checkpoint['log_alpha']
+        self.alpha = self.log_alpha.exp().item()
+        self.actor_optimizer.load_state_dict(checkpoint['actor_optimizer'])
+        self.q1_optimizer.load_state_dict(checkpoint['q1_optimizer'])
+        self.q2_optimizer.load_state_dict(checkpoint['q2_optimizer'])
+        self.alpha_optimizer.load_state_dict(checkpoint['alpha_optimizer'])
+        logger.info(f"SAC model loaded from {path}")
 
 
 class DQNTrainer:
-    """DQN trainer (placeholder for alternative RL algorithm)."""
+    """Deep Q-Network (DQN) trainer with experience replay and target network.
 
-    def __init__(self, config: MycoNetConfig):
+    Implements DQN with:
+    - Experience replay buffer
+    - Target network for stable Q-learning
+    - Epsilon-greedy exploration with decay
+    - Double DQN for reduced overestimation
+
+    Reference: Mnih et al. (2015). Human-level control through deep RL.
+    """
+
+    def __init__(self, config: MycoNetConfig, state_dim: int = 64, action_dim: int = 13):
         self.config = config
+        self.state_dim = state_dim
+        self.action_dim = action_dim
+
+        # DQN hyperparameters
+        self.gamma = 0.99
+        self.lr = 1e-4
+        self.batch_size = 64
+        self.buffer_size = 100000
+        self.min_buffer_size = 1000
+        self.target_update_freq = 1000  # Steps between target network updates
+
+        # Exploration parameters
         self.epsilon = 1.0
         self.epsilon_min = 0.01
         self.epsilon_decay = 0.995
 
-    def train_step(self, agent: MycoAgent, batch: List[Tuple]) -> Dict[str, float]:
-        """Perform DQN update step."""
-        return {"q_loss": 0.0}
+        self.update_counter = 0
+
+        if TORCH_AVAILABLE:
+            self._initialize_networks()
+            self._initialize_replay_buffer()
+        else:
+            logger.warning("PyTorch not available, DQN trainer will not function")
+
+    def _initialize_networks(self):
+        """Initialize Q-network and target network."""
+        hidden_dim = 256
+
+        self.q_network = self._create_q_network(hidden_dim)
+        self.target_network = self._create_q_network(hidden_dim)
+        self._hard_update_target()
+
+        self.optimizer = optim.Adam(self.q_network.parameters(), lr=self.lr)
+
+    def _create_q_network(self, hidden_dim: int) -> nn.Module:
+        """Create Q-value network."""
+        return nn.Sequential(
+            nn.Linear(self.state_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, self.action_dim)
+        )
+
+    def _initialize_replay_buffer(self):
+        """Initialize experience replay buffer."""
+        self.replay_buffer = deque(maxlen=self.buffer_size)
+
+    def _hard_update_target(self):
+        """Copy Q-network parameters to target network."""
+        self.target_network.load_state_dict(self.q_network.state_dict())
+
+    def store_transition(self, state: np.ndarray, action: int, reward: float,
+                        next_state: np.ndarray, done: bool):
+        """Store transition in replay buffer."""
+        self.replay_buffer.append((state, action, reward, next_state, done))
+
+    def get_action(self, state: np.ndarray, deterministic: bool = False) -> int:
+        """Select action using epsilon-greedy policy."""
+        if not TORCH_AVAILABLE:
+            return np.random.randint(0, self.action_dim)
+
+        # Epsilon-greedy exploration
+        if not deterministic and np.random.random() < self.epsilon:
+            return np.random.randint(0, self.action_dim)
+
+        with torch.no_grad():
+            state_tensor = torch.FloatTensor(state).unsqueeze(0)
+            q_values = self.q_network(state_tensor)
+            action = torch.argmax(q_values, dim=-1).item()
+
+        return action
+
+    def train_step(self, agent: MycoAgent = None,
+                   batch: List[Tuple] = None) -> Dict[str, float]:
+        """Perform DQN update step.
+
+        Args:
+            agent: Optional MycoAgent (for compatibility)
+            batch: Optional list of transitions to add to buffer
+
+        Returns:
+            Dictionary of training metrics
+        """
+        if not TORCH_AVAILABLE:
+            return {"q_loss": 0.0, "epsilon": self.epsilon}
+
+        # Add transitions to buffer if provided
+        if batch:
+            for t in batch:
+                self.store_transition(*t)
+
+        # Check if enough samples in buffer
+        if len(self.replay_buffer) < self.min_buffer_size:
+            return {"q_loss": 0.0, "epsilon": self.epsilon,
+                    "buffer_size": len(self.replay_buffer)}
+
+        # Sample batch
+        indices = np.random.choice(len(self.replay_buffer), self.batch_size, replace=False)
+        batch_data = [self.replay_buffer[i] for i in indices]
+
+        states = torch.FloatTensor(np.array([t[0] for t in batch_data]))
+        actions = torch.LongTensor([t[1] for t in batch_data])
+        rewards = torch.FloatTensor([t[2] for t in batch_data])
+        next_states = torch.FloatTensor(np.array([t[3] for t in batch_data]))
+        dones = torch.FloatTensor([t[4] for t in batch_data])
+
+        # Current Q-values for taken actions
+        current_q = self.q_network(states).gather(1, actions.unsqueeze(1)).squeeze()
+
+        # Double DQN: use online network to select actions, target to evaluate
+        with torch.no_grad():
+            # Select best actions using online network
+            next_actions = self.q_network(next_states).argmax(dim=1)
+            # Evaluate using target network
+            next_q = self.target_network(next_states).gather(1, next_actions.unsqueeze(1)).squeeze()
+            # Target Q-values
+            target_q = rewards + (1 - dones) * self.gamma * next_q
+
+        # Compute loss
+        q_loss = nn.MSELoss()(current_q, target_q)
+
+        # Optimize
+        self.optimizer.zero_grad()
+        q_loss.backward()
+        nn.utils.clip_grad_norm_(self.q_network.parameters(), 10.0)
+        self.optimizer.step()
+
+        # Update target network periodically
+        self.update_counter += 1
+        if self.update_counter % self.target_update_freq == 0:
+            self._hard_update_target()
+
+        # Decay epsilon
+        self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
+
+        return {
+            "q_loss": q_loss.item(),
+            "epsilon": self.epsilon,
+            "buffer_size": len(self.replay_buffer)
+        }
+
+    def save(self, path: str):
+        """Save DQN networks to file."""
+        if not TORCH_AVAILABLE:
+            return
+
+        torch.save({
+            'q_network': self.q_network.state_dict(),
+            'target_network': self.target_network.state_dict(),
+            'optimizer': self.optimizer.state_dict(),
+            'epsilon': self.epsilon,
+            'update_counter': self.update_counter,
+        }, path)
+        logger.info(f"DQN model saved to {path}")
+
+    def load(self, path: str):
+        """Load DQN networks from file."""
+        if not TORCH_AVAILABLE:
+            return
+
+        checkpoint = torch.load(path)
+        self.q_network.load_state_dict(checkpoint['q_network'])
+        self.target_network.load_state_dict(checkpoint['target_network'])
+        self.optimizer.load_state_dict(checkpoint['optimizer'])
+        self.epsilon = checkpoint['epsilon']
+        self.update_counter = checkpoint['update_counter']
+        logger.info(f"DQN model loaded from {path}")
 
 
 class SurrogateCalibrator:
