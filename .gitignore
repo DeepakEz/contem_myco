@@ -1,2 +1,37 @@
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
+
+# Logs
+*.log
+
+# Results and outputs (regeneratable)
+results_*/
+contemplative_results/
+quick_results/
+publication_analysis/
+comprehensive_publication_analysis/
+visualizations/
+
+# Temporary and backup files
+*.backup
+*.bak
+*.tmp
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+venv/
+.venv/
