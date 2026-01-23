@@ -68,6 +68,15 @@ def setup_logging(verbose: bool = False) -> logging.Logger:
 
 logger = setup_logging()
 
+# Import research parameters for configurable thresholds
+try:
+    from myconet_contemplative_config import get_research_parameters, ResearchParameters
+    RESEARCH_PARAMS = get_research_parameters()
+    logger.info("Loaded research parameters from config")
+except ImportError:
+    RESEARCH_PARAMS = None
+    logger.warning("Research parameters not available, using hardcoded defaults")
+
 # ==============================================================================
 # CORE ENUMS AND TYPES
 # ==============================================================================
@@ -369,7 +378,9 @@ class FallbackContemplativeAgent:
             # Ethical decision: help others in distress
             self.ethical_decisions += 1
             return 'contemplate'  # Generate compassion signals
-        elif np.random.random() < 0.15:  # Increased contemplation rate
+        # Contemplation rate configurable via research parameters
+        contemplation_rate = RESEARCH_PARAMS.meditation_sync_threshold if RESEARCH_PARAMS else 0.15
+        if np.random.random() < contemplation_rate:
             return 'contemplate'
         else:
             movements = ['move_north', 'move_south', 'move_east', 'move_west']
@@ -1461,7 +1472,8 @@ class ContemplativeSimulation:
                 agent.health = min(1.0, agent.health + 0.05)
             elif action == 'contemplate':
                 agent.energy = max(0.0, agent.energy - 0.02)
-                if np.random.random() < 0.15:
+                wisdom_gen_rate = RESEARCH_PARAMS.meditation_sync_threshold if RESEARCH_PARAMS else 0.15
+                if np.random.random() < wisdom_gen_rate:
                     if hasattr(agent, 'wisdom_insights_generated'):
                         agent.wisdom_insights_generated += 1
                     # Add wisdom signal to the grid
@@ -1636,7 +1648,11 @@ class ContemplativeSimulation:
                 energy = getattr(agent, 'energy', 0.0)
                 health = getattr(agent, 'health', 0.0)
                 
-                if (energy > 0.8 and health > 0.7 and np.random.random() < 0.05):
+                # Reproduction thresholds configurable via research parameters
+                energy_thresh = RESEARCH_PARAMS.contemplation_energy_threshold if RESEARCH_PARAMS else 0.8
+                health_thresh = RESEARCH_PARAMS.contemplation_health_threshold if RESEARCH_PARAMS else 0.7
+                repro_prob = RESEARCH_PARAMS.contemplation_probability if RESEARCH_PARAMS else 0.05
+                if (energy > energy_thresh and health > health_thresh and np.random.random() < repro_prob):
                     
                     if hasattr(agent, 'reproduce') and callable(agent.reproduce):
                         offspring = agent.reproduce()

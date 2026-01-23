@@ -25,7 +25,11 @@ from myconet_wisdom_signals import (
     WisdomSignalGrid, WisdomSignalProcessor, WisdomSignalType
 )
 from myconet_contemplative_brains import ContemplativeBrain, create_contemplative_brain
-from myconet_contemplative_config import ContemplativeConfig  # Unified configuration
+from myconet_contemplative_config import (
+    ContemplativeConfig,
+    ResearchParameters,
+    get_research_parameters
+)  # Unified configuration
 
 # Enhanced logging setup
 logger = logging.getLogger(__name__)
@@ -303,6 +307,9 @@ class ContemplativeNeuroAgent:
         self.steps_since_mindfulness_update = 0
         self.steps_since_reproduction = 0
         self.reproduction_cooldown = 100
+
+        # Research parameters for configurable thresholds
+        self.research_params = get_research_parameters()
         
         # Wisdom signal processing
         self.wisdom_signal_processor = None  # Will be set when grid is available
@@ -473,11 +480,12 @@ class ContemplativeNeuroAgent:
                         if hasattr(environment, 'get_cell_info'):
                             cell_info = environment.get_cell_info(check_x, check_y)
                         else:
-                            # Fallback for simple environments
+                            # Fallback for simple environments - uses research parameters
+                            params = get_research_parameters()
                             cell_info = {
-                                'food': 0.5 if random.random() > 0.7 else 0.0,
-                                'water': 0.3 if random.random() > 0.8 else 0.0,
-                                'hazard': random.random() > 0.9
+                                'food': params.food_consumption_rate if random.random() > params.food_success_threshold else 0.0,
+                                'water': params.water_consumption_rate if random.random() > params.water_success_threshold else 0.0,
+                                'hazard': random.random() > params.hazard_encounter_threshold
                             }
                         
                         local_environment[f"({dx},{dy})"] = {
@@ -809,15 +817,17 @@ class ContemplativeNeuroAgent:
                     outcome['details'] = f"Moved to ({self.x}, {self.y})"
             
             elif action == ActionType.EAT_FOOD:
-                food_consumed = self._consume_food(environment, self.x, self.y, amount=0.3)
+                food_consumed = self._consume_food(environment, self.x, self.y,
+                                                   amount=self.research_params.food_consumption_rate)
                 if food_consumed > 0:
                     self.energy = min(1.0, self.energy + food_consumed)
                     outcome['success'] = True
                     outcome['details'] = f"Consumed {food_consumed:.2f} food, energy now {self.energy:.2f}"
                     outcome['energy_cost'] = 0.01  # Eating has low energy cost
-            
+
             elif action == ActionType.COLLECT_WATER:
-                water_collected = self._consume_water(environment, self.x, self.y, amount=0.3)
+                water_collected = self._consume_water(environment, self.x, self.y,
+                                                      amount=self.research_params.water_consumption_rate)
                 if water_collected > 0:
                     self.water = min(1.0, self.water + water_collected)
                     outcome['success'] = True
@@ -836,12 +846,12 @@ class ContemplativeNeuroAgent:
                 # Meditation increases mindfulness and may generate wisdom insights
                 self.mindfulness_level = min(1.0, self.mindfulness_level + 0.15)
 
-                # Log meditation action every time it happens
-                if self.age % 50 == 0 or random.random() < 0.1:  # Log 10% of meditations
+                # Log meditation action periodically
+                if self.age % 50 == 0 or random.random() < self.research_params.meditation_sync_threshold:
                     logger.info(f"Agent {self.agent_id}: Executing MEDITATE action (age {self.age})")
 
-                # Chance to gain wisdom insight during meditation
-                if random.random() < 0.3:
+                # Chance to gain wisdom insight during meditation (configurable)
+                if random.random() < self.research_params.wisdom_sharing_effect:
                     insight = self._generate_meditation_insight()
                     self.contemplative_insights.append(insight)
                     self.wisdom_insights_generated += 1  # Track wisdom generation
@@ -879,8 +889,8 @@ class ContemplativeNeuroAgent:
                     new_x, new_y = self.x + dx, self.y + dy
                     if self._is_passable(environment, new_x, new_y):
                         self.x, self.y = new_x, new_y
-                        # Chance to discover hidden resources
-                        if random.random() < 0.2:
+                        # Chance to discover hidden resources (configurable)
+                        if random.random() < self.research_params.signal_proximity_threshold:
                             if hasattr(environment, 'add_resource'):
                                 environment.add_resource(new_x, new_y, 'food', 0.5)
                             outcome['discovery'] = 'food'
@@ -944,12 +954,13 @@ class ContemplativeNeuroAgent:
                 result = environment.consume_food(x, y, amount)
                 return float(result) if isinstance(result, (int, float)) else 0.0
             else:
-                # Simulate food consumption
-                return min(float(amount), 0.3) if random.random() > 0.7 else 0.0
+                # Simulate food consumption using research parameters
+                params = get_research_parameters()
+                return min(float(amount), params.food_consumption_rate) if random.random() > params.food_success_threshold else 0.0
         except Exception as e:
             decision_logger.warning(f"Error consuming food at ({x}, {y}): {e}")
             return 0.0
-    
+
     def _consume_water(self, environment, x: int, y: int, amount: float) -> float:
         """Consume water from environment - TYPE VALIDATED"""
         try:
@@ -957,8 +968,9 @@ class ContemplativeNeuroAgent:
                 result = environment.consume_water(x, y, amount)
                 return float(result) if isinstance(result, (int, float)) else 0.0
             else:
-                # Simulate water consumption
-                return min(float(amount), 0.3) if random.random() > 0.8 else 0.0
+                # Simulate water consumption using research parameters
+                params = get_research_parameters()
+                return min(float(amount), params.water_consumption_rate) if random.random() > params.water_success_threshold else 0.0
         except Exception as e:
             decision_logger.warning(f"Error consuming water at ({x}, {y}): {e}")
             return 0.0

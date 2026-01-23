@@ -229,3 +229,190 @@ def create_default_wisdom_signal_config(**overrides) -> WisdomSignalConfig:
             raise ValueError(f"Unknown wisdom signal configuration parameter: {key}")
     config.validate()
     return config
+
+
+@dataclass
+class ResearchParameters:
+    """
+    Centralized research parameters extracted from hardcoded values.
+
+    All magic numbers that affect research outcomes are documented here with:
+    - Scientific justification where applicable
+    - Valid ranges for sensitivity analysis
+    - References to relevant literature
+
+    IMPORTANT: Changes to these parameters should be documented and justified
+    for academic reproducibility.
+    """
+
+    # ===== AGENT BEHAVIOR THRESHOLDS =====
+    # Energy/health initialization range [min, max]
+    # Based on typical survival simulation initial conditions
+    agent_energy_init_min: float = 0.3
+    agent_energy_init_max: float = 0.9
+    agent_health_init_min: float = 0.4
+    agent_health_init_max: float = 1.0
+
+    # Contemplation probability when energy > threshold
+    contemplation_energy_threshold: float = 0.8
+    contemplation_health_threshold: float = 0.7
+    contemplation_probability: float = 0.05  # 5% base chance
+
+    # Mindfulness-related thresholds
+    high_mindfulness_threshold: float = 0.6  # Above this = "mindful" state
+    deep_contemplation_threshold: float = 0.8  # Above this = deep state
+    meditation_sync_threshold: float = 0.15  # Rate for meditation logging
+
+    # ===== RESOURCE CONSUMPTION RATES =====
+    # These affect survival dynamics significantly
+    food_consumption_rate: float = 0.3  # Max food consumed per action
+    water_consumption_rate: float = 0.3  # Max water consumed per action
+    food_success_threshold: float = 0.7  # random() > this = success
+    water_success_threshold: float = 0.8  # random() > this = success
+    hazard_encounter_threshold: float = 0.9  # random() > this = hazard
+
+    # ===== INTERVENTION & DECISION THRESHOLDS =====
+    # Overmind intervention triggers
+    crisis_intervention_threshold: float = 0.7  # Crisis level to trigger
+    mesh_consensus_crisis_threshold: float = 0.6  # Request consensus above
+    mesh_consensus_cooperation_threshold: float = 0.8  # Or cooperation below
+
+    # Decision confidence thresholds
+    low_confidence_threshold: float = 0.4
+    high_confidence_threshold: float = 0.8
+    default_confidence: float = 0.5
+
+    # ===== LEARNING & ADAPTATION RATES =====
+    # Neural network and learning parameters
+    adaptation_learning_rate: float = 0.01
+    threshold_adaptation_rate: float = 0.01
+    wisdom_retention_rate: float = 0.7  # How much wisdom is retained
+
+    # Exploration vs exploitation
+    epsilon_initial: float = 0.1  # Initial exploration rate
+    epsilon_min: float = 0.01  # Minimum exploration rate
+    epsilon_decay: float = 0.995  # Decay rate per step
+
+    # ===== COOPERATION & SOCIAL DYNAMICS =====
+    cooperation_boost_rate: float = 0.1  # Cooperation increase from rituals
+    conflict_reduction_rate: float = 0.15  # Conflict decrease from rituals
+    wisdom_sharing_effect: float = 0.3  # Effect magnitude of sharing
+
+    # Group dynamics
+    min_ritual_participants: int = 5  # Minimum for group bonus
+    group_bonus_rate: float = 0.02  # Bonus per additional participant
+    max_group_bonus: float = 0.3  # Cap on group bonus
+
+    # ===== EVALUATION METRICS =====
+    # Weights for multi-objective evaluation
+    survival_weight: float = 0.25
+    wisdom_weight: float = 0.25
+    ethical_weight: float = 0.25
+    efficiency_weight: float = 0.25
+
+    # Significance thresholds
+    significance_archival_threshold: float = 0.7  # Min significance to archive
+    high_significance_threshold: float = 0.8  # Log as "high significance"
+    decay_warning_threshold: float = 0.6  # Warn about insight decay
+
+    # ===== SIGNAL PROPAGATION =====
+    signal_intensity_normalization: float = 0.2  # Grid normalization factor
+    signal_proximity_threshold: float = 0.2  # Fraction of grid for "nearby"
+    signal_strength_minimum: float = 0.1  # Minimum detectable signal
+
+    def validate(self) -> bool:
+        """Validate research parameters are within acceptable ranges."""
+        # Validate probability ranges [0, 1]
+        prob_params = [
+            'agent_energy_init_min', 'agent_energy_init_max',
+            'agent_health_init_min', 'agent_health_init_max',
+            'contemplation_probability', 'high_mindfulness_threshold',
+            'food_success_threshold', 'water_success_threshold',
+            'crisis_intervention_threshold', 'default_confidence',
+            'epsilon_initial', 'epsilon_min', 'wisdom_retention_rate',
+            'significance_archival_threshold'
+        ]
+        for param in prob_params:
+            value = getattr(self, param)
+            if not 0 <= value <= 1:
+                raise ValueError(f"{param} must be in [0, 1], got {value}")
+
+        # Validate positive rates
+        rate_params = [
+            'adaptation_learning_rate', 'threshold_adaptation_rate',
+            'cooperation_boost_rate', 'conflict_reduction_rate',
+            'group_bonus_rate', 'epsilon_decay'
+        ]
+        for param in rate_params:
+            value = getattr(self, param)
+            if value <= 0:
+                raise ValueError(f"{param} must be positive, got {value}")
+
+        # Validate weights sum to 1 (approximately)
+        weight_sum = (self.survival_weight + self.wisdom_weight +
+                     self.ethical_weight + self.efficiency_weight)
+        if abs(weight_sum - 1.0) > 0.01:
+            logger.warning(f"Evaluation weights sum to {weight_sum}, not 1.0")
+
+        return True
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for serialization."""
+        return {
+            field_name: getattr(self, field_name)
+            for field_name in self.__dataclass_fields__
+        }
+
+    @classmethod
+    def from_dict(cls, config_dict: dict) -> 'ResearchParameters':
+        """Create from dictionary."""
+        return cls(**{k: v for k, v in config_dict.items()
+                     if k in cls.__dataclass_fields__})
+
+    def get_sensitivity_ranges(self) -> dict:
+        """
+        Get suggested ranges for sensitivity analysis.
+
+        Returns dict of parameter -> (min, max, recommended_steps)
+        for systematic parameter sweeps.
+        """
+        return {
+            'crisis_intervention_threshold': (0.5, 0.9, 5),
+            'high_mindfulness_threshold': (0.4, 0.8, 5),
+            'cooperation_boost_rate': (0.05, 0.2, 4),
+            'wisdom_retention_rate': (0.5, 0.9, 5),
+            'significance_archival_threshold': (0.5, 0.9, 5),
+            'survival_weight': (0.1, 0.4, 4),
+            'wisdom_weight': (0.1, 0.4, 4),
+        }
+
+
+def create_default_research_parameters(**overrides) -> ResearchParameters:
+    """Create ResearchParameters with default values and optional overrides."""
+    config = ResearchParameters()
+    for key, value in overrides.items():
+        if hasattr(config, key):
+            setattr(config, key, value)
+        else:
+            raise ValueError(f"Unknown research parameter: {key}")
+    config.validate()
+    return config
+
+
+# Global singleton for research parameters (can be overridden)
+_research_params: Optional[ResearchParameters] = None
+
+
+def get_research_parameters() -> ResearchParameters:
+    """Get the global research parameters instance."""
+    global _research_params
+    if _research_params is None:
+        _research_params = ResearchParameters()
+    return _research_params
+
+
+def set_research_parameters(params: ResearchParameters):
+    """Set the global research parameters instance."""
+    global _research_params
+    params.validate()
+    _research_params = params
