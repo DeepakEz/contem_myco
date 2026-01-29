@@ -144,7 +144,7 @@ class BriefGenerator:
         if save_path is None:
             save_path = self.output_dir / "resilience_brief.md"
 
-        with open(save_path, 'w') as f:
+        with open(save_path, 'w', encoding='utf-8') as f:
             f.write(report)
 
         logger.info(f"Generated resilience brief: {save_path}")
@@ -248,7 +248,7 @@ class BriefGenerator:
         if save_path is None:
             save_path = self.output_dir / "society_brief.md"
 
-        with open(save_path, 'w') as f:
+        with open(save_path, 'w', encoding='utf-8') as f:
             f.write(report)
 
         logger.info(f"Generated society brief: {save_path}")
@@ -327,7 +327,7 @@ class BriefGenerator:
         if save_path is None:
             save_path = self.output_dir / "combined_brief.md"
 
-        with open(save_path, 'w') as f:
+        with open(save_path, 'w', encoding='utf-8') as f:
             f.write(report)
 
         logger.info(f"Generated combined brief: {save_path}")
@@ -337,7 +337,7 @@ class BriefGenerator:
 
 def load_results(results_path: str) -> Dict[str, Any]:
     """Load results from JSON file"""
-    with open(results_path, 'r') as f:
+    with open(results_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
