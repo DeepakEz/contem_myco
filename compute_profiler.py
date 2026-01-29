@@ -223,7 +223,7 @@ class ComputeProfiler:
             ]
         }
 
-        with open(filepath, 'w') as f:
+        with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(convert_numpy_types(export_data), f, indent=2)
 
         logger.info(f"Exported compute metrics to {filepath}")
@@ -347,7 +347,7 @@ class ProfilerRegistry:
 
         # Export aggregate summary
         summary_path = os.path.join(directory, "profiler_summary.json")
-        with open(summary_path, 'w') as f:
+        with open(summary_path, 'w', encoding='utf-8') as f:
             json.dump(convert_numpy_types(self.get_aggregate_summary()), f, indent=2)
 
         logger.info(f"Exported all profiler data to {directory}")

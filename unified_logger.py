@@ -334,7 +334,7 @@ class UnifiedLogger:
 
         # Convert numpy types for JSON serialization
         serializable_data = convert_numpy_types(export_data)
-        with open(filepath, 'w') as f:
+        with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(serializable_data, f, indent=2)
 
         self.logger.info(f"Exported logs to {filepath}")
@@ -424,7 +424,7 @@ class UnifiedLogger:
 
         # Export metadata
         metadata_file = self.output_dir / f"{self.experiment_name}_metadata.json"
-        with open(metadata_file, 'w') as f:
+        with open(metadata_file, 'w', encoding='utf-8') as f:
             json.dump(convert_numpy_types(self.metadata), f, indent=2)
 
         self.logger.info(f"Exported all logs to {self.output_dir}")

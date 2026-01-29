@@ -384,7 +384,7 @@ class ExperimentRunner:
         # Export aggregated JSON (convert numpy types for JSON serialization)
         results_file = self.output_dir / "results.json"
         serializable_results = convert_numpy_types(aggregated)
-        with open(results_file, 'w') as f:
+        with open(results_file, 'w', encoding='utf-8') as f:
             json.dump(serializable_results, f, indent=2)
 
         logger.info(f"Exported results to {results_file}")
