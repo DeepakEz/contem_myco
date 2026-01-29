@@ -58,9 +58,9 @@ def main(quick_mode: bool = False):
         num_runs = 2
         output_dir = "quick_results"
     else:
-        logger.info("Running FULL experiments")
-        num_steps = 200
-        num_runs = 3
+        logger.info("Running FULL experiments (research-grade)")
+        num_steps = 1000  # Full simulation length
+        num_runs = 10     # Statistical significance
         output_dir = "results"
 
     seed = 42
