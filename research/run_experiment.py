@@ -280,11 +280,11 @@ def run_baseline_experiment(
 
         episode_rewards.append(episode_reward)
 
-        # Get metrics from env
+        # Get metrics from env (EpisodeMetrics is a dataclass, access as attributes)
         metrics = env.get_metrics()
-        social_welfare_list.append(metrics.get('social_welfare', 0))
-        gini_list.append(metrics.get('gini_coefficient', 0))
-        cooperation_list.append(metrics.get('cooperation_rate', 0))
+        social_welfare_list.append(getattr(metrics, 'social_welfare', 0))
+        gini_list.append(getattr(metrics, 'gini_coefficient', 0))
+        cooperation_list.append(getattr(metrics, 'cooperation_rate', 0))
 
     # Compute final metrics
     results = {
