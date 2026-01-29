@@ -20,6 +20,24 @@ from dataclasses import dataclass, asdict
 import logging
 import time
 
+
+def convert_numpy_types(obj):
+    """Recursively convert numpy types to native Python types for JSON serialization."""
+    if isinstance(obj, dict):
+        return {k: convert_numpy_types(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_numpy_types(item) for item in obj]
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, np.bool_):
+        return bool(obj)
+    return obj
+
+
 # Import environments
 from resilience_env import ResilienceEnv
 from society_env import SocietyEnv, PolicyType
@@ -363,10 +381,11 @@ class ExperimentRunner:
 
     def _export_results(self, aggregated: Dict[str, Any]):
         """Export results to files"""
-        # Export aggregated JSON
+        # Export aggregated JSON (convert numpy types for JSON serialization)
         results_file = self.output_dir / "results.json"
+        serializable_results = convert_numpy_types(aggregated)
         with open(results_file, 'w') as f:
-            json.dump(aggregated, f, indent=2)
+            json.dump(serializable_results, f, indent=2)
 
         logger.info(f"Exported results to {results_file}")
 
