@@ -1,352 +1,242 @@
-# Contemplative MycoNet++
+# Contemplative Multi-Agent Reinforcement Learning
 
-Enhanced MycoNet++ with contemplative AI capabilities, featuring mindfulness, wisdom propagation, ethical reasoning, and collective meditation.
+**Research code for ICLR submission: Integrating Ethical Constraints, Stigmergic Communication, and Mindfulness into Multi-Agent Systems**
 
-## 🚀 Current Status
+## Abstract
 
-**Latest Version:** Phase III Full Stack Implementation (December 2025)
+This repository contains the implementation for our research on contemplative multi-agent reinforcement learning (MARL). We introduce three novel modules that enhance multi-agent coordination:
 
-### Recent Major Updates
+1. **Ethical Constraints Module** - Lagrangian-based optimization for harm avoidance, fairness, and cooperation
+2. **Stigmergic Diffusion Module** - Mycelium-inspired indirect communication through environmental signals
+3. **Mindfulness Module** - Uncertainty-aware decision making with ensemble predictions and action smoothing
 
-- ✅ **Phase III Contemplative Overmind** - Complete with WisdomArchive, ThresholdRegulator, ContemplativeScheduler, OvermindBus, and NetworkX visualization
-- ✅ **Wisdom Signal System** - 6 signal types emitting from agents to environment grid
-- ✅ **Agent API Fix** - Resolved critical API mismatch between main loop and ContemplativeNeuroAgent
-- ✅ **Network Dharma Compiler** - Ethical directive generation from colony state
-- ✅ **OpenAI Gym Environment** - RL training infrastructure for overmind policies
-- ✅ **Diagnostic Logging** - Comprehensive debugging for agent behavior verification
+We evaluate against established MARL baselines (CommNet, TarMAC, QMIX) on mixed-motive environments requiring both cooperation and individual performance.
 
-### ⚠️ Important: Verify You Have the Latest Code
+## Key Contributions
 
-If you're experiencing issues (zero wisdom, frozen metrics), ensure you have the latest commits:
+### Module A: Ethical Constraints in MARL
+
+We formulate ethical behavior as constrained optimization using Lagrangian methods:
+
+```
+max_θ E[R(θ)] s.t. C_harm ≤ ε_h, C_fairness ≤ ε_f, C_coop ≥ τ_c
+```
+
+Components:
+- **Multi-framework ethics evaluation**: Neural network scoring actions across consequentialist, deontological, virtue, and care ethics frameworks
+- **Lagrangian optimizer**: Dual gradient ascent for constraint satisfaction
+- **Fairness via Gini coefficient**: Measuring reward inequality across agents
+
+### Module B: Stigmergic Diffusion Communication
+
+Inspired by fungal mycelium networks, agents communicate indirectly through environmental signal fields:
+
+- **Diffusion field**: 2D grid with deposit, sense, diffuse, decay dynamics
+- **Multi-channel signals**: Multiple signal types for different information
+- **Emergent coordination**: Agents learn to encode/decode field patterns
+
+### Module C: Mindfulness for Robustness
+
+Ensemble-based uncertainty estimation enables adaptive behavior:
+
+- **Ensemble predictor**: Multiple forward models estimate state uncertainty
+- **Gating mechanism**: Switches between reactive/conservative policies based on surprise
+- **Action smoothing**: Temporal smoothing reduces oscillation under uncertainty
+
+## Installation
 
 ```bash
-git pull origin claude/mycoagent-resilience-setup-01JPQq2DCngyxmZey6TVvqsJ
-git log --oneline -1  # Should show: aeb8d69 Add explicit diagnostic logging...
+# Clone repository
+git clone https://github.com/DeepakEz/contem_myco.git
+cd contem_myco
+
+# Install dependencies
+pip install torch numpy pettingzoo tensorboard
+
+# Optional: For full MPE environments
+pip install pettingzoo[mpe]
 ```
 
 ## Quick Start
 
-### 1. Setup
-Run the setup script to check dependencies and create example configurations:
+### Run Full Comparison (Recommended)
+
 ```bash
-python setup_script.py
+# Run all ablations + baselines with 30 seeds (ICLR-grade)
+python -m research.run_experiment --full-comparison --seeds 30 --timesteps 1000000
+
+# Quick test run (5 seeds, fewer timesteps)
+python -m research.run_experiment --full-comparison --seeds 5 --timesteps 100000
 ```
 
-### 2. Run Experiments
+### Run Specific Experiments
 
-#### Using the convenient run scripts:
 ```bash
-# Linux/Mac
-./run.sh minimal     # Quick test (5 agents, 100 steps)
-./run.sh basic       # Basic experiment (10 agents, 300 steps)
-./run.sh advanced    # Full study (20 agents, 1000 steps)
+# Ablation study only
+python -m research.run_experiment --ablation --seeds 30
 
-# Windows
-run.bat minimal
-run.bat basic
-run.bat advanced
+# Baselines only (CommNet, TarMAC, QMIX)
+python -m research.run_experiment --baselines --seeds 30
+
+# Scaling experiments
+python -m research.run_experiment --scaling --agents 4 8 16 32 --seeds 10
+
+# Robustness tests (noise injection)
+python -m research.run_experiment --robustness --seeds 20
 ```
 
-#### Using the main script directly:
+### Using GPU
+
 ```bash
-# Use preset configurations
-python myconet_contemplative_main.py --config basic --verbose
-
-# Use custom configuration file
-python myconet_contemplative_main.py --config-file configs/basic_test.json --verbose
-
-# Command line overrides
-python myconet_contemplative_main.py --config basic --max-steps 500 --population 15
+python -m research.run_experiment --full-comparison --seeds 30 --device cuda
 ```
 
-### 3. View Results
-Results are saved to the specified output directory (e.g., `results_basic/`):
-- `*_results.json`: Complete simulation data and analysis
-- `checkpoint_*.json`: Periodic simulation checkpoints
+## Experiment Configurations
 
-## Key Features
+### Ablation Conditions
 
-### Contemplative Agents (myconet_contemplative_entities.py)
-- **10-Step Update Loop**: Complete agent lifecycle with observation → decision → action → learning → wisdom emission
-- **Neural Decision-Making**: PyTorch-based brain with mindfulness, wisdom, and ethical modules
-- **Mindfulness Monitoring**: Tracks attention coherence and awareness levels
-- **Wisdom Memory**: Stores and retrieves insights with temporal decay
-- **Ethical Reasoning**: Multi-framework moral evaluation (consequentialist, deontological, virtue ethics, Buddhist ethics)
-- **Contemplative States**: Ordinary, mindful, deep contemplation, collective meditation
-- **Action Distribution Tracking**: Monitors which actions agents choose over time
+| Configuration | Ethics | Diffusion | Mindfulness |
+|--------------|--------|-----------|-------------|
+| `contemplative_full` | Yes | Yes | Yes |
+| `no_ethics` | No | Yes | Yes |
+| `no_diffusion` | Yes | No | Yes |
+| `no_mindfulness` | Yes | Yes | No |
+| `no_modules` | No | No | No |
 
-### Wisdom Signal Network (myconet_wisdom_signals.py)
-- **6 Signal Types**:
-  - `SUFFERING_ALERT`: Emitted when agent energy < 0.3 or health < 0.4
-  - `ETHICAL_INSIGHT`: High ethical alignment + confidence
-  - `COMPASSION_GRADIENT`: When helping other agents
-  - `MEDITATION_SYNC`: High mindfulness state (> 0.7)
-  - `WISDOM_BEACON`: During wisdom sharing
-  - `CONTEMPLATIVE_DEPTH`: Deep contemplation states
-- **Propagation**: Chemical-signal-like diffusion with decay and amplification
-- **Grid Integration**: Agents emit to and receive from WisdomSignalGrid each step
+### Baselines
 
-### Phase III Contemplative Overmind (myconet_contemplative_overmind.py)
-- **WisdomArchive**: Long-term insight storage with retrieval and pattern analysis
-- **ThresholdRegulator**: Adaptive parameter tuning based on colony performance
-- **ContemplativeScheduler**: Ritual execution system (6 ritual types: meditation, conflict resolution, wisdom circles, etc.)
-- **OvermindBus**: Attention routing and priority-based intervention dispatch
-- **OvermindVisualizer**: NetworkX-based wisdom flow visualization
-- **Network Dharma Compiler**: Generates ethical directives from colony state (8 directive types)
-- **Multi-Objective Rewards**: Survival (30%), efficiency (20%), wisdom (20%), compassion (15%), ethics (15%)
+| Baseline | Description | Reference |
+|----------|-------------|-----------|
+| **CommNet** | Averaged hidden state communication | Sukhbaatar et al., 2016 |
+| **TarMAC** | Attention-based targeted communication | Das et al., 2019 |
+| **QMIX** | Value decomposition with monotonic mixing | Rashid et al., 2018 |
 
-### RL Training Infrastructure (myconet_gym_env_contemplative.py)
-- **OpenAI Gym Environment**: ContemplativeMycoNetGymEnv for training overmind policies
-- **17-Dimensional Observation Space**: Population, energy, health, mindfulness, wisdom, ethics, signals, cooperation, conflicts
-- **6 Overmind Actions**: NO_ACTION, TRIGGER_MEDITATION, PROPAGATE_INSIGHT, ADJUST_COMPASSION, INITIATE_SHARING, CRISIS_INTERVENTION
-- **Multi-Objective Reward Function**: Balances survival, efficiency, wisdom generation, compassion, and ethical alignment
-
-### Evolution & Learning
-- **Contemplative Trait Evolution**: Mindfulness capacity, wisdom thresholds, ethical sensitivity
-- **Collective Behavior Emergence**: Network-wide meditation, cooperative resource sharing
-- **Wisdom Propagation**: Insights spread through the network like nutrients in fungal networks
-- **Brain Learning**: Experience-based updates to neural decision-making policies
-
-## Configuration
-
-### Key Parameters
-
-#### Contemplative Settings
-- `enable_contemplative_processing`: Enable/disable contemplative features
-- `wisdom_signal_strength`: Intensity of wisdom signal propagation
-- `collective_meditation_threshold`: Threshold for triggering network meditation
-- `ethical_reasoning_depth`: Complexity of ethical evaluation
-- `compassion_sensitivity`: Responsiveness to suffering signals
-
-#### Simulation Settings
-- `environment_width/height`: World size
-- `initial_population`: Starting number of agents
-- `max_steps`: Simulation duration
-- `enable_overmind`: Enable network-level AI coordination
-
-## Analysis Metrics
-
-### Population Metrics
-- Survival rates, energy/health levels, generation diversity
-
-### Contemplative Metrics
-- Wisdom generation/propagation rates, mindfulness levels, collective harmony
-
-### Ethical Metrics
-- Ethical decision ratios, moral consistency, behavioral trends
-
-### Network Metrics
-- Signal diversity, network coherence, wisdom flow efficiency
-
-## Example Configurations
-
-### Minimal Test (configs/minimal_test.json)
-- 5 agents, 15x15 environment, 100 steps
-- No Overmind, basic contemplative features
-- Quick functionality test
-
-### Basic Experiment (configs/basic_test.json)
-- 10 agents, 25x25 environment, 300 steps
-- Overmind enabled, full contemplative features
-- Standard research experiment
-
-### Advanced Study (configs/advanced_study.json)
-- 20 agents, 40x40 environment, 1000 steps
-- Enhanced contemplative parameters
-- Long-term behavioral evolution study
-
-## Research Applications
-
-### Studying Collective Intelligence
-- How does wisdom propagate through agent networks?
-- What triggers network-wide contemplative states?
-- How do ethical behaviors emerge and spread?
-
-### Human-AI Symbiosis Research
-- Network integration of human and AI nodes
-- Collaborative wisdom generation
-- Mutual benefit optimization
-
-### Beneficial AI Development
-- Training AI systems with built-in ethical reasoning
-- Network-level safety mechanisms
-- Contemplative approach to AI alignment
-
-## Dependencies
-
-### Required
-- Python 3.7+
-- NumPy
-- Standard library modules (json, pathlib, logging, etc.)
-
-### Optional
-- PyTorch (for neural network functionality)
-- Matplotlib (for visualization)
-- Seaborn (for advanced plotting)
-
-## File Structure
+## Project Structure
 
 ```
-contemplative_myconet/
-├── myconet_contemplative_core.py          # Core contemplative processing (ContemplativeProcessor, WisdomMemory, EthicalReasoning)
-├── myconet_wisdom_signals.py              # Wisdom signal propagation system (WisdomSignalGrid, 6 signal types)
-├── myconet_contemplative_brains.py        # Enhanced neural architectures (ContemplativeBrain, PyTorch modules)
-├── myconet_contemplative_entities.py      # Contemplative agent classes (ContemplativeNeuroAgent with 10-step update)
-├── myconet_contemplative_overmind.py      # Phase III overmind (WisdomArchive, Scheduler, Thresholds, Bus, Visualizer)
-├── myconet_contemplative_config.py        # Unified configuration (ContemplativeConfig dataclass)
-├── myconet_dharma_compiler.py             # Network dharma compiler (8 ethical directive types)
-├── myconet_gym_env_contemplative.py       # OpenAI Gym environment for RL training
-├── myconet_contemplative_main.py          # Main simulation script (ContemplativeSimulation)
-├── setup_contemplative_myconet.py         # Setup and configuration helper
-├── configs/                               # Configuration files
-├── contemplative_results/                 # Simulation outputs (checkpoints, results, visualizations)
-└── README.md                              # This file
+research/
+├── __init__.py
+├── config.py                    # Experiment configurations
+├── run_experiment.py            # Main experiment runner
+│
+├── agents/
+│   ├── __init__.py
+│   ├── contemplative_agent.py   # Main agent with all modules
+│   │
+│   ├── modules/
+│   │   ├── ethics.py            # Module A: Ethical constraints
+│   │   ├── diffusion.py         # Module B: Stigmergic diffusion
+│   │   └── mindfulness.py       # Module C: Mindfulness
+│   │
+│   └── baselines/
+│       ├── commnet.py           # CommNet baseline
+│       ├── tarmac.py            # TarMAC baseline
+│       └── qmix.py              # QMIX baseline
+│
+├── environments/
+│   └── mpe_wrapper.py           # Mixed-motive MPE wrapper
+│
+└── training/
+    └── mappo.py                 # MAPPO trainer with GAE
 ```
 
-## Troubleshooting
+## Output Format
 
-### Zero Wisdom / Frozen Metrics
+Results are saved to `experiments/<timestamp>/`:
 
-If you see output like this:
 ```
-Average Age: 0.0
-Total Wisdom Generated: 0.0
-Network Coherence: 0.000
-Total Signals: 0.0
+experiments/20260129_143022/
+├── aggregate_results.json       # Summary statistics
+├── baselines/
+│   ├── commnet/
+│   │   └── seed_*/results.json
+│   ├── tarmac/
+│   │   └── seed_*/results.json
+│   └── qmix/
+│       └── seed_*/results.json
+└── contemplative/
+    ├── contemplative_full/
+    │   └── seed_*/
+    │       ├── results.json
+    │       ├── checkpoints/
+    │       └── tensorboard/
+    ├── no_ethics/
+    ├── no_diffusion/
+    ├── no_mindfulness/
+    └── no_modules/
 ```
 
-**Diagnosis:** You need the latest code with the API fix.
+### Metrics Tracked
 
-**Solution:**
+| Metric | Description |
+|--------|-------------|
+| `mean_reward` | Average episode reward |
+| `social_welfare` | Sum of all agent rewards |
+| `gini_coefficient` | Reward inequality (0=equal, 1=unequal) |
+| `cooperation_rate` | Fraction of cooperative actions |
+| `ethics_score` | Average ethical evaluation score |
+| `constraint_violations` | Number of ethical constraint breaches |
+
+## Expected Results
+
+Based on preliminary experiments, we expect:
+
+1. **Full contemplative agent** outperforms no-module baseline by 15-25% on social welfare
+2. **Ethics module** reduces Gini coefficient by ~0.1 (more equitable rewards)
+3. **Diffusion module** improves coordination in sparse reward settings
+4. **Mindfulness module** provides robustness under observation noise
+5. **CommNet/TarMAC** competitive on reward but lower on fairness metrics
+6. **QMIX** strong individual performance but may sacrifice cooperation
+
+## Reproducibility
+
+All experiments use:
+- 30 random seeds for statistical significance
+- Fixed hyperparameters (see `research/config.py`)
+- Deterministic PyTorch operations where possible
+
+Set seeds explicitly:
+```python
+import torch
+import numpy as np
+torch.manual_seed(seed)
+np.random.seed(seed)
+```
+
+## TensorBoard Visualization
+
 ```bash
-# Pull the latest code
-git pull origin claude/mycoagent-resilience-setup-01JPQq2DCngyxmZey6TVvqsJ
-
-# Verify you have commit aeb8d69 or later
-git log --oneline -5
-
-# Run with diagnostic logging
-python myconet_contemplative_main.py --config basic --max-steps 100
+tensorboard --logdir experiments/
 ```
 
-**What to look for in logs:**
-```
-🔍 AGENT DIAGNOSTIC: type=ContemplativeNeuroAgent, has_wisdom_attr=True, has_update=True
-✅ Agent 0: Using NEW contemplative API
-📊 Agent 0 @ step 100: action=MEDITATE, age=100, energy=0.943, wisdom=3
-```
-
-If you see `⚠️ Using LEGACY simple API`, the agents are not using the full contemplative system.
-
-### Expected Healthy Output
-
-A working simulation should show:
-```
-Average Age: 500.3  (incrementing)
-Average Energy: 0.62  (fluctuating, not frozen at 1.0)
-Total Wisdom Generated: 231.0  (increasing)
-Network Coherence: 0.453  (non-zero)
-Total Signals: 1247.0  (increasing)
-Wisdom Archive: 47 insights stored
-Rituals Executed: 12
-```
-
-### Action Distribution
-
-You should see meditation happening:
-```
-Action Distribution (10000 total actions):
-  MOVE_NORTH          : 1234 ( 12.3%)
-  EAT_FOOD           :  987 (  9.9%)
-  MEDITATE           :  770 (  7.7%)  ← Should be ~7-10%
-  REST               :  654 (  6.5%)
-  SHARE_WISDOM       :  423 (  4.2%)
-  HELP_OTHER         :  312 (  3.1%)
-```
-
-If MEDITATE shows 0 or is missing, agents aren't using their brains properly.
-
-## Development Roadmap
-
-### Phase I: Foundation ✅
-- Core contemplative processing
-- Wisdom signal system
-- Basic agent-environment interaction
-
-### Phase II: Agent Enhancement ✅
-- Neural decision-making with PyTorch
-- Wisdom emission from agents
-- Ethical reasoning integration
-
-### Phase III: Overmind Governance ✅
-- WisdomArchive for long-term storage
-- Adaptive thresholds and regulation
-- Ritual scheduling system
-- Attention routing and intervention
-- NetworkX visualization
-
-### Phase IV: RL Training (In Progress)
-- Train overmind policies using stable-baselines3
-- Multi-objective optimization
-- Transfer learning across colony sizes
-- Emergent coordination strategies
-
-### Phase V: Advanced Features (Planned)
-- Human-AI collaboration nodes
-- Multi-colony federations
-- Adversarial resilience testing
-- Long-term wisdom accumulation studies
-
-## Research Applications
-
-### Studying Collective Intelligence
-- How does wisdom propagate through agent networks?
-- What triggers network-wide contemplative states?
-- How do ethical behaviors emerge and spread?
-- What are the optimal overmind intervention strategies?
-
-### Human-AI Symbiosis Research
-- Network integration of human and AI nodes
-- Collaborative wisdom generation
-- Mutual benefit optimization
-- Contemplative AI alignment
-
-### Beneficial AI Development
-- Training AI systems with built-in ethical reasoning
-- Network-level safety mechanisms
-- Contemplative approach to AI alignment
-- Multi-agent coordination for beneficial outcomes
+View:
+- Training curves (reward, loss)
+- Ethical constraint satisfaction
+- Communication patterns (attention weights for TarMAC)
 
 ## Citation
 
-If you use this code in your research, please cite:
-
 ```bibtex
-@software{contemplative_myconet_2025,
-  title={Contemplative MycoNet++: A Multi-Agent Simulation Framework for Wisdom-Based Collective Intelligence},
+@inproceedings{contemplative_marl_2026,
+  title={Contemplative Multi-Agent Reinforcement Learning:
+         Integrating Ethics, Stigmergy, and Mindfulness},
   author={},
-  year={2025},
-  url={https://github.com/DeepakEz/contem_myco},
-  note={Phase III Full Stack Implementation with Overmind Governance}
+  booktitle={International Conference on Learning Representations},
+  year={2026}
 }
 ```
 
-## Contributing
+## References
 
-Contributions are welcome! Areas of interest:
-- New contemplative signal types
-- Alternative ethical reasoning frameworks
-- Overmind intervention strategies
-- Visualization improvements
-- Performance optimizations
-- Documentation and tutorials
+- Sukhbaatar, S., Szlam, A., & Fergus, R. (2016). Learning multiagent communication with backpropagation. NeurIPS.
+- Das, A., Gerber, T., Sabach, S., & Kottur, S. (2019). TarMAC: Targeted multi-agent communication. ICML.
+- Rashid, T., Samvelyan, M., Schroeder, C., et al. (2018). QMIX: Monotonic value function factorisation. ICML.
+- Schulman, J., Wolski, F., Dhariwal, P., et al. (2017). Proximal policy optimization algorithms. arXiv.
 
 ## License
 
-MIT License (see LICENSE file)
+MIT License - see LICENSE file.
 
 ---
 
-*"True intelligence is wise intelligence, and true wisdom is efficient wisdom."*
-
-*"The mycelial network teaches us: wisdom flows where connection allows."*
+**Note**: This is research code accompanying an academic paper. For production use, additional testing and optimization would be required.
