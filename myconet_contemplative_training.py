@@ -42,7 +42,7 @@ except ImportError:
 # Import contemplative modules
 from myconet_contemplative_main import ContemplativeSimulation, ContemplativeSimulationConfig
 from myconet_contemplative_overmind import ContemplativeOvermind, OvermindAction
-from myconet_contemplative_integration import ContemplativeFeatureManager, ExperimentRunner
+from integration_adapter import ContemplativeFeatureManager, ExperimentRunner
 
 logger = logging.getLogger(__name__)
 
@@ -161,23 +161,6 @@ class ContemplativeGymEnvironment:
         else:
             return observation
     
-    def step(self, action):
-        """Execute one step in the environment"""
-        # Convert action index to action type
-        action_type = self.action_mapping.get(action, 'no_intervention')
-        
-        # Create OvermindAction
-        overmind_action = OvermindAction(
-            action_type=action_type,
-            parameters={},
-            urgency=0.5,
-            ethical_weight=0.7,
-            expected_benefit=0.6
-        )
-        
-        # Execute simulation step with Overmind action
-        previous_state = self._get_colony_metrics()
-        
     def step(self, action):
         """Execute one step in the environment"""
         # Convert action index to action type
@@ -616,7 +599,7 @@ class ContemplativeTrainer:
         
         avg_eval_reward = np.mean(eval_rewards)
         
-        logger.info(f"Evaluation Results:")
+        logger.info("Evaluation Results:")
         logger.info(f"  Average Reward: {avg_eval_reward:.2f}")
         logger.info(f"  Survival Rate: {eval_metrics['survival_rate']:.1%}")
         logger.info(f"  Average Wisdom: {eval_metrics['avg_wisdom']:.3f}")
