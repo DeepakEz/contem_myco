@@ -96,7 +96,7 @@ def main(quick_mode: bool = False):
         output_dir=output_dir
     )
 
-    logger.info("\n✓ Resilience experiments completed")
+    logger.info("\n[OK] Resilience experiments completed")
 
     # ===== PHASE 2: SOCIETY EXPERIMENTS =====
 
@@ -122,7 +122,7 @@ def main(quick_mode: bool = False):
         output_dir=output_dir
     )
 
-    logger.info("\n✓ Society experiments completed")
+    logger.info("\n[OK] Society experiments completed")
 
     # ===== PHASE 3: GENERATE VISUALIZATIONS =====
 
@@ -154,7 +154,7 @@ def main(quick_mode: bool = False):
         save_path=plots_dir / "society_comparison.png"
     )
 
-    logger.info("\n✓ Visualizations completed")
+    logger.info("\n[OK] Visualizations completed")
 
     # ===== PHASE 4: GENERATE BRIEFS =====
 
@@ -190,7 +190,7 @@ def main(quick_mode: bool = False):
         save_path=briefs_dir / "combined_brief.md"
     )
 
-    logger.info("\n✓ Briefs completed")
+    logger.info("\n[OK] Briefs completed")
 
     # ===== FINAL SUMMARY =====
 
