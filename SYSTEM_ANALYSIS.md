@@ -52,7 +52,6 @@ This repository contains **TWO INDEPENDENT SYSTEMS**:
 - `quick_publication_runner.py` - Fast publication experiments
 - `run_publication_analysis.py` - Publication analysis runner
 - `publication_analysis_suite.py` - Statistical analysis suite
-- `fix_overmind_syntax.py` - Utility (likely obsolete now)
 
 ---
 
@@ -217,5 +216,5 @@ python run_all_experiments.py --quick
 
 ---
 
-**Last Updated:** 2025-12-03
+**Last Updated:** 2026-01-29
 **Analysis Status:** ✅ Complete
