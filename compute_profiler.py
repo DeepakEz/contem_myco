@@ -15,6 +15,7 @@ Key metrics:
 import time
 import psutil
 import os
+import json
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from collections import deque, defaultdict
@@ -22,6 +23,23 @@ import numpy as np
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+def convert_numpy_types(obj):
+    """Recursively convert numpy types to native Python types for JSON serialization."""
+    if isinstance(obj, dict):
+        return {k: convert_numpy_types(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_numpy_types(item) for item in obj]
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, np.bool_):
+        return bool(obj)
+    return obj
 
 
 @dataclass
@@ -185,8 +203,6 @@ class ComputeProfiler:
 
     def export_metrics(self, filepath: str):
         """Export metrics to JSON file"""
-        import json
-
         export_data = {
             'summary': self.get_summary(),
             'component_breakdown': self.get_component_breakdown(),
@@ -208,7 +224,7 @@ class ComputeProfiler:
         }
 
         with open(filepath, 'w') as f:
-            json.dump(export_data, f, indent=2)
+            json.dump(convert_numpy_types(export_data), f, indent=2)
 
         logger.info(f"Exported compute metrics to {filepath}")
 
@@ -330,10 +346,9 @@ class ProfilerRegistry:
             self.global_profiler.export_metrics(filepath)
 
         # Export aggregate summary
-        import json
         summary_path = os.path.join(directory, "profiler_summary.json")
         with open(summary_path, 'w') as f:
-            json.dump(self.get_aggregate_summary(), f, indent=2)
+            json.dump(convert_numpy_types(self.get_aggregate_summary()), f, indent=2)
 
         logger.info(f"Exported all profiler data to {directory}")
 
