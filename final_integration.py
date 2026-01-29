@@ -38,7 +38,7 @@ try:
     from myconet_contemplative_main import (
         ContemplativeSimulation, ContemplativeSimulationConfig, ContemplativeEnvironment
     )
-    from myconet_contemplative_integration import (
+    from integration_adapter import (
         ContemplativeFeatureManager, ExperimentRunner, DataAnalyzer,
         MycoNetCompatibilityLayer
     )
@@ -526,7 +526,7 @@ class CompleteSystemTest:
         print(f"Success Rate: {passed_count/total_tests:.1%}")
         
         if self.failed_tests:
-            print(f"\nFailed Tests:")
+            print("\nFailed Tests:")
             for test_name in self.failed_tests:
                 status_info = self.test_results.get(test_name, {})
                 if 'error' in status_info:
@@ -534,13 +534,13 @@ class CompleteSystemTest:
                 else:
                     print(f"  ❌ {test_name}")
         
-        print(f"\nPassed Tests:")
+        print("\nPassed Tests:")
         for test_name in self.passed_tests:
             test_time = self.test_results.get(test_name, {}).get('time', 0)
             print(f"  ✅ {test_name} ({test_time:.2f}s)")
         
         # System status
-        print(f"\n🌐 SYSTEM STATUS:")
+        print("\n🌐 SYSTEM STATUS:")
         
         if passed_count == total_tests:
             print("🎉 ALL SYSTEMS OPERATIONAL!")
@@ -556,7 +556,7 @@ class CompleteSystemTest:
             print("   Recommend resolving critical failures before use")
         
         # Recommendations
-        print(f"\n💡 RECOMMENDATIONS:")
+        print("\n💡 RECOMMENDATIONS:")
         print("   1. Run: python setup_contemplative_myconet.py")
         print("   2. Install optional dependencies: pip install torch matplotlib seaborn")
         print("   3. Try minimal experiment: ./run.sh minimal")

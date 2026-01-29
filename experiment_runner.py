@@ -471,6 +471,6 @@ if __name__ == "__main__":
     runner = ExperimentRunner(test_config)
     results = runner.run_experiment()
 
-    print(f"\n  Test completed!")
+    print("\n  Test completed!")
     print(f"  Final metrics: {results['mean_metrics']}")
     print("\n✓ Experiment Runner initialized successfully")

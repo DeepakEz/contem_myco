@@ -384,7 +384,7 @@ class ExperimentRunner:
         
         # Create simulation configuration
         from myconet_contemplative_main import ContemplativeSimulationConfig, ContemplativeConfig
-        from myconet_wisdom_signals import WisdomSignalConfig
+        # WisdomSignalConfig already imported at module level
         
         env_width, env_height = template['environment_size']
         

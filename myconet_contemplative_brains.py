@@ -554,7 +554,7 @@ class ContemplativeBrain(nn.Module):
                 base_logits = self.base_network(obs_tensor)
                 base_probs = F.softmax(base_logits, dim=0)
             
-            reasoning_trace.append(f"Base network action preferences computed")
+            reasoning_trace.append("Base network action preferences computed")
             
             # Process through contemplative modules
             mindfulness_info = {}
@@ -900,15 +900,15 @@ class EnhancedContemplativeBrain(nn.Module):
             with torch.no_grad():
                 base_logits = self.base_network(obs_tensor)
                 base_probs = torch.softmax(base_logits, dim=0)
-            reasoning_trace.append(f"Base network suggested action preferences")
+            reasoning_trace.append("Base network suggested action preferences")
             
             # Step 3: Get contemplative evaluations
             mindfulness_state = self._evaluate_mindfulness(observations, base_probs)
             ethical_evaluation = self._evaluate_ethics(observations, base_probs)
             wisdom_insights = self._integrate_wisdom(observations, base_probs)
             
-            reasoning_trace.append(f"Mindfulness evaluation completed")
-            reasoning_trace.append(f"Ethical evaluation completed")
+            reasoning_trace.append("Mindfulness evaluation completed")
+            reasoning_trace.append("Ethical evaluation completed")
             reasoning_trace.append(f"Wisdom insights generated: {len(wisdom_insights)}")
             
             # Step 4: Apply contemplative decision integration

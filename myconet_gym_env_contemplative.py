@@ -1,6 +1,10 @@
 """
-Contemplative MycoNet Gym Environment - Section 3.2
-===================================================
+Contemplative MycoNet Gym Environment - Section 3.2 (SCAFFOLD)
+==============================================================
+
+NOTE: This is a STANDALONE SCAFFOLD/DEMO environment using simulated data.
+For the PRODUCTION Gym environment connected to actual MycoNet simulation,
+use ContemplativeGymEnvironment from myconet_contemplative_training.py.
 
 Extended Gym environment for training contemplative overmind policies.
 Adds contemplative actions and observations to base MycoNet environment.
