@@ -22,6 +22,23 @@ from collections import defaultdict
 import numpy as np
 
 
+def convert_numpy_types(obj):
+    """Recursively convert numpy types to native Python types for JSON serialization."""
+    if isinstance(obj, dict):
+        return {k: convert_numpy_types(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_numpy_types(item) for item in obj]
+    elif isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, np.bool_):
+        return bool(obj)
+    return obj
+
+
 @dataclass
 class LogEntry:
     """Generic log entry"""
@@ -315,8 +332,10 @@ class UnifiedLogger:
             }
         }
 
+        # Convert numpy types for JSON serialization
+        serializable_data = convert_numpy_types(export_data)
         with open(filepath, 'w') as f:
-            json.dump(export_data, f, indent=2)
+            json.dump(serializable_data, f, indent=2)
 
         self.logger.info(f"Exported logs to {filepath}")
 
@@ -406,7 +425,7 @@ class UnifiedLogger:
         # Export metadata
         metadata_file = self.output_dir / f"{self.experiment_name}_metadata.json"
         with open(metadata_file, 'w') as f:
-            json.dump(self.metadata, f, indent=2)
+            json.dump(convert_numpy_types(self.metadata), f, indent=2)
 
         self.logger.info(f"Exported all logs to {self.output_dir}")
 
