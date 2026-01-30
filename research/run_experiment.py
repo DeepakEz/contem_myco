@@ -238,6 +238,14 @@ def run_baseline_experiment(
     gini_list = []
     cooperation_list = []
 
+    # Rollout storage for CommNet/TarMAC
+    rollout_obs = []
+    rollout_actions = []
+    rollout_rewards = []
+    rollout_log_probs = []
+    rollout_values = []
+    rollout_dones = []
+
     steps = 0
     while steps < total_steps:
         obs, _ = env.reset()
@@ -253,8 +261,10 @@ def run_baseline_experiment(
             # Get actions
             if baseline_type == "qmix":
                 actions = agent.act(obs, explore=True)
+                log_probs_dict = {}
+                values_dict = {}
             else:
-                actions, _, _ = agent.act(obs)
+                actions, values_dict, log_probs_dict = agent.act(obs)
 
             # Step environment
             next_obs, rewards, terminations, truncations, infos = env.step(actions)
@@ -271,6 +281,14 @@ def run_baseline_experiment(
                 agent.store(obs, state, actions, rewards, next_obs, next_state, terminations)
                 agent.update()
                 state = next_state
+            else:
+                # Store for CommNet/TarMAC PPO update
+                rollout_obs.append(obs)
+                rollout_actions.append(actions)
+                rollout_rewards.append(rewards)
+                rollout_log_probs.append(log_probs_dict)
+                rollout_values.append(values_dict)
+                rollout_dones.append({k: done for k in obs.keys()})
 
             obs = next_obs
             steps += 1
@@ -279,6 +297,43 @@ def run_baseline_experiment(
                 break
 
         episode_rewards.append(episode_reward)
+
+        # PPO update for CommNet/TarMAC every episode
+        if baseline_type != "qmix" and len(rollout_obs) >= 64:
+            # Simple REINFORCE-style update
+            agent_ids = list(rollout_obs[0].keys())
+            all_log_probs = []
+            all_rewards = []
+
+            for t, (lp_dict, r_dict) in enumerate(zip(rollout_log_probs, rollout_rewards)):
+                for aid in agent_ids:
+                    all_log_probs.append(lp_dict[aid])
+                    # Compute returns (simple discounted sum)
+                    gamma = 0.99
+                    ret = 0
+                    for k in range(t, len(rollout_rewards)):
+                        ret += (gamma ** (k - t)) * sum(rollout_rewards[k].values()) / len(agent_ids)
+                    all_rewards.append(ret)
+
+            if all_log_probs:
+                log_probs_tensor = torch.tensor(all_log_probs, dtype=torch.float32, device=device)
+                returns_tensor = torch.tensor(all_rewards, dtype=torch.float32, device=device)
+                returns_tensor = (returns_tensor - returns_tensor.mean()) / (returns_tensor.std() + 1e-8)
+
+                policy_loss = -(log_probs_tensor * returns_tensor).mean()
+
+                optimizer.zero_grad()
+                policy_loss.backward()
+                torch.nn.utils.clip_grad_norm_(agent.parameters(), 0.5)
+                optimizer.step()
+
+            # Clear rollout
+            rollout_obs.clear()
+            rollout_actions.clear()
+            rollout_rewards.clear()
+            rollout_log_probs.clear()
+            rollout_values.clear()
+            rollout_dones.clear()
 
         # Get metrics from env (EpisodeMetrics is a dataclass, access as attributes)
         metrics = env.get_metrics()
