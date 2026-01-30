@@ -374,6 +374,9 @@ class SocialDilemmaEnv:
         self.action_history = []
         self.reward_history = []
 
+        # Episode metrics
+        self._episode_metrics = EpisodeMetrics()
+
     def reset(self, seed: Optional[int] = None) -> Tuple[Dict[str, np.ndarray], Dict]:
         """Reset game."""
         if seed is not None:
@@ -382,6 +385,7 @@ class SocialDilemmaEnv:
         self.current_round = 0
         self.action_history = []
         self.reward_history = []
+        self._episode_metrics = EpisodeMetrics()
 
         # Initial observation: all zeros (no history)
         observations = {
@@ -410,6 +414,9 @@ class SocialDilemmaEnv:
         action_vec = np.array([actions[a] for a in self.agents])
         self.action_history.append(action_vec)
         self.reward_history.append(rewards)
+
+        # Update metrics
+        self._update_metrics(rewards, actions)
 
         # Create observations (last round actions)
         observations = {
@@ -482,6 +489,49 @@ class SocialDilemmaEnv:
             rewards[agent] = personal_gain - shared_loss
 
         return rewards
+
+    def _update_metrics(self, rewards: Dict[str, float], actions: Dict[str, int]):
+        """Update episode metrics."""
+        reward_values = np.array(list(rewards.values()))
+
+        # Total reward
+        self._episode_metrics.total_reward += reward_values.sum()
+
+        # Individual rewards
+        for agent, r in rewards.items():
+            if agent not in self._episode_metrics.individual_rewards:
+                self._episode_metrics.individual_rewards[agent] = 0.0
+            self._episode_metrics.individual_rewards[agent] += r
+
+        # Social welfare
+        self._episode_metrics.social_welfare = self._episode_metrics.total_reward
+
+        # Gini coefficient
+        values = list(self._episode_metrics.individual_rewards.values())
+        if len(values) >= 2:
+            values = np.array(values)
+            values = values - values.min() + 1e-8
+            sorted_values = np.sort(values)
+            n = len(sorted_values)
+            cumsum = np.cumsum(sorted_values)
+            gini = (2 * np.sum((np.arange(1, n + 1) * sorted_values))) / (n * np.sum(sorted_values)) - (n + 1) / n
+            self._episode_metrics.gini_coefficient = max(0, min(1, gini))
+
+        # Cooperation rate (0 = cooperate)
+        action_values = list(actions.values())
+        self._episode_metrics.cooperation_rate = 1.0 - np.mean(action_values)
+
+    def get_metrics(self) -> EpisodeMetrics:
+        """Get current episode metrics."""
+        return self._episode_metrics
+
+    def get_positions(self) -> Dict[str, np.ndarray]:
+        """Get agent positions (not applicable, return empty)."""
+        return {}
+
+    def close(self):
+        """Close environment (no-op for this env)."""
+        pass
 
 
 def create_env(config) -> MixedMotiveMPE:
