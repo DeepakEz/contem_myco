@@ -300,27 +300,49 @@ def run_baseline_experiment(
 
         # PPO update for CommNet/TarMAC every episode
         if baseline_type != "qmix" and len(rollout_obs) >= 64:
-            # Simple REINFORCE-style update
+            # Recompute log_probs WITH gradients for policy gradient
             agent_ids = list(rollout_obs[0].keys())
-            all_log_probs = []
-            all_rewards = []
 
-            for t, (lp_dict, r_dict) in enumerate(zip(rollout_log_probs, rollout_rewards)):
-                for aid in agent_ids:
-                    all_log_probs.append(lp_dict[aid])
-                    # Compute returns (simple discounted sum)
-                    gamma = 0.99
-                    ret = 0
-                    for k in range(t, len(rollout_rewards)):
-                        ret += (gamma ** (k - t)) * sum(rollout_rewards[k].values()) / len(agent_ids)
-                    all_rewards.append(ret)
+            # Stack all observations and actions
+            all_obs = []
+            all_actions = []
+            all_returns = []
 
-            if all_log_probs:
-                log_probs_tensor = torch.tensor(all_log_probs, dtype=torch.float32, device=device)
-                returns_tensor = torch.tensor(all_rewards, dtype=torch.float32, device=device)
+            for t in range(len(rollout_obs)):
+                obs_list = [rollout_obs[t][aid] for aid in agent_ids]
+                action_list = [rollout_actions[t][aid] for aid in agent_ids]
+
+                # Compute return for this timestep
+                gamma = 0.99
+                ret = 0
+                for k in range(t, len(rollout_rewards)):
+                    ret += (gamma ** (k - t)) * sum(rollout_rewards[k].values()) / len(agent_ids)
+
+                all_obs.append(obs_list)
+                all_actions.append(action_list)
+                all_returns.extend([ret] * len(agent_ids))
+
+            if all_obs:
+                # Convert to tensors
+                obs_tensor = torch.tensor(
+                    np.array(all_obs), dtype=torch.float32, device=device
+                )  # (T, num_agents, obs_size)
+                actions_tensor = torch.tensor(
+                    np.array(all_actions), dtype=torch.long, device=device
+                )  # (T, num_agents)
+                returns_tensor = torch.tensor(all_returns, dtype=torch.float32, device=device)
                 returns_tensor = (returns_tensor - returns_tensor.mean()) / (returns_tensor.std() + 1e-8)
 
-                policy_loss = -(log_probs_tensor * returns_tensor).mean()
+                # Recompute log_probs WITH gradients
+                _, log_probs, _, _ = agent.network.get_action_and_value(
+                    obs_tensor, action=actions_tensor
+                )
+
+                # Flatten log_probs to match returns
+                log_probs_flat = log_probs.view(-1)
+
+                # Policy gradient loss
+                policy_loss = -(log_probs_flat * returns_tensor).mean()
 
                 optimizer.zero_grad()
                 policy_loss.backward()
