@@ -297,10 +297,17 @@ class ContemplativeAgent(nn.Module):
         diffusion_obs = None
         deposit_strengths = None
 
-        if self.config.diffusion.enabled and diffusion_field is not None and position is not None:
-            # Sense field
-            field_obs = diffusion_field.sense(position)
-            diffusion_obs = torch.from_numpy(field_obs).unsqueeze(0)
+        if self.config.diffusion.enabled:
+            # Compute diffusion observation size
+            diffusion_obs_size = 3 * self.config.diffusion.num_channels
+
+            if diffusion_field is not None and position is not None:
+                # Sense field
+                field_obs = diffusion_field.sense(position)
+                diffusion_obs = torch.from_numpy(field_obs).float().unsqueeze(0)
+            else:
+                # No position available - use zeros to maintain expected input size
+                diffusion_obs = torch.zeros(1, diffusion_obs_size, dtype=obs.dtype, device=obs.device)
 
         # Get action and value
         action_out, log_prob, entropy, value = self.ac.get_action_and_value(
