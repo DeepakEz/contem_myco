@@ -2,13 +2,29 @@
 Statistical Significance Testing
 ================================
 Tools for comparing experimental results with proper statistical tests.
+
+Features:
+- Welch's t-test and Mann-Whitney U tests
+- Cohen's d effect size
+- Bootstrap confidence intervals (BCa method)
+- Multiple comparison correction (Bonferroni, Holm)
 """
 
 import numpy as np
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Union
 from dataclasses import dataclass
 import json
 from pathlib import Path
+
+
+@dataclass
+class BootstrapCI:
+    """Bootstrap confidence interval result."""
+    mean: float
+    ci_lower: float
+    ci_upper: float
+    ci_level: float
+    n_bootstrap: int
 
 
 @dataclass
@@ -26,6 +42,127 @@ class ComparisonResult:
     significant: bool
     effect_size: float
     effect_size_interpretation: str
+    ci_lower: Optional[float] = None
+    ci_upper: Optional[float] = None
+
+
+def bootstrap_ci(
+    data: np.ndarray,
+    statistic: str = "mean",
+    n_bootstrap: int = 10000,
+    ci_level: float = 0.95,
+    method: str = "percentile",
+    random_state: Optional[int] = None,
+) -> BootstrapCI:
+    """
+    Compute bootstrap confidence interval.
+
+    Args:
+        data: Input data array
+        statistic: Statistic to compute ("mean", "median", "std")
+        n_bootstrap: Number of bootstrap samples
+        ci_level: Confidence level (e.g., 0.95 for 95% CI)
+        method: CI method ("percentile" or "bca")
+        random_state: Random seed for reproducibility
+
+    Returns:
+        BootstrapCI with mean and confidence bounds
+    """
+    if random_state is not None:
+        np.random.seed(random_state)
+
+    data = np.asarray(data)
+    n = len(data)
+
+    # Compute statistic function
+    if statistic == "mean":
+        stat_func = np.mean
+    elif statistic == "median":
+        stat_func = np.median
+    elif statistic == "std":
+        stat_func = np.std
+    else:
+        raise ValueError(f"Unknown statistic: {statistic}")
+
+    # Original statistic
+    original_stat = stat_func(data)
+
+    # Bootstrap resampling
+    bootstrap_stats = np.zeros(n_bootstrap)
+    for i in range(n_bootstrap):
+        resample = data[np.random.randint(0, n, size=n)]
+        bootstrap_stats[i] = stat_func(resample)
+
+    alpha = 1 - ci_level
+
+    if method == "percentile":
+        # Simple percentile method
+        ci_lower = np.percentile(bootstrap_stats, 100 * alpha / 2)
+        ci_upper = np.percentile(bootstrap_stats, 100 * (1 - alpha / 2))
+
+    elif method == "bca":
+        # Bias-corrected and accelerated (BCa) method
+        # Compute bias correction
+        z0 = _norm_ppf(np.mean(bootstrap_stats < original_stat))
+
+        # Compute acceleration (jackknife)
+        jackknife_stats = np.zeros(n)
+        for i in range(n):
+            jackknife_sample = np.delete(data, i)
+            jackknife_stats[i] = stat_func(jackknife_sample)
+
+        jackknife_mean = np.mean(jackknife_stats)
+        num = np.sum((jackknife_mean - jackknife_stats) ** 3)
+        denom = 6 * np.sum((jackknife_mean - jackknife_stats) ** 2) ** 1.5
+        a = num / (denom + 1e-10)
+
+        # Compute adjusted percentiles
+        z_alpha_lower = _norm_ppf(alpha / 2)
+        z_alpha_upper = _norm_ppf(1 - alpha / 2)
+
+        p_lower = _norm_cdf(z0 + (z0 + z_alpha_lower) / (1 - a * (z0 + z_alpha_lower)))
+        p_upper = _norm_cdf(z0 + (z0 + z_alpha_upper) / (1 - a * (z0 + z_alpha_upper)))
+
+        ci_lower = np.percentile(bootstrap_stats, 100 * p_lower)
+        ci_upper = np.percentile(bootstrap_stats, 100 * p_upper)
+
+    else:
+        raise ValueError(f"Unknown method: {method}")
+
+    return BootstrapCI(
+        mean=original_stat,
+        ci_lower=ci_lower,
+        ci_upper=ci_upper,
+        ci_level=ci_level,
+        n_bootstrap=n_bootstrap,
+    )
+
+
+def _norm_ppf(p: float) -> float:
+    """Approximate normal percent point function (inverse CDF)."""
+    # Approximation using Abramowitz and Stegun formula 26.2.23
+    if p <= 0:
+        return -np.inf
+    if p >= 1:
+        return np.inf
+
+    if p < 0.5:
+        sign = -1
+        p = 1 - p
+    else:
+        sign = 1
+        p = p
+
+    t = np.sqrt(-2 * np.log(1 - p))
+    c0, c1, c2 = 2.515517, 0.802853, 0.010328
+    d1, d2, d3 = 1.432788, 0.189269, 0.001308
+
+    return sign * (t - (c0 + c1 * t + c2 * t ** 2) / (1 + d1 * t + d2 * t ** 2 + d3 * t ** 3))
+
+
+def _norm_cdf(x: float) -> float:
+    """Approximate normal CDF."""
+    return 0.5 * (1 + np.tanh(np.sqrt(2 / np.pi) * (x + 0.044715 * x ** 3)))
 
 
 def compute_effect_size(mean_a: float, mean_b: float, std_a: float, std_b: float, n_a: int, n_b: int) -> Tuple[float, str]:
@@ -63,12 +200,15 @@ def compare_methods(
     method_b_name: str = "Method B",
     metric_name: str = "reward",
     alpha: float = 0.05,
+    use_bootstrap_ci: bool = True,
+    n_bootstrap: int = 10000,
 ) -> ComparisonResult:
     """
     Compare two methods using appropriate statistical test.
 
     Uses Welch's t-test (unequal variance) by default.
     Falls back to Mann-Whitney U if normality assumption is violated.
+    Optionally computes bootstrap CI for the difference.
 
     Args:
         results_a: Results from method A (one value per seed)
@@ -77,6 +217,8 @@ def compare_methods(
         method_b_name: Name of method B
         metric_name: Name of the metric being compared
         alpha: Significance level
+        use_bootstrap_ci: Whether to compute bootstrap confidence intervals
+        n_bootstrap: Number of bootstrap samples
 
     Returns:
         ComparisonResult with statistical analysis
@@ -121,6 +263,13 @@ def compare_methods(
         mean_a, mean_b, std_a, std_b, len(a), len(b)
     )
 
+    # Bootstrap confidence interval for the difference
+    ci_lower, ci_upper = None, None
+    if use_bootstrap_ci and len(a) >= 3 and len(b) >= 3:
+        diff_ci = bootstrap_difference_ci(a, b, n_bootstrap=n_bootstrap, ci_level=1 - alpha)
+        ci_lower = diff_ci.ci_lower
+        ci_upper = diff_ci.ci_upper
+
     return ComparisonResult(
         method_a=method_a_name,
         method_b=method_b_name,
@@ -134,6 +283,51 @@ def compare_methods(
         significant=p_value < alpha,
         effect_size=effect_size,
         effect_size_interpretation=effect_interp,
+        ci_lower=ci_lower,
+        ci_upper=ci_upper,
+    )
+
+
+def bootstrap_difference_ci(
+    a: np.ndarray,
+    b: np.ndarray,
+    n_bootstrap: int = 10000,
+    ci_level: float = 0.95,
+) -> BootstrapCI:
+    """
+    Compute bootstrap CI for the difference of means.
+
+    Args:
+        a: First sample
+        b: Second sample
+        n_bootstrap: Number of bootstrap samples
+        ci_level: Confidence level
+
+    Returns:
+        BootstrapCI for the difference (a - b)
+    """
+    a = np.asarray(a)
+    b = np.asarray(b)
+    n_a, n_b = len(a), len(b)
+
+    original_diff = np.mean(a) - np.mean(b)
+
+    bootstrap_diffs = np.zeros(n_bootstrap)
+    for i in range(n_bootstrap):
+        resample_a = a[np.random.randint(0, n_a, size=n_a)]
+        resample_b = b[np.random.randint(0, n_b, size=n_b)]
+        bootstrap_diffs[i] = np.mean(resample_a) - np.mean(resample_b)
+
+    alpha = 1 - ci_level
+    ci_lower = np.percentile(bootstrap_diffs, 100 * alpha / 2)
+    ci_upper = np.percentile(bootstrap_diffs, 100 * (1 - alpha / 2))
+
+    return BootstrapCI(
+        mean=original_diff,
+        ci_lower=ci_lower,
+        ci_upper=ci_upper,
+        ci_level=ci_level,
+        n_bootstrap=n_bootstrap,
     )
 
 

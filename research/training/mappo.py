@@ -2,6 +2,12 @@
 MAPPO Training Loop
 ===================
 Multi-Agent PPO with Contemplative modules integration.
+
+Features:
+- Centralized critic with decentralized actors (CTDE)
+- Learning rate scheduling (cosine annealing)
+- Mixed precision training (torch.cuda.amp)
+- Full contemplative module integration
 """
 
 import numpy as np
@@ -9,12 +15,23 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
+from torch.optim.lr_scheduler import CosineAnnealingLR
 from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass, field
 from pathlib import Path
 import time
 import json
 import logging
+
+# Mixed precision support
+try:
+    from torch.cuda.amp import GradScaler, autocast
+    AMP_AVAILABLE = True
+except ImportError:
+    AMP_AVAILABLE = False
+
+# torch.compile support (PyTorch 2.0+)
+COMPILE_AVAILABLE = hasattr(torch, 'compile')
 
 logger = logging.getLogger(__name__)
 
@@ -100,6 +117,12 @@ class TrainingStats:
 class MAPPOTrainer:
     """
     Multi-Agent PPO trainer with Contemplative modules.
+
+    Features:
+    - Centralized Training with Decentralized Execution (CTDE)
+    - Learning rate scheduling (cosine annealing)
+    - Mixed precision training for GPU acceleration
+    - torch.compile() optimization (PyTorch 2.0+)
     """
 
     def __init__(
@@ -111,6 +134,9 @@ class MAPPOTrainer:
         log_dir: Optional[str] = None,
         ethics_coef: float = 0.1,
         mindfulness_coef: float = 0.1,
+        use_lr_scheduler: bool = True,
+        use_mixed_precision: bool = True,
+        use_compile: bool = True,
     ):
         self.env = env
         self.agent_system = agent_system
@@ -135,6 +161,34 @@ class MAPPOTrainer:
             agent_system.parameters(),
             lr=config.training.learning_rate,
         )
+
+        # Learning rate scheduler (cosine annealing)
+        self.use_lr_scheduler = use_lr_scheduler
+        self.scheduler = None
+        if use_lr_scheduler:
+            total_updates = config.training.total_timesteps // config.training.n_steps
+            self.scheduler = CosineAnnealingLR(
+                self.optimizer,
+                T_max=total_updates,
+                eta_min=config.training.learning_rate * 0.1,  # 10% of initial LR
+            )
+            logger.info(f"Using cosine LR scheduling over {total_updates} updates")
+
+        # Mixed precision training
+        self.use_mixed_precision = use_mixed_precision and AMP_AVAILABLE and device != "cpu"
+        self.scaler = None
+        if self.use_mixed_precision:
+            self.scaler = GradScaler()
+            logger.info("Mixed precision training enabled")
+
+        # torch.compile optimization (PyTorch 2.0+)
+        if use_compile and COMPILE_AVAILABLE and device != "cpu":
+            try:
+                agent = agent_system.shared_agent if hasattr(agent_system, 'shared_agent') else agent_system.agents[0]
+                agent.ac = torch.compile(agent.ac, mode='reduce-overhead')
+                logger.info("torch.compile() optimization enabled")
+            except Exception as e:
+                logger.warning(f"torch.compile() failed: {e}")
 
         # Rollout buffer
         self.buffer = RolloutBuffer()
@@ -293,6 +347,11 @@ class MAPPOTrainer:
     def update(self) -> Dict[str, float]:
         """
         Update policy using collected rollout.
+
+        Supports:
+        - Mixed precision training (AMP)
+        - Centralized critic with global state
+        - Learning rate scheduling
         """
         config = self.config.training
 
@@ -308,6 +367,7 @@ class MAPPOTrainer:
         # Flatten data for all agents
         agents = list(self.buffer.observations[0].keys())
         n_steps = len(self.buffer)
+        n_agents = len(agents)
 
         all_obs = []
         all_next_obs = []
@@ -318,18 +378,23 @@ class MAPPOTrainer:
         all_returns = []
         all_diffusion_obs = []
         all_rewards = []
+        all_global_states = []
 
         # Get action size for one-hot encoding
         agent_ref = self.agent_system.shared_agent if hasattr(self.agent_system, 'shared_agent') else self.agent_system.agents[0]
         action_size = agent_ref.action_size
 
         for t in range(n_steps):
+            # Build global state (concatenated observations from all agents)
+            global_state = np.concatenate([self.buffer.observations[t][a] for a in agents])
+
             for agent in agents:
                 all_obs.append(self.buffer.observations[t][agent])
                 all_actions.append(self.buffer.actions[t][agent])
                 all_old_log_probs.append(self.buffer.log_probs[t][agent])
                 all_advantages.append(advantages[agent][t])
                 all_returns.append(returns[agent][t])
+                all_global_states.append(global_state)
 
                 # One-hot encode actions for ethics module
                 action_onehot = np.zeros(action_size)
@@ -357,6 +422,7 @@ class MAPPOTrainer:
         advantages_tensor = torch.tensor(all_advantages, dtype=torch.float32, device=self.device)
         returns_tensor = torch.tensor(all_returns, dtype=torch.float32, device=self.device)
         rewards_tensor = torch.tensor(all_rewards, dtype=torch.float32, device=self.device)
+        global_state_tensor = torch.tensor(np.array(all_global_states), dtype=torch.float32, device=self.device)
 
         # Normalize advantages
         advantages_tensor = (advantages_tensor - advantages_tensor.mean()) / (advantages_tensor.std() + 1e-8)
@@ -379,6 +445,9 @@ class MAPPOTrainer:
         # Get agent reference
         agent = self.agent_system.shared_agent if hasattr(self.agent_system, 'shared_agent') else self.agent_system.agents[0]
 
+        # Check if centralized critic is available
+        use_centralized = agent.ac.centralized_critic is not None
+
         for epoch in range(config.n_epochs):
             # Shuffle
             indices = np.random.permutation(n_samples)
@@ -396,78 +465,94 @@ class MAPPOTrainer:
                 batch_returns = returns_tensor[batch_indices]
                 batch_rewards = rewards_tensor[batch_indices]
                 batch_diffusion = diffusion_tensor[batch_indices] if diffusion_tensor is not None else None
+                batch_global_state = global_state_tensor[batch_indices] if use_centralized else None
 
-                _, log_probs, entropy, values = agent.ac.get_action_and_value(
-                    batch_obs,
-                    batch_diffusion,
-                    batch_actions,
-                )
+                # Mixed precision context
+                amp_context = autocast() if self.use_mixed_precision else torch.enable_grad()
 
-                # Policy loss (clipped)
-                ratio = torch.exp(log_probs - batch_old_log_probs)
-                surr1 = ratio * batch_advantages
-                surr2 = torch.clamp(ratio, 1 - config.clip_range, 1 + config.clip_range) * batch_advantages
-                policy_loss = -torch.min(surr1, surr2).mean()
-
-                # Value loss
-                value_loss = nn.functional.mse_loss(values, batch_returns)
-
-                # Entropy loss
-                entropy_loss = -entropy.mean()
-
-                # Ethics loss (Module A)
-                ethics_loss = torch.tensor(0.0, device=self.device)
-                if agent.ethics is not None and self.ethics_coef > 0:
-                    ethics_score, _ = agent.ethics(batch_obs, batch_actions_onehot)
-                    # Encourage high ethics scores (negative loss when score is high)
-                    ethics_loss = -ethics_score.mean()
-
-                    # Compute constraint penalties based on rewards (fairness)
-                    # Reshape rewards to compute Gini per batch segment
-                    batch_len = len(batch_rewards)
-                    n_agents = len(agents)
-                    if batch_len >= n_agents:
-                        reward_chunks = batch_rewards[:batch_len - (batch_len % n_agents)].view(-1, n_agents)
-                        # Compute Gini for each chunk
-                        gini_losses = []
-                        for chunk in reward_chunks:
-                            sorted_r, _ = torch.sort(chunk)
-                            n = len(sorted_r)
-                            indices = torch.arange(1, n + 1, dtype=torch.float32, device=self.device)
-                            gini = (2 * (indices * sorted_r).sum()) / (n * sorted_r.sum() + 1e-8) - (n + 1) / n
-                            gini_losses.append(torch.relu(gini - 0.3))  # Penalize Gini > 0.3
-                        if gini_losses:
-                            ethics_loss = ethics_loss + torch.stack(gini_losses).mean()
-
-                # Mindfulness loss (Module C) - train world model
-                mindfulness_loss = torch.tensor(0.0, device=self.device)
-                if agent.mindfulness is not None and self.mindfulness_coef > 0:
-                    # Embed discrete actions for prediction model
-                    action_embed = batch_actions_onehot
-                    mindfulness_loss = agent.mindfulness.compute_prediction_loss(
-                        batch_obs, action_embed, batch_next_obs
+                with amp_context:
+                    _, log_probs, entropy, values = agent.ac.get_action_and_value(
+                        batch_obs,
+                        batch_diffusion,
+                        batch_actions,
+                        global_state=batch_global_state,
                     )
 
-                # Total loss
-                loss = (
-                    policy_loss +
-                    config.vf_coef * value_loss +
-                    config.ent_coef * entropy_loss +
-                    self.ethics_coef * ethics_loss +
-                    self.mindfulness_coef * mindfulness_loss
-                )
+                    # Policy loss (clipped)
+                    ratio = torch.exp(log_probs - batch_old_log_probs)
+                    surr1 = ratio * batch_advantages
+                    surr2 = torch.clamp(ratio, 1 - config.clip_range, 1 + config.clip_range) * batch_advantages
+                    policy_loss = -torch.min(surr1, surr2).mean()
 
-                # Optimize
+                    # Value loss
+                    value_loss = nn.functional.mse_loss(values, batch_returns)
+
+                    # Entropy loss
+                    entropy_loss = -entropy.mean()
+
+                    # Ethics loss (Module A)
+                    ethics_loss = torch.tensor(0.0, device=self.device)
+                    if agent.ethics is not None and self.ethics_coef > 0:
+                        ethics_score, _ = agent.ethics(batch_obs, batch_actions_onehot)
+                        # Encourage high ethics scores (negative loss when score is high)
+                        ethics_loss = -ethics_score.mean()
+
+                        # Compute constraint penalties based on rewards (fairness)
+                        # Reshape rewards to compute Gini per batch segment
+                        batch_len = len(batch_rewards)
+                        if batch_len >= n_agents:
+                            reward_chunks = batch_rewards[:batch_len - (batch_len % n_agents)].view(-1, n_agents)
+                            # Compute Gini for each chunk
+                            gini_losses = []
+                            for chunk in reward_chunks:
+                                sorted_r, _ = torch.sort(chunk)
+                                n = len(sorted_r)
+                                gini_indices = torch.arange(1, n + 1, dtype=torch.float32, device=self.device)
+                                gini = (2 * (gini_indices * sorted_r).sum()) / (n * sorted_r.sum() + 1e-8) - (n + 1) / n
+                                gini_losses.append(torch.relu(gini - 0.3))  # Penalize Gini > 0.3
+                            if gini_losses:
+                                ethics_loss = ethics_loss + torch.stack(gini_losses).mean()
+
+                    # Mindfulness loss (Module C) - train world model
+                    mindfulness_loss = torch.tensor(0.0, device=self.device)
+                    if agent.mindfulness is not None and self.mindfulness_coef > 0:
+                        # Embed discrete actions for prediction model
+                        action_embed = batch_actions_onehot
+                        mindfulness_loss = agent.mindfulness.compute_prediction_loss(
+                            batch_obs, action_embed, batch_next_obs
+                        )
+
+                    # Total loss
+                    loss = (
+                        policy_loss +
+                        config.vf_coef * value_loss +
+                        config.ent_coef * entropy_loss +
+                        self.ethics_coef * ethics_loss +
+                        self.mindfulness_coef * mindfulness_loss
+                    )
+
+                # Optimize (with mixed precision if enabled)
                 self.optimizer.zero_grad()
-                loss.backward()
-                nn.utils.clip_grad_norm_(agent.parameters(), config.max_grad_norm)
-                self.optimizer.step()
+                if self.use_mixed_precision:
+                    self.scaler.scale(loss).backward()
+                    self.scaler.unscale_(self.optimizer)
+                    nn.utils.clip_grad_norm_(agent.parameters(), config.max_grad_norm)
+                    self.scaler.step(self.optimizer)
+                    self.scaler.update()
+                else:
+                    loss.backward()
+                    nn.utils.clip_grad_norm_(agent.parameters(), config.max_grad_norm)
+                    self.optimizer.step()
 
                 total_policy_loss += policy_loss.item()
                 total_value_loss += value_loss.item()
                 total_entropy_loss += entropy_loss.item()
                 total_ethics_loss += ethics_loss.item()
                 total_mindfulness_loss += mindfulness_loss.item()
+
+        # Step LR scheduler
+        if self.scheduler is not None:
+            self.scheduler.step()
 
         n_updates = config.n_epochs * (n_samples // batch_size + 1)
         avg_policy_loss = total_policy_loss / n_updates
@@ -482,12 +567,16 @@ class MAPPOTrainer:
         self.stats.ethics_losses.append(avg_ethics_loss)
         self.stats.mindfulness_losses.append(avg_mindfulness_loss)
 
+        # Get current learning rate
+        current_lr = self.optimizer.param_groups[0]['lr']
+
         return {
             'policy_loss': avg_policy_loss,
             'value_loss': avg_value_loss,
             'entropy_loss': avg_entropy_loss,
             'ethics_loss': avg_ethics_loss,
             'mindfulness_loss': avg_mindfulness_loss,
+            'learning_rate': current_lr,
         }
 
     def train(self, total_timesteps: int, log_interval: int = 10, save_interval: int = 100000):
