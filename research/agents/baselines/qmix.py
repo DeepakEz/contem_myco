@@ -5,6 +5,10 @@ Rashid et al., 2018
 
 Value decomposition method that learns individual Q-functions
 and combines them with a mixing network that enforces monotonicity.
+
+Modern improvements implemented:
+- Double DQN for reduced overestimation (van Hasselt et al., 2016)
+- Prioritized Experience Replay (Schaul et al., 2015)
 """
 
 import numpy as np
@@ -150,6 +154,156 @@ class ReplayBuffer:
         return len(self.buffer)
 
 
+class SumTree:
+    """Sum tree data structure for efficient priority sampling."""
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.tree = np.zeros(2 * capacity - 1)
+        self.data = np.zeros(capacity, dtype=object)
+        self.write_idx = 0
+        self.n_entries = 0
+
+    def _propagate(self, idx: int, change: float):
+        """Propagate priority change up the tree."""
+        parent = (idx - 1) // 2
+        self.tree[parent] += change
+        if parent != 0:
+            self._propagate(parent, change)
+
+    def _retrieve(self, idx: int, s: float) -> int:
+        """Retrieve leaf index for given priority sum."""
+        left = 2 * idx + 1
+        right = left + 1
+
+        if left >= len(self.tree):
+            return idx
+
+        if s <= self.tree[left]:
+            return self._retrieve(left, s)
+        else:
+            return self._retrieve(right, s - self.tree[left])
+
+    def total(self) -> float:
+        """Total priority sum."""
+        return self.tree[0]
+
+    def add(self, priority: float, data):
+        """Add data with given priority."""
+        idx = self.write_idx + self.capacity - 1
+        self.data[self.write_idx] = data
+        self.update(idx, priority)
+
+        self.write_idx = (self.write_idx + 1) % self.capacity
+        self.n_entries = min(self.n_entries + 1, self.capacity)
+
+    def update(self, idx: int, priority: float):
+        """Update priority at given index."""
+        change = priority - self.tree[idx]
+        self.tree[idx] = priority
+        self._propagate(idx, change)
+
+    def get(self, s: float) -> Tuple[int, float, any]:
+        """Get (index, priority, data) for given priority sum."""
+        idx = self._retrieve(0, s)
+        data_idx = idx - self.capacity + 1
+        return idx, self.tree[idx], self.data[data_idx]
+
+
+class PrioritizedReplayBuffer:
+    """
+    Prioritized Experience Replay buffer.
+
+    Schaul et al., 2015 - "Prioritized Experience Replay"
+    """
+
+    def __init__(
+        self,
+        capacity: int = 100000,
+        alpha: float = 0.6,
+        beta_start: float = 0.4,
+        beta_frames: int = 100000,
+        epsilon: float = 1e-6,
+    ):
+        """
+        Args:
+            capacity: Buffer capacity
+            alpha: Priority exponent (0 = uniform, 1 = full prioritization)
+            beta_start: Initial importance sampling weight
+            beta_frames: Frames to anneal beta to 1.0
+            epsilon: Small constant to prevent zero priorities
+        """
+        self.tree = SumTree(capacity)
+        self.capacity = capacity
+        self.alpha = alpha
+        self.beta_start = beta_start
+        self.beta_frames = beta_frames
+        self.epsilon = epsilon
+        self.frame = 0
+        self.max_priority = 1.0
+
+    @property
+    def beta(self) -> float:
+        """Current beta value (annealed from beta_start to 1.0)."""
+        return min(1.0, self.beta_start + (1.0 - self.beta_start) * self.frame / self.beta_frames)
+
+    def push(
+        self,
+        obs: Dict[str, np.ndarray],
+        state: np.ndarray,
+        actions: Dict[str, int],
+        rewards: Dict[str, float],
+        next_obs: Dict[str, np.ndarray],
+        next_state: np.ndarray,
+        dones: Dict[str, bool],
+    ):
+        """Add transition with max priority."""
+        self.tree.add(self.max_priority ** self.alpha,
+                      (obs, state, actions, rewards, next_obs, next_state, dones))
+        self.frame += 1
+
+    def sample(self, batch_size: int) -> Tuple:
+        """
+        Sample batch with prioritized sampling.
+
+        Returns:
+            (obs, state, actions, rewards, next_obs, next_state, dones, indices, weights)
+        """
+        batch = []
+        indices = []
+        priorities = []
+        segment = self.tree.total() / batch_size
+
+        for i in range(batch_size):
+            a = segment * i
+            b = segment * (i + 1)
+            s = random.uniform(a, b)
+            idx, priority, data = self.tree.get(s)
+            batch.append(data)
+            indices.append(idx)
+            priorities.append(priority)
+
+        # Compute importance sampling weights
+        sampling_probs = np.array(priorities) / self.tree.total()
+        weights = (self.tree.n_entries * sampling_probs) ** (-self.beta)
+        weights = weights / weights.max()  # Normalize
+
+        # Unzip batch
+        obs, state, actions, rewards, next_obs, next_state, dones = zip(*batch)
+
+        return obs, state, actions, rewards, next_obs, next_state, dones, indices, weights
+
+    def update_priorities(self, indices: List[int], td_errors: np.ndarray):
+        """Update priorities based on TD errors."""
+        for idx, td_error in zip(indices, td_errors):
+            priority = (abs(td_error) + self.epsilon) ** self.alpha
+            self.max_priority = max(self.max_priority, priority)
+            self.tree.update(idx, priority)
+
+    def __len__(self):
+        return self.tree.n_entries
+
+
 class QMIX(nn.Module):
     """
     Full QMIX architecture.
@@ -254,7 +408,13 @@ class QMIX(nn.Module):
 
 
 class QMIXAgent:
-    """QMIX agent wrapper with training."""
+    """
+    QMIX agent wrapper with training.
+
+    Modern improvements:
+    - Double DQN: Action selection with online network, evaluation with target
+    - Prioritized Experience Replay: Sample important transitions more often
+    """
 
     def __init__(
         self,
@@ -272,12 +432,20 @@ class QMIXAgent:
         batch_size: int = 32,
         target_update_freq: int = 200,
         device: str = "cpu",
+        use_double_dqn: bool = True,
+        use_prioritized_replay: bool = True,
+        per_alpha: float = 0.6,
+        per_beta_start: float = 0.4,
     ):
         self.num_agents = num_agents
+        self.action_size = action_size
         self.device = torch.device(device)
         self.gamma = gamma
         self.batch_size = batch_size
         self.target_update_freq = target_update_freq
+
+        # Double DQN flag
+        self.use_double_dqn = use_double_dqn
 
         # Epsilon schedule
         self.epsilon_start = epsilon_start
@@ -306,8 +474,16 @@ class QMIXAgent:
         # Optimizer
         self.optimizer = torch.optim.Adam(self.qmix.parameters(), lr=lr)
 
-        # Replay buffer
-        self.buffer = ReplayBuffer(buffer_size)
+        # Replay buffer (prioritized or uniform)
+        self.use_prioritized_replay = use_prioritized_replay
+        if use_prioritized_replay:
+            self.buffer = PrioritizedReplayBuffer(
+                capacity=buffer_size,
+                alpha=per_alpha,
+                beta_start=per_beta_start,
+            )
+        else:
+            self.buffer = ReplayBuffer(buffer_size)
 
     @property
     def epsilon(self) -> float:
@@ -351,13 +527,26 @@ class QMIXAgent:
         self.steps += 1
 
     def update(self) -> Optional[float]:
-        """Update networks from replay buffer."""
+        """
+        Update networks from replay buffer.
+
+        Uses Double DQN: select actions with online network, evaluate with target.
+        Supports prioritized experience replay with importance sampling weights.
+        """
         if len(self.buffer) < self.batch_size:
             return None
 
-        # Sample batch
-        obs_batch, state_batch, actions_batch, rewards_batch, \
-            next_obs_batch, next_state_batch, dones_batch = self.buffer.sample(self.batch_size)
+        # Sample batch (different return format for prioritized vs uniform)
+        if self.use_prioritized_replay:
+            obs_batch, state_batch, actions_batch, rewards_batch, \
+                next_obs_batch, next_state_batch, dones_batch, indices, weights = \
+                self.buffer.sample(self.batch_size)
+            weights = torch.tensor(weights, dtype=torch.float32, device=self.device)
+        else:
+            obs_batch, state_batch, actions_batch, rewards_batch, \
+                next_obs_batch, next_state_batch, dones_batch = self.buffer.sample(self.batch_size)
+            indices = None
+            weights = None
 
         # Convert to tensors
         agent_ids = list(obs_batch[0].keys())
@@ -388,19 +577,42 @@ class QMIXAgent:
         # Current Q-values
         _, q_total = self.qmix(obs, state, actions)
 
-        # Target Q-values
+        # Target Q-values with Double DQN
         with torch.no_grad():
-            _, target_q_total = self.target_qmix(next_obs, next_state)
+            if self.use_double_dqn:
+                # Double DQN: select actions with online network
+                batch_size = next_obs.shape[0]
+                next_obs_flat = next_obs.view(batch_size * self.num_agents, -1)
+                next_q_values = self.qmix.q_network(next_obs_flat)
+                next_q_values = next_q_values.view(batch_size, self.num_agents, self.action_size)
+                next_actions = next_q_values.argmax(dim=-1)
+
+                # Evaluate selected actions with target network
+                _, target_q_total = self.target_qmix(next_obs, next_state, next_actions)
+            else:
+                # Standard DQN: max Q from target network
+                _, target_q_total = self.target_qmix(next_obs, next_state)
+
             target = rewards + self.gamma * (1 - dones) * target_q_total
 
-        # Loss
-        loss = F.mse_loss(q_total, target)
+        # TD error for prioritized replay
+        td_errors = (q_total - target).detach().cpu().numpy()
+
+        # Loss (weighted for prioritized replay)
+        if weights is not None:
+            loss = (weights * F.mse_loss(q_total, target, reduction='none')).mean()
+        else:
+            loss = F.mse_loss(q_total, target)
 
         # Optimize
         self.optimizer.zero_grad()
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.qmix.parameters(), 10)
         self.optimizer.step()
+
+        # Update priorities in prioritized replay buffer
+        if self.use_prioritized_replay and indices is not None:
+            self.buffer.update_priorities(indices, td_errors)
 
         # Update target network
         if self.steps % self.target_update_freq == 0:

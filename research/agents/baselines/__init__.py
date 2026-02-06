@@ -11,7 +11,7 @@ Implementations:
 
 from .commnet import CommNet, CommNetAgent, CommNetLayer
 from .tarmac import TarMAC, TarMACAgent, TarMACLayer, MultiHeadAttention
-from .qmix import QMIX, QMIXAgent, MixingNetwork, ReplayBuffer
+from .qmix import QMIX, QMIXAgent, MixingNetwork, ReplayBuffer, PrioritizedReplayBuffer
 
 __all__ = [
     # CommNet
@@ -28,4 +28,5 @@ __all__ = [
     "QMIXAgent",
     "MixingNetwork",
     "ReplayBuffer",
+    "PrioritizedReplayBuffer",
 ]

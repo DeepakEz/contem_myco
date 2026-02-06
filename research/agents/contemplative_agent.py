@@ -33,9 +33,50 @@ class AgentOutput:
     deposit_strengths: Optional[torch.Tensor] = None
 
 
+class CentralizedCritic(nn.Module):
+    """
+    Centralized critic for MAPPO that uses global state.
+
+    Following MAPPO best practices (Yu et al., 2022):
+    - Actors use local observations
+    - Critic uses global state (concatenated observations from all agents)
+    """
+
+    def __init__(
+        self,
+        global_state_size: int,
+        hidden_sizes: List[int] = [256, 256],
+    ):
+        super().__init__()
+
+        layers = []
+        prev_size = global_state_size
+        for hidden_size in hidden_sizes:
+            layers.extend([
+                nn.Linear(prev_size, hidden_size),
+                nn.Tanh(),
+            ])
+            prev_size = hidden_size
+
+        self.network = nn.Sequential(*layers)
+        self.value_head = nn.Linear(prev_size, 1)
+
+    def forward(self, global_state: torch.Tensor) -> torch.Tensor:
+        """
+        Args:
+            global_state: Concatenated observations from all agents (batch, global_state_size)
+
+        Returns:
+            value: Centralized value estimate (batch,)
+        """
+        features = self.network(global_state)
+        return self.value_head(features).squeeze(-1)
+
+
 class ActorCritic(nn.Module):
     """
     Actor-Critic network with modular augmentations.
+    Supports both decentralized and centralized critic modes.
     """
 
     def __init__(
@@ -45,16 +86,21 @@ class ActorCritic(nn.Module):
         hidden_sizes: List[int] = [256, 256],
         continuous: bool = False,
         diffusion_obs_size: int = 0,
+        use_centralized_critic: bool = False,
+        num_agents: int = 1,
     ):
         super().__init__()
 
         self.continuous = continuous
         self.action_size = action_size
+        self.use_centralized_critic = use_centralized_critic
+        self.num_agents = num_agents
 
         # Total input size includes diffusion observations
         total_obs_size = obs_size + diffusion_obs_size
+        self.local_obs_size = total_obs_size
 
-        # Shared feature extractor
+        # Shared feature extractor for actor
         layers = []
         prev_size = total_obs_size
         for hidden_size in hidden_sizes:
@@ -73,8 +119,17 @@ class ActorCritic(nn.Module):
         else:
             self.actor = nn.Linear(prev_size, action_size)
 
-        # Critic head
+        # Critic head - decentralized (local) critic
         self.critic = nn.Linear(prev_size, 1)
+
+        # Centralized critic (optional) - uses global state
+        self.centralized_critic = None
+        if use_centralized_critic:
+            global_state_size = total_obs_size * num_agents
+            self.centralized_critic = CentralizedCritic(
+                global_state_size=global_state_size,
+                hidden_sizes=hidden_sizes,
+            )
 
     def forward(
         self,
@@ -109,12 +164,23 @@ class ActorCritic(nn.Module):
         obs: torch.Tensor,
         diffusion_obs: Optional[torch.Tensor] = None,
         action: Optional[torch.Tensor] = None,
-        deterministic: bool = False
+        deterministic: bool = False,
+        global_state: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Get action, log_prob, entropy, and value.
+
+        Args:
+            obs: Local observation
+            diffusion_obs: Optional diffusion field observations
+            action: Optional action for log_prob computation
+            deterministic: Use greedy action selection
+            global_state: Optional global state for centralized critic
+
+        Returns:
+            action, log_prob, entropy, value
         """
-        action_out, value = self.forward(obs, diffusion_obs)
+        action_out, local_value = self.forward(obs, diffusion_obs)
 
         if self.continuous:
             std = torch.exp(self.actor_logstd)
@@ -140,7 +206,13 @@ class ActorCritic(nn.Module):
             log_prob = dist.log_prob(action)
             entropy = dist.entropy()
 
-        return action, log_prob, entropy, value.squeeze(-1)
+        # Use centralized critic if available and global_state provided
+        if self.centralized_critic is not None and global_state is not None:
+            value = self.centralized_critic(global_state)
+        else:
+            value = local_value.squeeze(-1)
+
+        return action, log_prob, entropy, value
 
 
 class ContemplativeAgent(nn.Module):
