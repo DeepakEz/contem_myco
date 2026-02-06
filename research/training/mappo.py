@@ -235,11 +235,15 @@ class MAPPOTrainer:
 
             # Get diffusion observations
             diffusion_obs = {}
-            if self.agent_system.diffusion_field is not None:
+            if self.config.diffusion.enabled:
+                diffusion_obs_size = 3 * self.config.diffusion.num_channels
                 for agent in obs.keys():
                     pos = positions.get(agent)
-                    if pos is not None:
+                    if self.agent_system.diffusion_field is not None and pos is not None:
                         diffusion_obs[agent] = self.agent_system.diffusion_field.sense(pos)
+                    else:
+                        # No position available - use zeros to match expected input size
+                        diffusion_obs[agent] = np.zeros(diffusion_obs_size, dtype=np.float32)
 
             # Step environment
             next_obs, rewards, terminations, truncations, infos = self.env.step(actions)
@@ -429,8 +433,14 @@ class MAPPOTrainer:
 
         # Diffusion observations
         diffusion_tensor = None
-        if all_diffusion_obs:
+        agent_ref = self.agent_system.shared_agent if hasattr(self.agent_system, 'shared_agent') else self.agent_system.agents[0]
+        if all_diffusion_obs and len(all_diffusion_obs) == n_samples:
             diffusion_tensor = torch.tensor(np.array(all_diffusion_obs), dtype=torch.float32, device=self.device)
+        elif self.config.diffusion.enabled:
+            # Diffusion is enabled but no observations collected (positions unavailable)
+            # Provide zeros to match expected input size
+            diffusion_obs_size = 3 * self.config.diffusion.num_channels
+            diffusion_tensor = torch.zeros(n_samples, diffusion_obs_size, dtype=torch.float32, device=self.device)
 
         # PPO update
         total_policy_loss = 0
