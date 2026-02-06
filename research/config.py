@@ -126,15 +126,28 @@ class ExperimentConfig:
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
+        import copy
+
+        def dataclass_to_dict(obj):
+            """Recursively convert dataclass to dict."""
+            if hasattr(obj, '__dataclass_fields__'):
+                return {k: dataclass_to_dict(v) for k, v in obj.__dict__.items()}
+            elif isinstance(obj, list):
+                return [dataclass_to_dict(item) for item in obj]
+            elif isinstance(obj, dict):
+                return {k: dataclass_to_dict(v) for k, v in obj.items()}
+            else:
+                return copy.deepcopy(obj)
+
         return {
             "name": self.name,
             "seed": self.seed,
             "num_seeds": self.num_seeds,
-            "env": self.env.__dict__,
-            "diffusion": self.diffusion.__dict__,
-            "ethics": self.ethics.__dict__,
-            "mindfulness": self.mindfulness.__dict__,
-            "training": self.training.__dict__,
+            "env": dataclass_to_dict(self.env),
+            "diffusion": dataclass_to_dict(self.diffusion),
+            "ethics": dataclass_to_dict(self.ethics),
+            "mindfulness": dataclass_to_dict(self.mindfulness),
+            "training": dataclass_to_dict(self.training),
             "ablation_mode": self.ablation_mode,
         }
 

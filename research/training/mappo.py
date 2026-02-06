@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 class RolloutBuffer:
     """Buffer for storing rollout data."""
     observations: List[Dict[str, np.ndarray]] = field(default_factory=list)
+    next_observations: List[Dict[str, np.ndarray]] = field(default_factory=list)
     actions: List[Dict[str, int]] = field(default_factory=list)
     rewards: List[Dict[str, float]] = field(default_factory=list)
     values: List[Dict[str, float]] = field(default_factory=list)
@@ -43,12 +44,14 @@ class RolloutBuffer:
         value: Dict[str, float],
         log_prob: Dict[str, float],
         done: Dict[str, bool],
+        next_obs: Optional[Dict[str, np.ndarray]] = None,
         position: Optional[Dict[str, np.ndarray]] = None,
         diffusion_obs: Optional[Dict[str, np.ndarray]] = None,
         ethics_score: Optional[Dict[str, float]] = None,
     ):
         """Add a transition to the buffer."""
         self.observations.append(obs)
+        self.next_observations.append(next_obs or {})
         self.actions.append(action)
         self.rewards.append(reward)
         self.values.append(value)
@@ -61,6 +64,7 @@ class RolloutBuffer:
     def clear(self):
         """Clear the buffer."""
         self.observations.clear()
+        self.next_observations.clear()
         self.actions.clear()
         self.rewards.clear()
         self.values.clear()
@@ -105,6 +109,8 @@ class MAPPOTrainer:
         config,
         device: str = "cpu",
         log_dir: Optional[str] = None,
+        ethics_coef: float = 0.1,
+        mindfulness_coef: float = 0.1,
     ):
         self.env = env
         self.agent_system = agent_system
@@ -112,6 +118,10 @@ class MAPPOTrainer:
         self.device = torch.device(device)
         self.log_dir = Path(log_dir) if log_dir else Path("runs")
         self.log_dir.mkdir(parents=True, exist_ok=True)
+
+        # Loss coefficients for contemplative modules
+        self.ethics_coef = ethics_coef
+        self.mindfulness_coef = mindfulness_coef
 
         # Move agents to device
         if hasattr(agent_system, 'shared_agent'):
@@ -195,6 +205,7 @@ class MAPPOTrainer:
                 value=values,
                 log_prob=log_probs,
                 done=dones,
+                next_obs=next_obs,
                 position=positions,
                 diffusion_obs=diffusion_obs,
                 ethics_score=ethics_scores,
@@ -299,11 +310,18 @@ class MAPPOTrainer:
         n_steps = len(self.buffer)
 
         all_obs = []
+        all_next_obs = []
         all_actions = []
+        all_actions_onehot = []
         all_old_log_probs = []
         all_advantages = []
         all_returns = []
         all_diffusion_obs = []
+        all_rewards = []
+
+        # Get action size for one-hot encoding
+        agent_ref = self.agent_system.shared_agent if hasattr(self.agent_system, 'shared_agent') else self.agent_system.agents[0]
+        action_size = agent_ref.action_size
 
         for t in range(n_steps):
             for agent in agents:
@@ -313,15 +331,32 @@ class MAPPOTrainer:
                 all_advantages.append(advantages[agent][t])
                 all_returns.append(returns[agent][t])
 
+                # One-hot encode actions for ethics module
+                action_onehot = np.zeros(action_size)
+                action_onehot[self.buffer.actions[t][agent]] = 1.0
+                all_actions_onehot.append(action_onehot)
+
+                # Next observations for mindfulness prediction
+                if self.buffer.next_observations[t].get(agent) is not None:
+                    all_next_obs.append(self.buffer.next_observations[t][agent])
+                else:
+                    all_next_obs.append(self.buffer.observations[t][agent])
+
+                # Rewards for computing fairness
+                all_rewards.append(self.buffer.rewards[t][agent])
+
                 if self.buffer.diffusion_obs[t].get(agent) is not None:
                     all_diffusion_obs.append(self.buffer.diffusion_obs[t][agent])
 
         # Convert to tensors
         obs_tensor = torch.tensor(np.array(all_obs), dtype=torch.float32, device=self.device)
+        next_obs_tensor = torch.tensor(np.array(all_next_obs), dtype=torch.float32, device=self.device)
         actions_tensor = torch.tensor(all_actions, dtype=torch.long, device=self.device)
+        actions_onehot_tensor = torch.tensor(np.array(all_actions_onehot), dtype=torch.float32, device=self.device)
         old_log_probs_tensor = torch.tensor(all_old_log_probs, dtype=torch.float32, device=self.device)
         advantages_tensor = torch.tensor(all_advantages, dtype=torch.float32, device=self.device)
         returns_tensor = torch.tensor(all_returns, dtype=torch.float32, device=self.device)
+        rewards_tensor = torch.tensor(all_rewards, dtype=torch.float32, device=self.device)
 
         # Normalize advantages
         advantages_tensor = (advantages_tensor - advantages_tensor.mean()) / (advantages_tensor.std() + 1e-8)
@@ -335,9 +370,14 @@ class MAPPOTrainer:
         total_policy_loss = 0
         total_value_loss = 0
         total_entropy_loss = 0
+        total_ethics_loss = 0
+        total_mindfulness_loss = 0
 
         batch_size = config.batch_size
         n_samples = len(all_obs)
+
+        # Get agent reference
+        agent = self.agent_system.shared_agent if hasattr(self.agent_system, 'shared_agent') else self.agent_system.agents[0]
 
         for epoch in range(config.n_epochs):
             # Shuffle
@@ -348,14 +388,14 @@ class MAPPOTrainer:
                 batch_indices = indices[start:end]
 
                 batch_obs = obs_tensor[batch_indices]
+                batch_next_obs = next_obs_tensor[batch_indices]
                 batch_actions = actions_tensor[batch_indices]
+                batch_actions_onehot = actions_onehot_tensor[batch_indices]
                 batch_old_log_probs = old_log_probs_tensor[batch_indices]
                 batch_advantages = advantages_tensor[batch_indices]
                 batch_returns = returns_tensor[batch_indices]
+                batch_rewards = rewards_tensor[batch_indices]
                 batch_diffusion = diffusion_tensor[batch_indices] if diffusion_tensor is not None else None
-
-                # Get current policy outputs
-                agent = self.agent_system.shared_agent if hasattr(self.agent_system, 'shared_agent') else self.agent_system.agents[0]
 
                 _, log_probs, entropy, values = agent.ac.get_action_and_value(
                     batch_obs,
@@ -375,11 +415,46 @@ class MAPPOTrainer:
                 # Entropy loss
                 entropy_loss = -entropy.mean()
 
+                # Ethics loss (Module A)
+                ethics_loss = torch.tensor(0.0, device=self.device)
+                if agent.ethics is not None and self.ethics_coef > 0:
+                    ethics_score, _ = agent.ethics(batch_obs, batch_actions_onehot)
+                    # Encourage high ethics scores (negative loss when score is high)
+                    ethics_loss = -ethics_score.mean()
+
+                    # Compute constraint penalties based on rewards (fairness)
+                    # Reshape rewards to compute Gini per batch segment
+                    batch_len = len(batch_rewards)
+                    n_agents = len(agents)
+                    if batch_len >= n_agents:
+                        reward_chunks = batch_rewards[:batch_len - (batch_len % n_agents)].view(-1, n_agents)
+                        # Compute Gini for each chunk
+                        gini_losses = []
+                        for chunk in reward_chunks:
+                            sorted_r, _ = torch.sort(chunk)
+                            n = len(sorted_r)
+                            indices = torch.arange(1, n + 1, dtype=torch.float32, device=self.device)
+                            gini = (2 * (indices * sorted_r).sum()) / (n * sorted_r.sum() + 1e-8) - (n + 1) / n
+                            gini_losses.append(torch.relu(gini - 0.3))  # Penalize Gini > 0.3
+                        if gini_losses:
+                            ethics_loss = ethics_loss + torch.stack(gini_losses).mean()
+
+                # Mindfulness loss (Module C) - train world model
+                mindfulness_loss = torch.tensor(0.0, device=self.device)
+                if agent.mindfulness is not None and self.mindfulness_coef > 0:
+                    # Embed discrete actions for prediction model
+                    action_embed = batch_actions_onehot
+                    mindfulness_loss = agent.mindfulness.compute_prediction_loss(
+                        batch_obs, action_embed, batch_next_obs
+                    )
+
                 # Total loss
                 loss = (
                     policy_loss +
                     config.vf_coef * value_loss +
-                    config.ent_coef * entropy_loss
+                    config.ent_coef * entropy_loss +
+                    self.ethics_coef * ethics_loss +
+                    self.mindfulness_coef * mindfulness_loss
                 )
 
                 # Optimize
@@ -391,20 +466,28 @@ class MAPPOTrainer:
                 total_policy_loss += policy_loss.item()
                 total_value_loss += value_loss.item()
                 total_entropy_loss += entropy_loss.item()
+                total_ethics_loss += ethics_loss.item()
+                total_mindfulness_loss += mindfulness_loss.item()
 
         n_updates = config.n_epochs * (n_samples // batch_size + 1)
         avg_policy_loss = total_policy_loss / n_updates
         avg_value_loss = total_value_loss / n_updates
         avg_entropy_loss = total_entropy_loss / n_updates
+        avg_ethics_loss = total_ethics_loss / n_updates
+        avg_mindfulness_loss = total_mindfulness_loss / n_updates
 
         self.stats.policy_losses.append(avg_policy_loss)
         self.stats.value_losses.append(avg_value_loss)
         self.stats.entropy_losses.append(avg_entropy_loss)
+        self.stats.ethics_losses.append(avg_ethics_loss)
+        self.stats.mindfulness_losses.append(avg_mindfulness_loss)
 
         return {
             'policy_loss': avg_policy_loss,
             'value_loss': avg_value_loss,
             'entropy_loss': avg_entropy_loss,
+            'ethics_loss': avg_ethics_loss,
+            'mindfulness_loss': avg_mindfulness_loss,
         }
 
     def train(self, total_timesteps: int, log_interval: int = 10, save_interval: int = 100000):
@@ -445,6 +528,8 @@ class MAPPOTrainer:
                     self.writer.add_scalar('train/policy_loss', update_info['policy_loss'], self.global_step)
                     self.writer.add_scalar('train/value_loss', update_info['value_loss'], self.global_step)
                     self.writer.add_scalar('train/entropy', -update_info['entropy_loss'], self.global_step)
+                    self.writer.add_scalar('train/ethics_loss', update_info['ethics_loss'], self.global_step)
+                    self.writer.add_scalar('train/mindfulness_loss', update_info['mindfulness_loss'], self.global_step)
 
                     if 'social_welfare' in rollout_info:
                         self.writer.add_scalar('metrics/social_welfare', rollout_info['social_welfare'], self.global_step)

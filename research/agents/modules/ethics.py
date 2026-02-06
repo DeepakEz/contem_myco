@@ -208,12 +208,13 @@ class LagrangianOptimizer:
         self.violation_ema = {name: 0.0 for name in constraint_names}
         self.ema_alpha = 0.1
 
-    def compute_penalty(self, violations: Dict[str, float]) -> torch.Tensor:
+    def compute_penalty(self, violations: Dict[str, float], device: str = "cpu") -> torch.Tensor:
         """
         Compute total constraint penalty.
 
         Args:
             violations: Dict of constraint_name -> violation_amount
+            device: Device for the output tensor
 
         Returns:
             Total penalty (scalar tensor)
@@ -222,7 +223,7 @@ class LagrangianOptimizer:
         for name, violation in violations.items():
             if name in self.lambdas:
                 total += self.lambdas[name] * violation
-        return torch.tensor(total, dtype=torch.float32)
+        return torch.tensor(total, dtype=torch.float32, device=device)
 
     def update(self, violations: Dict[str, float]):
         """

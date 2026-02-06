@@ -309,6 +309,30 @@ class MindfulnessModule(nn.Module):
 
         return total_loss / len(self.ensemble.models)
 
+    def state_dict(self):
+        """Get state dict including running statistics."""
+        base_state = super().state_dict()
+        base_state['_running_stats'] = {
+            'surprise_mean': self.surprise_mean,
+            'surprise_std': self.surprise_std,
+            'uncertainty_mean': self.uncertainty_mean,
+            'uncertainty_std': self.uncertainty_std,
+            'update_count': self.update_count,
+        }
+        return base_state
+
+    def load_state_dict(self, state_dict, strict: bool = True):
+        """Load state dict including running statistics."""
+        # Extract running stats before loading
+        running_stats = state_dict.pop('_running_stats', None)
+        super().load_state_dict(state_dict, strict=strict)
+        if running_stats:
+            self.surprise_mean = running_stats['surprise_mean']
+            self.surprise_std = running_stats['surprise_std']
+            self.uncertainty_mean = running_stats['uncertainty_mean']
+            self.uncertainty_std = running_stats['uncertainty_std']
+            self.update_count = running_stats['update_count']
+
 
 def create_mindfulness_module(
     config,

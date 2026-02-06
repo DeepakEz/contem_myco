@@ -13,6 +13,12 @@ import torch.nn as nn
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 
+try:
+    from scipy.ndimage import convolve as scipy_convolve
+    SCIPY_AVAILABLE = True
+except ImportError:
+    SCIPY_AVAILABLE = False
+
 
 @dataclass
 class SignalChannel:
@@ -158,8 +164,11 @@ class DiffusionField:
             channel = self.channels[c] if c < len(self.channels) else self.channels[0]
 
             # Diffusion via convolution
-            from scipy.ndimage import convolve
-            diffused = convolve(self.field[c], self._diffusion_kernel, mode='constant')
+            if SCIPY_AVAILABLE:
+                diffused = scipy_convolve(self.field[c], self._diffusion_kernel, mode='constant')
+            else:
+                # Simple fallback without scipy
+                diffused = self._simple_diffuse(self.field[c])
 
             # Blend original with diffused
             new_field[c] = (1 - channel.diffusion_rate) * self.field[c] + \
@@ -169,6 +178,21 @@ class DiffusionField:
             new_field[c] *= (1 - channel.decay_rate)
 
         self.field = new_field
+
+    def _simple_diffuse(self, field: np.ndarray) -> np.ndarray:
+        """Simple diffusion fallback without scipy."""
+        result = np.zeros_like(field)
+        for i in range(field.shape[0]):
+            for j in range(field.shape[1]):
+                count = 1
+                total = field[i, j] * 0.4
+                for di, dj in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    ni, nj = i + di, j + dj
+                    if 0 <= ni < field.shape[0] and 0 <= nj < field.shape[1]:
+                        total += field[ni, nj] * 0.1
+                        count += 1
+                result[i, j] = total
+        return result
 
     def reset(self):
         """Reset field to zero."""
@@ -252,8 +276,16 @@ class DiffusionPolicy(nn.Module):
 
 
 # Convenience functions for integration
-def create_diffusion_module(config) -> Tuple[DiffusionField, DiffusionEncoder, DiffusionPolicy]:
-    """Create all diffusion components from config."""
+def create_diffusion_module(
+    config,
+    state_size: int = 256
+) -> Tuple[DiffusionField, DiffusionEncoder, DiffusionPolicy]:
+    """Create all diffusion components from config.
+
+    Args:
+        config: Diffusion configuration
+        state_size: Size of agent's hidden state for DiffusionPolicy
+    """
     field = DiffusionField(
         grid_size=config.grid_size,
         num_channels=config.num_channels,
@@ -265,7 +297,7 @@ def create_diffusion_module(config) -> Tuple[DiffusionField, DiffusionEncoder, D
     )
 
     policy = DiffusionPolicy(
-        state_size=256,  # Will be set properly during integration
+        state_size=state_size,
         num_channels=config.num_channels,
     )
 
