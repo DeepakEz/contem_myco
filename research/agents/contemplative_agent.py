@@ -237,9 +237,10 @@ class ContemplativeAgent(nn.Module):
         self.continuous = continuous
 
         # Compute additional observation size from diffusion
-        diffusion_obs_size = 0
+        # Store this so forward() uses the same value the network was built with
+        self.diffusion_obs_size = 0
         if config.diffusion.enabled:
-            diffusion_obs_size = 3 * config.diffusion.num_channels  # value + grad_x + grad_y
+            self.diffusion_obs_size = 3 * config.diffusion.num_channels  # value + grad_x + grad_y
 
         # Core actor-critic
         self.ac = ActorCritic(
@@ -247,7 +248,7 @@ class ContemplativeAgent(nn.Module):
             action_size=action_size,
             hidden_sizes=config.training.hidden_sizes,
             continuous=continuous,
-            diffusion_obs_size=diffusion_obs_size,
+            diffusion_obs_size=self.diffusion_obs_size,
         )
 
         # Module A: Ethics
@@ -297,17 +298,21 @@ class ContemplativeAgent(nn.Module):
         diffusion_obs = None
         deposit_strengths = None
 
-        if self.config.diffusion.enabled:
-            # Compute diffusion observation size
-            diffusion_obs_size = 3 * self.config.diffusion.num_channels
-
+        if self.diffusion_obs_size > 0:
+            # Use stored diffusion_obs_size to ensure consistency with network architecture
             if diffusion_field is not None and position is not None:
                 # Sense field
                 field_obs = diffusion_field.sense(position)
                 diffusion_obs = torch.from_numpy(field_obs).float().unsqueeze(0)
+                # Validate size matches what network expects
+                if diffusion_obs.shape[-1] != self.diffusion_obs_size:
+                    raise ValueError(
+                        f"Diffusion observation size mismatch: got {diffusion_obs.shape[-1]}, "
+                        f"expected {self.diffusion_obs_size}. Check num_channels configuration."
+                    )
             else:
                 # No position available - use zeros to maintain expected input size
-                diffusion_obs = torch.zeros(1, diffusion_obs_size, dtype=obs.dtype, device=obs.device)
+                diffusion_obs = torch.zeros(1, self.diffusion_obs_size, dtype=obs.dtype, device=obs.device)
 
         # Get action and value
         action_out, log_prob, entropy, value = self.ac.get_action_and_value(
