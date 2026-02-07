@@ -242,6 +242,13 @@ class ContemplativeAgent(nn.Module):
         if config.diffusion.enabled:
             self.diffusion_obs_size = 3 * config.diffusion.num_channels  # value + grad_x + grad_y
 
+        # Debug: Print sizes to help diagnose dimension issues
+        print(f"[DEBUG] ContemplativeAgent.__init__: obs_size={obs_size}, "
+              f"diffusion_enabled={config.diffusion.enabled}, "
+              f"num_channels={config.diffusion.num_channels}, "
+              f"diffusion_obs_size={self.diffusion_obs_size}, "
+              f"total_obs_size={obs_size + self.diffusion_obs_size}")
+
         # Core actor-critic
         self.ac = ActorCritic(
             obs_size=obs_size,
