@@ -431,6 +431,10 @@ class MAPPOTrainer:
         # Normalize advantages
         advantages_tensor = (advantages_tensor - advantages_tensor.mean()) / (advantages_tensor.std() + 1e-8)
 
+        # Get batch size info first (needed for diffusion tensor creation)
+        batch_size = config.batch_size
+        n_samples = len(all_obs)
+
         # Diffusion observations
         diffusion_tensor = None
         agent_ref = self.agent_system.shared_agent if hasattr(self.agent_system, 'shared_agent') else self.agent_system.agents[0]
@@ -448,9 +452,6 @@ class MAPPOTrainer:
         total_entropy_loss = 0
         total_ethics_loss = 0
         total_mindfulness_loss = 0
-
-        batch_size = config.batch_size
-        n_samples = len(all_obs)
 
         # Get agent reference
         agent = self.agent_system.shared_agent if hasattr(self.agent_system, 'shared_agent') else self.agent_system.agents[0]

@@ -326,10 +326,19 @@ class ContemplativeAgent(nn.Module):
             obs, diffusion_obs, action, deterministic
         )
 
+        # Convert action to one-hot encoding for modules that need it
+        if not self.continuous:
+            action_onehot = F.one_hot(
+                action_out.long() if action_out.dim() == 0 else action_out.long().squeeze(),
+                num_classes=self.action_size
+            ).float().unsqueeze(0)
+        else:
+            action_onehot = action_out.unsqueeze(0) if action_out.dim() == 1 else action_out
+
         # Apply mindfulness gating if enabled
         if self.mindfulness is not None and not deterministic:
             mindfulness_state = self.mindfulness.compute_mindfulness_state(
-                obs, action_out.unsqueeze(0) if action_out.dim() == 1 else action_out
+                obs, action_onehot
             )
             entropy_bonus = self.mindfulness.get_entropy_bonus(
                 torch.tensor([1.0 if mindfulness_state.is_conservative else 0.0])
@@ -341,10 +350,6 @@ class ContemplativeAgent(nn.Module):
         # Compute ethics score if enabled
         ethics_score = None
         if self.ethics is not None:
-            action_onehot = F.one_hot(
-                action_out if action_out.dim() == 0 else action_out.long(),
-                num_classes=self.action_size
-            ).float()
             ethics_score, _ = self.ethics(obs, action_onehot)
 
         # Compute deposit strengths for diffusion
