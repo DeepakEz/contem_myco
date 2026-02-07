@@ -114,11 +114,16 @@ class MixedMotiveMPE:
         # Agent positions (extracted from observations)
         self.agent_positions = {}
 
+        # Get actual observation size from a test reset (PettingZoo spaces may not match actual obs)
+        test_obs, _ = self.env.reset()
+        self._actual_obs_size = len(list(test_obs.values())[0])
+        # Reset again to clear state
+        self.env.reset()
+
     @property
     def obs_size(self) -> int:
-        """Get observation size (assuming homogeneous agents)."""
-        space = list(self.observation_spaces.values())[0]
-        return space.shape[0]
+        """Get observation size (from actual observations, not space which may differ)."""
+        return self._actual_obs_size
 
     @property
     def action_size(self) -> int:
