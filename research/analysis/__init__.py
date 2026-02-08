@@ -1,7 +1,9 @@
 """
 Analysis Tools for Contemplative MARL
 =====================================
-Statistical testing and result analysis.
+Comprehensive statistical testing, calibration, communication analysis,
+adversarial robustness, sample efficiency, human evaluation, and
+transfer learning evaluation.
 """
 
 from .significance import (
@@ -17,7 +19,21 @@ from .visualization import (
     plot_ablation_heatmap,
 )
 
+from .statistical_tests import (
+    StatisticalAnalyzer,
+    PairwiseComparison,
+    FactorialAnalysis,
+)
+
+from .calibration import CalibrationAnalyzer
+from .communication_analysis import CommunicationAnalyzer
+from .adversarial_robustness import AdversarialRobustnessEvaluator
+from .sample_efficiency import SampleEfficiencyAnalyzer
+from .human_evaluation import HumanEvaluationProtocol
+from .transfer_learning import TransferLearningEvaluator
+
 __all__ = [
+    # Original
     "compare_methods",
     "run_significance_tests",
     "compute_effect_size",
@@ -25,4 +41,15 @@ __all__ = [
     "plot_learning_curves",
     "plot_comparison_bars",
     "plot_ablation_heatmap",
+    # New statistical analysis
+    "StatisticalAnalyzer",
+    "PairwiseComparison",
+    "FactorialAnalysis",
+    # New analysis modules
+    "CalibrationAnalyzer",
+    "CommunicationAnalyzer",
+    "AdversarialRobustnessEvaluator",
+    "SampleEfficiencyAnalyzer",
+    "HumanEvaluationProtocol",
+    "TransferLearningEvaluator",
 ]
