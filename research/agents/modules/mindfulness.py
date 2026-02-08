@@ -470,9 +470,9 @@ class MindfulnessModule(nn.Module):
         else:
             return ensemble_loss
 
-    def state_dict(self):
+    def state_dict(self, *args, **kwargs):
         """Get state dict including running statistics."""
-        base_state = super().state_dict()
+        base_state = super().state_dict(*args, **kwargs)
         base_state['_running_stats'] = {
             'surprise_mean': self.surprise_mean,
             'surprise_std': self.surprise_std,
