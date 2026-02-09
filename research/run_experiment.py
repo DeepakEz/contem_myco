@@ -31,9 +31,11 @@ from research.config import (
     get_ablation_configs,
     get_scaling_configs,
     get_robustness_configs,
+    get_factorial_ablation_configs,
+    get_adversarial_configs,
 )
 from research.agents import MultiAgentSystem
-from research.agents.baselines import CommNetAgent, TarMACAgent, QMIXAgent
+from research.agents.baselines import CommNetAgent, TarMACAgent, QMIXAgent, MADDPGAgent
 from research.environments import MixedMotiveMPE, SocialDilemmaEnv
 from research.training import MAPPOTrainer
 
@@ -226,11 +228,20 @@ def run_baseline_experiment(
             hidden_size=64,
             device=device,
         )
+    elif baseline_type == "maddpg":
+        agent = MADDPGAgent(
+            num_agents=config.env.num_agents,
+            obs_size=env.obs_size,
+            action_size=env.action_size,
+            hidden_size=128,
+            continuous=False,
+            device=device,
+        )
     else:
         raise ValueError(f"Unknown baseline type: {baseline_type}")
 
     # Training loop for baselines
-    optimizer = optim.Adam(agent.parameters(), lr=3e-4) if baseline_type != "qmix" else None
+    optimizer = optim.Adam(agent.parameters(), lr=3e-4) if baseline_type not in ("qmix", "maddpg") else None
 
     total_steps = config.training.total_timesteps
     episode_rewards = []
@@ -252,8 +263,8 @@ def run_baseline_experiment(
         episode_reward = 0
         done = False
 
-        # For QMIX, create global state
-        if baseline_type == "qmix":
+        # For QMIX/MADDPG, create global state
+        if baseline_type in ("qmix", "maddpg"):
             agent_ids = list(obs.keys())
             state = np.concatenate([obs[aid] for aid in agent_ids])
 
@@ -263,6 +274,8 @@ def run_baseline_experiment(
                 actions = agent.act(obs, explore=True)
                 log_probs_dict = {}
                 values_dict = {}
+            elif baseline_type == "maddpg":
+                actions, values_dict, log_probs_dict = agent.act(obs, explore=True)
             else:
                 actions, values_dict, log_probs_dict = agent.act(obs)
 
@@ -275,12 +288,15 @@ def run_baseline_experiment(
             # Accumulate reward
             episode_reward += sum(rewards.values())
 
-            # QMIX-specific update
+            # QMIX/MADDPG-specific update
             if baseline_type == "qmix":
                 next_state = np.concatenate([next_obs[aid] for aid in agent_ids])
                 agent.store(obs, state, actions, rewards, next_obs, next_state, terminations)
                 agent.update()
                 state = next_state
+            elif baseline_type == "maddpg":
+                agent.store(obs, actions, rewards, next_obs, terminations)
+                agent.update()
             else:
                 # Store for CommNet/TarMAC PPO update
                 rollout_obs.append(obs)
@@ -299,7 +315,7 @@ def run_baseline_experiment(
         episode_rewards.append(episode_reward)
 
         # PPO update for CommNet/TarMAC every episode
-        if baseline_type != "qmix" and len(rollout_obs) >= 64:
+        if baseline_type not in ("qmix", "maddpg") and len(rollout_obs) >= 64:
             # Recompute log_probs WITH gradients for policy gradient
             agent_ids = list(rollout_obs[0].keys())
 
@@ -395,7 +411,7 @@ def run_baseline_comparison(
     """Run all baselines for comparison."""
     all_results = {}
 
-    baselines = ['commnet', 'tarmac', 'qmix']
+    baselines = ['commnet', 'tarmac', 'qmix', 'maddpg']
 
     for baseline in baselines:
         logger.info(f"\n{'='*60}")
@@ -472,6 +488,77 @@ def print_results_table(results: dict):
     print("=" * 80)
 
 
+def run_statistical_analysis(results: dict, output_dir: Path):
+    """Run comprehensive statistical analysis on experiment results."""
+    from research.analysis import StatisticalAnalyzer
+
+    logger.info("\n" + "=" * 60)
+    logger.info("RUNNING STATISTICAL ANALYSIS")
+    logger.info("=" * 60)
+
+    analyzer = StatisticalAnalyzer(alpha=0.05, n_bootstrap=10000)
+
+    # Convert results format for the analyzer
+    formatted = {}
+    for config_name, data in results.items():
+        if 'individual_results' in data:
+            formatted[config_name] = {
+                'reward': [r['final_reward'] for r in data['individual_results']],
+                'social_welfare': [r['mean_social_welfare'] for r in data['individual_results']],
+                'gini': [r['mean_gini'] for r in data['individual_results']],
+                'cooperation': [r['mean_cooperation'] for r in data['individual_results']],
+            }
+
+    if len(formatted) < 2:
+        logger.info("Need at least 2 conditions for statistical analysis")
+        return
+
+    # Run full analysis
+    analysis = analyzer.run_full_analysis(formatted)
+
+    # Generate LaTeX tables
+    if analysis.get("pairwise_vs_baseline"):
+        latex = analyzer.generate_latex_table(analysis["pairwise_vs_baseline"])
+        latex_path = output_dir / "statistical_comparison.tex"
+        with open(latex_path, 'w') as f:
+            f.write(latex)
+        logger.info(f"Saved LaTeX table to {latex_path}")
+
+    if analysis.get("factorial_analysis"):
+        factorial_latex = analyzer.generate_factorial_latex_table(
+            analysis["factorial_analysis"]
+        )
+        factorial_path = output_dir / "factorial_anova.tex"
+        with open(factorial_path, 'w') as f:
+            f.write(factorial_latex)
+        logger.info(f"Saved factorial ANOVA table to {factorial_path}")
+
+    # Save full analysis as JSON
+    analysis_path = output_dir / "statistical_analysis.json"
+    with open(analysis_path, 'w') as f:
+        json.dump(
+            analysis.get("analysis_config", {}),
+            f, indent=2, default=lambda x: float(x) if hasattr(x, 'item') else str(x)
+        )
+
+    # Print summary
+    if analysis.get("pairwise_vs_baseline"):
+        print("\n" + "=" * 80)
+        print("STATISTICAL COMPARISON (vs baseline)")
+        print("=" * 80)
+        print(f"{'Condition':<25} {'Metric':<15} {'Diff':>8} {'p-adj':>10} {'Effect':>12} {'Sig':>5}")
+        print("-" * 80)
+        for c in analysis["pairwise_vs_baseline"]:
+            p = c.p_value_corrected if c.p_value_corrected else c.p_value_raw
+            sig = "*" if c.significant_corrected else ""
+            print(
+                f"{c.method_a:<25} {c.metric:<15} "
+                f"{c.difference:>+8.3f} {p:>10.4f} "
+                f"{c.effect_size_hedges_g:>6.2f} ({c.effect_interpretation:>5}) {sig:>5}"
+            )
+        print("=" * 80)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run Contemplative MARL experiments")
 
@@ -480,15 +567,25 @@ def main():
                        choices=['full', 'baseline'],
                        help='Which configuration to run')
     parser.add_argument('--ablation', action='store_true',
-                       help='Run ablation study')
+                       help='Run ablation study (5 conditions)')
+    parser.add_argument('--factorial', action='store_true',
+                       help='Run full 2^3 factorial ablation (8 conditions)')
     parser.add_argument('--scaling', action='store_true',
                        help='Run scaling experiments')
     parser.add_argument('--robustness', action='store_true',
                        help='Run robustness experiments')
     parser.add_argument('--baselines', action='store_true',
-                       help='Run baseline comparison (CommNet, TarMAC, QMIX)')
+                       help='Run baseline comparison (CommNet, TarMAC, QMIX, MADDPG)')
     parser.add_argument('--full-comparison', action='store_true',
-                       help='Run full comparison: ablations + baselines')
+                       help='Run full comparison: factorial ablations + baselines')
+    parser.add_argument('--adversarial', action='store_true',
+                       help='Run adversarial robustness evaluation')
+
+    # Analysis options
+    parser.add_argument('--analyze', action='store_true',
+                       help='Run statistical analysis after experiments')
+    parser.add_argument('--analyze-only', type=str, default=None,
+                       help='Run analysis on existing experiment directory')
 
     # Experiment parameters
     parser.add_argument('--seeds', type=int, default=5,
@@ -509,6 +606,17 @@ def main():
 
     args = parser.parse_args()
 
+    # Handle --analyze-only
+    if args.analyze_only:
+        output_dir = Path(args.analyze_only)
+        if (output_dir / 'aggregate_results.json').exists():
+            with open(output_dir / 'aggregate_results.json') as f:
+                all_results = json.load(f)
+            run_statistical_analysis(all_results, output_dir)
+        else:
+            logger.error(f"No aggregate_results.json found in {args.analyze_only}")
+        return
+
     # Create output directory
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_dir = Path(args.output) / timestamp
@@ -517,11 +625,12 @@ def main():
     logger.info(f"Output directory: {output_dir}")
 
     all_results = {}
+    all_results_with_individual = {}
 
     # Run baseline comparison if requested
     if args.baselines or args.full_comparison:
         logger.info("\n" + "=" * 60)
-        logger.info("RUNNING BASELINE COMPARISON")
+        logger.info("RUNNING BASELINE COMPARISON (CommNet, TarMAC, QMIX, MADDPG)")
         logger.info("=" * 60)
 
         config = get_full_config()
@@ -536,15 +645,22 @@ def main():
         all_results.update(baseline_results)
 
     # Determine which contemplative experiments to run
-    if args.full_comparison or args.ablation:
+    if args.full_comparison or args.factorial:
+        # Use full 2^3 factorial design (8 conditions)
+        configs = get_factorial_ablation_configs()
+        logger.info("\nRunning full 2^3 factorial ablation (8 conditions)")
+    elif args.ablation:
         configs = get_ablation_configs()
-        logger.info("\nRunning ablation study")
+        logger.info("\nRunning ablation study (5 conditions)")
     elif args.scaling:
         configs = get_scaling_configs(args.agents)
         logger.info(f"\nRunning scaling experiments: {args.agents}")
     elif args.robustness:
         configs = get_robustness_configs()
         logger.info("\nRunning robustness experiments")
+    elif args.adversarial:
+        configs = get_adversarial_configs()
+        logger.info("\nRunning adversarial robustness experiments")
     elif not args.baselines:  # Only run if not just baselines
         if args.config == 'full':
             configs = {'contemplative_full': get_full_config()}
@@ -566,8 +682,9 @@ def main():
             device=args.device,
         )
 
-        # Merge results (remove individual results for aggregation)
+        # Keep individual results for statistical analysis
         for k, v in contemp_results.items():
+            all_results_with_individual[k] = v
             all_results[k] = {kk: vv for kk, vv in v.items() if kk != 'individual_results'}
 
     # Save aggregate results
@@ -577,6 +694,10 @@ def main():
     # Print table
     if all_results:
         print_results_table(all_results)
+
+    # Run statistical analysis if requested
+    if args.analyze or args.full_comparison or args.factorial:
+        run_statistical_analysis(all_results_with_individual, output_dir)
 
     logger.info(f"\nResults saved to {output_dir}")
 

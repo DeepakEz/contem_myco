@@ -257,3 +257,116 @@ def get_robustness_configs() -> Dict[str, ExperimentConfig]:
         configs[f"act_noise_{noise}"] = config
 
     return configs
+
+
+def get_factorial_ablation_configs() -> Dict[str, ExperimentConfig]:
+    """
+    Generate full 2^3 factorial ablation configurations.
+
+    Tests all 8 combinations of ethics x diffusion x mindfulness
+    to enable proper factorial ANOVA analysis with interaction effects.
+
+    Returns:
+        Dict of 8 configs mapping condition name to ExperimentConfig
+    """
+    configs = {}
+    modules = ["ethics", "diffusion", "mindfulness"]
+
+    for ethics_on in [True, False]:
+        for diffusion_on in [True, False]:
+            for mindfulness_on in [True, False]:
+                # Generate descriptive name
+                active = []
+                if ethics_on:
+                    active.append("E")
+                if diffusion_on:
+                    active.append("D")
+                if mindfulness_on:
+                    active.append("M")
+
+                if active:
+                    name = "+".join(active)
+                else:
+                    name = "no_modules"
+
+                # Map to human-readable keys
+                if ethics_on and diffusion_on and mindfulness_on:
+                    key = "full"
+                elif not any([ethics_on, diffusion_on, mindfulness_on]):
+                    key = "no_modules"
+                elif ethics_on and not diffusion_on and not mindfulness_on:
+                    key = "ethics_only"
+                elif not ethics_on and diffusion_on and not mindfulness_on:
+                    key = "diffusion_only"
+                elif not ethics_on and not diffusion_on and mindfulness_on:
+                    key = "mindfulness_only"
+                elif ethics_on and diffusion_on and not mindfulness_on:
+                    key = "ethics_diffusion"
+                elif ethics_on and not diffusion_on and mindfulness_on:
+                    key = "ethics_mindfulness"
+                elif not ethics_on and diffusion_on and mindfulness_on:
+                    key = "diffusion_mindfulness"
+                else:
+                    key = name
+
+                config = ExperimentConfig(name=f"factorial_{key}")
+                config.ethics.enabled = ethics_on
+                config.diffusion.enabled = diffusion_on
+                config.mindfulness.enabled = mindfulness_on
+                configs[key] = config
+
+    return configs
+
+
+def get_adversarial_configs(
+    epsilons: List[float] = None,
+) -> Dict[str, ExperimentConfig]:
+    """
+    Generate configs for adversarial robustness testing.
+
+    Creates configs at multiple perturbation levels for both
+    the full contemplative agent and the no-module baseline.
+    """
+    epsilons = epsilons or [0.01, 0.05, 0.1, 0.2, 0.3]
+    configs = {}
+
+    for eps in epsilons:
+        # Full contemplative under attack
+        config_full = get_full_config()
+        config_full.name = f"adversarial_full_eps{eps}"
+        config_full.env.obs_noise_std = eps
+        configs[f"full_eps{eps}"] = config_full
+
+        # Baseline under attack
+        config_base = get_baseline_config()
+        config_base.name = f"adversarial_baseline_eps{eps}"
+        config_base.env.obs_noise_std = eps
+        configs[f"baseline_eps{eps}"] = config_base
+
+    return configs
+
+
+def get_transfer_configs(
+    source_envs: List[str] = None,
+    target_envs: List[str] = None,
+) -> Dict[str, Dict[str, ExperimentConfig]]:
+    """
+    Generate configs for transfer learning experiments.
+
+    Returns nested dict: {source_env: {target_env: config}}
+    """
+    source_envs = source_envs or ["mpe_simple_spread", "mpe_simple_tag"]
+    target_envs = target_envs or ["mpe_simple_adversary", "mpe_simple_spread"]
+
+    configs = {}
+    for source in source_envs:
+        configs[source] = {}
+        for target in target_envs:
+            if source == target:
+                continue
+            config = get_full_config()
+            config.name = f"transfer_{source}_to_{target}"
+            config.env.name = target
+            configs[source][target] = config
+
+    return configs

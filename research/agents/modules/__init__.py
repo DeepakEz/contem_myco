@@ -1,11 +1,13 @@
 """
 Contemplative MARL Modules
 ==========================
-Three core modules for the Contemplative MARL framework:
+Core modules for the Contemplative MARL framework:
 
 - Module A (Ethics): Multi-framework ethical constraints with Lagrangian optimization
 - Module B (Diffusion): Stigmergic communication via spatial signal fields
 - Module C (Mindfulness): Uncertainty-aware gating for robustness
+- Dynamic Ethics: Context-dependent ethical framework weighting
+- Interpretable Ethics: Attention-based explanations for ethical decisions
 """
 
 from .ethics import (
@@ -35,6 +37,17 @@ from .mindfulness import (
     create_mindfulness_module,
 )
 
+from .dynamic_ethics import (
+    DynamicMultiFrameworkEthics,
+    ContextualWeightNetwork,
+)
+
+from .interpretable_ethics import (
+    AttentiveEthicsEvaluator,
+    EthicsAuditTrail,
+    EthicalExplanation,
+)
+
 __all__ = [
     # Ethics
     "EthicsModule",
@@ -44,6 +57,13 @@ __all__ = [
     "EthicalFramework",
     "EthicalAssessment",
     "create_ethics_module",
+    # Dynamic Ethics
+    "DynamicMultiFrameworkEthics",
+    "ContextualWeightNetwork",
+    # Interpretable Ethics
+    "AttentiveEthicsEvaluator",
+    "EthicsAuditTrail",
+    "EthicalExplanation",
     # Diffusion
     "DiffusionField",
     "DiffusionEncoder",

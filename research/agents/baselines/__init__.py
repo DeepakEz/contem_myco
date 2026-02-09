@@ -7,11 +7,13 @@ Implementations:
 - CommNet: Learned continuous communication via averaging
 - TarMAC: Targeted multi-agent communication with attention
 - QMIX: Value decomposition with monotonic mixing
+- MADDPG: Multi-Agent Deep Deterministic Policy Gradient
 """
 
 from .commnet import CommNet, CommNetAgent, CommNetLayer
 from .tarmac import TarMAC, TarMACAgent, TarMACLayer, MultiHeadAttention
 from .qmix import QMIX, QMIXAgent, MixingNetwork, ReplayBuffer, PrioritizedReplayBuffer
+from .maddpg import MADDPGAgent, MADDPGActor, MADDPGCritic
 
 __all__ = [
     # CommNet
@@ -29,4 +31,8 @@ __all__ = [
     "MixingNetwork",
     "ReplayBuffer",
     "PrioritizedReplayBuffer",
+    # MADDPG
+    "MADDPGAgent",
+    "MADDPGActor",
+    "MADDPGCritic",
 ]
