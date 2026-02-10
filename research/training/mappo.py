@@ -25,10 +25,14 @@ import logging
 
 # Mixed precision support
 try:
-    from torch.cuda.amp import GradScaler, autocast
+    from torch.amp import GradScaler, autocast
     AMP_AVAILABLE = True
 except ImportError:
-    AMP_AVAILABLE = False
+    try:
+        from torch.cuda.amp import GradScaler, autocast
+        AMP_AVAILABLE = True
+    except ImportError:
+        AMP_AVAILABLE = False
 
 # torch.compile support (PyTorch 2.0+)
 COMPILE_AVAILABLE = hasattr(torch, 'compile')
@@ -178,7 +182,7 @@ class MAPPOTrainer:
         self.use_mixed_precision = use_mixed_precision and AMP_AVAILABLE and device != "cpu"
         self.scaler = None
         if self.use_mixed_precision:
-            self.scaler = GradScaler()
+            self.scaler = GradScaler('cuda')
             logger.info("Mixed precision training enabled")
 
         # torch.compile optimization (PyTorch 2.0+)
@@ -479,7 +483,7 @@ class MAPPOTrainer:
                 batch_global_state = global_state_tensor[batch_indices] if use_centralized else None
 
                 # Mixed precision context
-                amp_context = autocast() if self.use_mixed_precision else torch.enable_grad()
+                amp_context = autocast('cuda') if self.use_mixed_precision else torch.enable_grad()
 
                 with amp_context:
                     _, log_probs, entropy, values = agent.ac.get_action_and_value(
