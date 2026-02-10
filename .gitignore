@@ -8,6 +8,7 @@ __pycache__/
 
 # Results and outputs (regeneratable)
 results_*/
+experiment_results/
 contemplative_results/
 quick_results/
 publication_analysis/
