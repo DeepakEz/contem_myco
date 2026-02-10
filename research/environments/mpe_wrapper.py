@@ -382,6 +382,15 @@ class SocialDilemmaEnv:
         # Episode metrics
         self._episode_metrics = EpisodeMetrics()
 
+        # Assign fixed grid positions for stigmergic diffusion
+        # Place agents evenly spaced in [-0.8, 0.8] range
+        self._agent_positions = {}
+        spacing = 1.6 / max(num_agents, 1)
+        for i, agent in enumerate(self.agents):
+            x = -0.8 + spacing * (i + 0.5)
+            y = 0.0  # 1D arrangement for simple games
+            self._agent_positions[agent] = np.array([x, y], dtype=np.float32)
+
     def reset(self, seed: Optional[int] = None) -> Tuple[Dict[str, np.ndarray], Dict]:
         """Reset game."""
         if seed is not None:
@@ -531,8 +540,8 @@ class SocialDilemmaEnv:
         return self._episode_metrics
 
     def get_positions(self) -> Dict[str, np.ndarray]:
-        """Get agent positions (not applicable, return empty)."""
-        return {}
+        """Get agent positions for stigmergic diffusion field."""
+        return self._agent_positions.copy()
 
     def close(self):
         """Close environment (no-op for this env)."""
