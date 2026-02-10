@@ -310,7 +310,7 @@ class ContemplativeAgent(nn.Module):
             if diffusion_field is not None and position is not None:
                 # Sense field
                 field_obs = diffusion_field.sense(position)
-                diffusion_obs = torch.from_numpy(field_obs).float().unsqueeze(0)
+                diffusion_obs = torch.from_numpy(field_obs).float().to(obs.device).unsqueeze(0)
                 # Validate size matches what network expects
                 if diffusion_obs.shape[-1] != self.diffusion_obs_size:
                     raise ValueError(
@@ -341,7 +341,7 @@ class ContemplativeAgent(nn.Module):
                 obs, action_onehot
             )
             entropy_bonus = self.mindfulness.get_entropy_bonus(
-                torch.tensor([1.0 if mindfulness_state.is_conservative else 0.0])
+                torch.tensor([1.0 if mindfulness_state.is_conservative else 0.0], device=obs.device)
             )
             # Could modify action selection here based on uncertainty
         else:
@@ -446,7 +446,8 @@ class MultiAgentSystem:
         for i, (agent_id, obs) in enumerate(observations.items()):
             agent = self.agents[i] if not self.share_params else self.shared_agent
 
-            obs_tensor = torch.from_numpy(obs).float().unsqueeze(0)
+            device = next(agent.parameters()).device
+            obs_tensor = torch.from_numpy(obs).float().to(device).unsqueeze(0)
             pos = positions.get(agent_id) if positions else None
 
             output = agent(
