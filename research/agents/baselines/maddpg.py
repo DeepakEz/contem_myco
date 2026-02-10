@@ -193,6 +193,7 @@ class MADDPGAgent:
         tau: float = 0.01,
         batch_size: int = 256,
         buffer_size: int = 100000,
+        update_every: int = 100,
         continuous: bool = False,
         device: str = "cpu",
     ):
@@ -202,8 +203,10 @@ class MADDPGAgent:
         self.gamma = gamma
         self.tau = tau
         self.batch_size = batch_size
+        self.update_every = update_every
         self.device = device
         self.continuous = continuous
+        self._step_count = 0
 
         total_obs_size = obs_size * num_agents
         total_action_size = action_size * num_agents
@@ -291,6 +294,9 @@ class MADDPGAgent:
         Returns:
             Dict of loss values or None if buffer too small
         """
+        self._step_count += 1
+        if self._step_count % self.update_every != 0:
+            return None
         if len(self.replay_buffer) < self.batch_size:
             return None
 
