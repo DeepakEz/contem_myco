@@ -33,6 +33,9 @@ from research.config import (
     get_robustness_configs,
     get_factorial_ablation_configs,
     get_adversarial_configs,
+    get_diffusion_only_config,
+    get_diffusion_paper_configs,
+    get_scalability_configs,
 )
 from research.agents import MultiAgentSystem
 from research.agents.baselines import CommNetAgent, TarMACAgent, QMIXAgent, MADDPGAgent
@@ -581,6 +584,14 @@ def main():
     parser.add_argument('--adversarial', action='store_true',
                        help='Run adversarial robustness evaluation')
 
+    # Diffusion paper modes
+    parser.add_argument('--diffusion-paper', action='store_true',
+                       help='Run focused stigmergic diffusion paper experiments')
+    parser.add_argument('--diffusion-ablation', action='store_true',
+                       help='Run diffusion mechanism ablations only')
+    parser.add_argument('--diffusion-scalability', action='store_true',
+                       help='Run scalability comparison (diffusion vs explicit messaging)')
+
     # Analysis options
     parser.add_argument('--analyze', action='store_true',
                        help='Run statistical analysis after experiments')
@@ -626,6 +637,125 @@ def main():
 
     all_results = {}
     all_results_with_individual = {}
+
+    # ========================================
+    # DIFFUSION PAPER MODE
+    # ========================================
+    if args.diffusion_paper or args.diffusion_ablation or args.diffusion_scalability:
+        from research.analysis.diffusion_analysis import DiffusionPaperAnalyzer
+        analyzer = DiffusionPaperAnalyzer(output_dir=str(output_dir / "analysis"))
+
+        if args.diffusion_paper or args.diffusion_ablation:
+            logger.info("\n" + "=" * 60)
+            logger.info("STIGMERGIC DIFFUSION PAPER — ABLATION EXPERIMENTS")
+            logger.info("=" * 60)
+
+            diffusion_configs = get_diffusion_paper_configs()
+            for config in diffusion_configs.values():
+                config.training.total_timesteps = args.timesteps
+
+            ablation_results = run_experiment_suite(
+                configs=diffusion_configs,
+                num_seeds=args.seeds,
+                output_dir=output_dir / "diffusion_ablations",
+                device=args.device,
+            )
+            for k, v in ablation_results.items():
+                all_results_with_individual[k] = v
+                all_results[k] = {kk: vv for kk, vv in v.items() if kk != 'individual_results'}
+
+            # Generate ablation plots
+            analyzer.plot_ablation_results(all_results)
+
+        if args.diffusion_paper or args.diffusion_scalability:
+            logger.info("\n" + "=" * 60)
+            logger.info("STIGMERGIC DIFFUSION PAPER — SCALABILITY EXPERIMENTS")
+            logger.info("=" * 60)
+
+            scale_configs = get_scalability_configs(args.agents)
+            for config in scale_configs.values():
+                config.training.total_timesteps = args.timesteps
+
+            scale_results = run_experiment_suite(
+                configs=scale_configs,
+                num_seeds=args.seeds,
+                output_dir=output_dir / "scalability",
+                device=args.device,
+            )
+            for k, v in scale_results.items():
+                all_results_with_individual[k] = v
+                all_results[k] = {kk: vv for kk, vv in v.items() if kk != 'individual_results'}
+
+            # Run explicit messaging baselines at each scale
+            for n in args.agents:
+                logger.info(f"\nRunning CommNet and TarMAC baselines with {n} agents")
+                scale_baseline_config = get_baseline_config()
+                scale_baseline_config.env.num_agents = n
+                scale_baseline_config.env.num_landmarks = n
+                scale_baseline_config.training.total_timesteps = args.timesteps
+
+                for baseline_name in ['commnet', 'tarmac']:
+                    baseline_results_list = []
+                    for seed_i in range(args.seeds):
+                        set_seed(seed_i)
+                        result = run_baseline_experiment(
+                            config=scale_baseline_config,
+                            baseline_type=baseline_name,
+                            seed=seed_i,
+                            output_dir=output_dir / "scalability" / f"{baseline_name}_{n}" / f"seed_{seed_i}",
+                            device=args.device,
+                        )
+                        baseline_results_list.append(result)
+
+                    rewards = [r.get('mean_reward', 0) for r in baseline_results_list]
+                    key = f"{baseline_name}_{n}"
+                    all_results[key] = {
+                        'mean_reward': float(np.mean(rewards)),
+                        'std_reward': float(np.std(rewards)),
+                    }
+
+            # Generate scalability plots
+            methods = ['no_comm', 'diffusion', 'commnet', 'tarmac']
+            analyzer.plot_scalability(methods, args.agents, all_results)
+
+        if args.diffusion_paper:
+            # Also run main baselines (CommNet, TarMAC, QMIX, MADDPG) at default agent count
+            logger.info("\n" + "=" * 60)
+            logger.info("STIGMERGIC DIFFUSION PAPER — BASELINE COMPARISON")
+            logger.info("=" * 60)
+
+            config = get_diffusion_only_config()
+            config.training.total_timesteps = args.timesteps
+
+            baseline_results = run_baseline_comparison(
+                config=config,
+                num_seeds=args.seeds,
+                output_dir=output_dir / "baselines",
+                device=args.device,
+            )
+            all_results.update(baseline_results)
+
+        # Generate summary
+        ablation_res = {k: v for k, v in all_results.items() if k.startswith("diffusion_")}
+        main_res = {k: v for k, v in all_results.items() if not k.startswith("diffusion_") or k == "diffusion"}
+        summary = analyzer.generate_paper_summary(main_res, ablation_res)
+        with open(output_dir / "paper_summary.md", 'w') as f:
+            f.write(summary)
+        logger.info(f"\nPaper summary saved to {output_dir / 'paper_summary.md'}")
+
+        # Save and finish
+        with open(output_dir / 'aggregate_results.json', 'w', encoding='utf-8') as f:
+            json.dump(all_results, f, indent=2, default=lambda x: float(x) if hasattr(x, 'item') else x)
+        if all_results:
+            print_results_table(all_results)
+        if args.analyze:
+            run_statistical_analysis(all_results_with_individual, output_dir)
+        logger.info(f"\nResults saved to {output_dir}")
+        return
+
+    # ========================================
+    # ORIGINAL EXPERIMENT MODES
+    # ========================================
 
     # Run baseline comparison if requested
     if args.baselines or args.full_comparison:

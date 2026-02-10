@@ -31,6 +31,7 @@ from .adversarial_robustness import AdversarialRobustnessEvaluator
 from .sample_efficiency import SampleEfficiencyAnalyzer
 from .human_evaluation import HumanEvaluationProtocol
 from .transfer_learning import TransferLearningEvaluator
+from .diffusion_analysis import DiffusionPaperAnalyzer, DiffusionFieldMetrics
 
 __all__ = [
     # Original
@@ -52,4 +53,7 @@ __all__ = [
     "SampleEfficiencyAnalyzer",
     "HumanEvaluationProtocol",
     "TransferLearningEvaluator",
+    # Diffusion paper analysis
+    "DiffusionPaperAnalyzer",
+    "DiffusionFieldMetrics",
 ]

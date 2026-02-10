@@ -346,6 +346,113 @@ def get_adversarial_configs(
     return configs
 
 
+def get_diffusion_only_config() -> ExperimentConfig:
+    """Agent with ONLY stigmergic diffusion — no ethics, no mindfulness."""
+    config = ExperimentConfig(name="diffusion_only")
+    config.diffusion.enabled = True
+    config.ethics.enabled = False
+    config.mindfulness.enabled = False
+    return config
+
+
+def get_diffusion_paper_configs() -> Dict[str, ExperimentConfig]:
+    """
+    Configs for the stigmergic diffusion paper.
+
+    Compares:
+    - no_comm: Pure MAPPO without any communication
+    - diffusion: MAPPO + stigmergic diffusion (our method)
+    - diffusion_2ch: Diffusion with 2 channels (ablation)
+    - diffusion_8ch: Diffusion with 8 channels (ablation)
+    - diffusion_low_decay: Slower signal decay
+    - diffusion_high_decay: Faster signal decay
+    - diffusion_small_grid: 16x16 grid resolution
+    - diffusion_large_grid: 64x64 grid resolution
+    """
+    configs = {}
+
+    # --- Main comparison ---
+
+    # Baseline: no communication
+    configs["no_comm"] = get_baseline_config()
+    configs["no_comm"].name = "no_communication"
+
+    # Our method: stigmergic diffusion only
+    configs["diffusion"] = get_diffusion_only_config()
+
+    # --- Diffusion ablations ---
+
+    # Channel count ablation
+    for n_ch in [1, 2, 8]:
+        c = get_diffusion_only_config()
+        c.name = f"diffusion_{n_ch}ch"
+        c.diffusion.num_channels = n_ch
+        configs[f"diffusion_{n_ch}ch"] = c
+
+    # Decay rate ablation
+    for decay, label in [(0.01, "low_decay"), (0.1, "mid_decay"), (0.2, "high_decay")]:
+        c = get_diffusion_only_config()
+        c.name = f"diffusion_{label}"
+        c.diffusion.decay_rate = decay
+        configs[f"diffusion_{label}"] = c
+
+    # Grid resolution ablation
+    for grid, label in [(16, "grid16"), (32, "grid32"), (64, "grid64")]:
+        c = get_diffusion_only_config()
+        c.name = f"diffusion_{label}"
+        c.diffusion.grid_size = grid
+        configs[f"diffusion_{label}"] = c
+
+    # Deposit strength ablation
+    for strength, label in [(0.5, "weak_deposit"), (1.0, "default_deposit"), (2.0, "strong_deposit")]:
+        c = get_diffusion_only_config()
+        c.name = f"diffusion_{label}"
+        c.diffusion.deposit_strength = strength
+        configs[f"diffusion_{label}"] = c
+
+    # Sense radius ablation
+    for radius, label in [(1, "radius1"), (3, "radius3"), (5, "radius5")]:
+        c = get_diffusion_only_config()
+        c.name = f"diffusion_{label}"
+        c.diffusion.sense_radius = radius
+        configs[f"diffusion_{label}"] = c
+
+    return configs
+
+
+def get_scalability_configs(
+    agent_counts: List[int] = None,
+) -> Dict[str, ExperimentConfig]:
+    """
+    Scalability experiment: vary agent count for each communication method.
+
+    Key hypothesis: Stigmergic diffusion scales O(1) per agent while
+    explicit messaging (CommNet, TarMAC) scales O(n).
+
+    Returns configs for: no_comm, diffusion at each agent count.
+    Baselines (CommNet, TarMAC) are handled separately in run_experiment.
+    """
+    agent_counts = agent_counts or [4, 8, 16, 32]
+    configs = {}
+
+    for n in agent_counts:
+        # No communication baseline
+        c_base = get_baseline_config()
+        c_base.name = f"no_comm_{n}agents"
+        c_base.env.num_agents = n
+        c_base.env.num_landmarks = n
+        configs[f"no_comm_{n}"] = c_base
+
+        # Stigmergic diffusion
+        c_diff = get_diffusion_only_config()
+        c_diff.name = f"diffusion_{n}agents"
+        c_diff.env.num_agents = n
+        c_diff.env.num_landmarks = n
+        configs[f"diffusion_{n}"] = c_diff
+
+    return configs
+
+
 def get_transfer_configs(
     source_envs: List[str] = None,
     target_envs: List[str] = None,

@@ -150,8 +150,10 @@ class MAPPOTrainer:
         self.log_dir.mkdir(parents=True, exist_ok=True)
 
         # Loss coefficients for contemplative modules
-        self.ethics_coef = ethics_coef
-        self.mindfulness_coef = mindfulness_coef
+        # Auto-disable if the modules are not present in the agent
+        agent_ref = agent_system.shared_agent if hasattr(agent_system, 'shared_agent') else agent_system.agents[0]
+        self.ethics_coef = ethics_coef if agent_ref.ethics is not None else 0.0
+        self.mindfulness_coef = mindfulness_coef if agent_ref.mindfulness is not None else 0.0
 
         # Move agents to device
         if hasattr(agent_system, 'shared_agent'):
