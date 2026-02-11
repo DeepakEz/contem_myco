@@ -694,15 +694,28 @@ def main():
                 scale_baseline_config.env.num_landmarks = n
                 scale_baseline_config.training.total_timesteps = args.timesteps
 
+                # Create env for this agent count
+                try:
+                    scale_env = MixedMotiveMPE(
+                        env_name=scale_baseline_config.env.name.replace("mpe_", ""),
+                        num_agents=n,
+                        num_landmarks=n,
+                        max_steps=scale_baseline_config.env.max_steps,
+                        individual_reward_weight=scale_baseline_config.env.individual_reward_weight,
+                    )
+                except ImportError:
+                    scale_env = SocialDilemmaEnv(num_agents=n, num_rounds=scale_baseline_config.env.max_steps)
+
                 for baseline_name in ['commnet', 'tarmac']:
                     baseline_results_list = []
                     for seed_i in range(args.seeds):
                         set_seed(seed_i)
                         result = run_baseline_experiment(
-                            config=scale_baseline_config,
                             baseline_type=baseline_name,
+                            env=scale_env,
+                            config=scale_baseline_config,
                             seed=seed_i,
-                            output_dir=output_dir / "scalability" / f"{baseline_name}_{n}" / f"seed_{seed_i}",
+                            output_dir=output_dir / "scalability" / f"{baseline_name}_{n}",
                             device=args.device,
                         )
                         baseline_results_list.append(result)
@@ -714,26 +727,11 @@ def main():
                         'std_reward': float(np.std(rewards)),
                     }
 
+                scale_env.close()
+
             # Generate scalability plots
             methods = ['no_comm', 'diffusion', 'commnet', 'tarmac']
             analyzer.plot_scalability(methods, args.agents, all_results)
-
-        if args.diffusion_paper:
-            # Also run main baselines (CommNet, TarMAC, QMIX, MADDPG) at default agent count
-            logger.info("\n" + "=" * 60)
-            logger.info("STIGMERGIC DIFFUSION PAPER — BASELINE COMPARISON")
-            logger.info("=" * 60)
-
-            config = get_diffusion_only_config()
-            config.training.total_timesteps = args.timesteps
-
-            baseline_results = run_baseline_comparison(
-                config=config,
-                num_seeds=args.seeds,
-                output_dir=output_dir / "baselines",
-                device=args.device,
-            )
-            all_results.update(baseline_results)
 
         # Generate summary
         ablation_res = {k: v for k, v in all_results.items() if k.startswith("diffusion_")}
