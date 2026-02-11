@@ -80,7 +80,12 @@ def run_single_experiment(
             action_noise_std=config.env.action_noise_std,
         )
     except ImportError:
-        logger.warning("PettingZoo not available, using SocialDilemmaEnv")
+        if config.diffusion.enabled:
+            raise ImportError(
+                "PettingZoo is REQUIRED for diffusion experiments (spatial environment needed). "
+                "Install with: pip install 'pettingzoo[mpe]'"
+            )
+        logger.warning("PettingZoo not available, using SocialDilemmaEnv (non-spatial)")
         env = SocialDilemmaEnv(
             num_agents=config.env.num_agents,
             num_rounds=config.env.max_steps,
@@ -434,10 +439,9 @@ def run_baseline_comparison(
                 individual_reward_weight=config.env.individual_reward_weight,
             )
         except ImportError:
-            logger.warning("PettingZoo not available, using SocialDilemmaEnv")
-            env = SocialDilemmaEnv(
-                num_agents=config.env.num_agents,
-                num_rounds=config.env.max_steps,
+            raise ImportError(
+                "PettingZoo is REQUIRED for baseline comparison (spatial environment needed). "
+                "Install with: pip install 'pettingzoo[mpe]'"
             )
 
         for seed in range(num_seeds):
@@ -695,16 +699,13 @@ def main():
                 scale_baseline_config.training.total_timesteps = args.timesteps
 
                 # Create env for this agent count
-                try:
-                    scale_env = MixedMotiveMPE(
-                        env_name=scale_baseline_config.env.name.replace("mpe_", ""),
-                        num_agents=n,
-                        num_landmarks=n,
-                        max_steps=scale_baseline_config.env.max_steps,
-                        individual_reward_weight=scale_baseline_config.env.individual_reward_weight,
-                    )
-                except ImportError:
-                    scale_env = SocialDilemmaEnv(num_agents=n, num_rounds=scale_baseline_config.env.max_steps)
+                scale_env = MixedMotiveMPE(
+                    env_name=scale_baseline_config.env.name.replace("mpe_", ""),
+                    num_agents=n,
+                    num_landmarks=n,
+                    max_steps=scale_baseline_config.env.max_steps,
+                    individual_reward_weight=scale_baseline_config.env.individual_reward_weight,
+                )
 
                 for baseline_name in ['commnet', 'tarmac']:
                     baseline_results_list = []

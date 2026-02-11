@@ -98,7 +98,7 @@ class TrainingConfig:
     max_grad_norm: float = 0.5
 
     # Network architecture
-    hidden_sizes: List[int] = field(default_factory=lambda: [256, 256])
+    hidden_sizes: List[int] = field(default_factory=lambda: [128, 128])
     activation: str = "tanh"
 
     # Logging
