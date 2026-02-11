@@ -359,15 +359,9 @@ def get_diffusion_paper_configs() -> Dict[str, ExperimentConfig]:
     """
     Configs for the stigmergic diffusion paper.
 
-    Compares:
-    - no_comm: Pure MAPPO without any communication
-    - diffusion: MAPPO + stigmergic diffusion (our method)
-    - diffusion_2ch: Diffusion with 2 channels (ablation)
-    - diffusion_8ch: Diffusion with 8 channels (ablation)
-    - diffusion_low_decay: Slower signal decay
-    - diffusion_high_decay: Faster signal decay
-    - diffusion_small_grid: 16x16 grid resolution
-    - diffusion_large_grid: 64x64 grid resolution
+    Total: 2 main + 9 ablation variants = 11 configs (non-redundant).
+    Default diffusion uses: 4 channels, 0.05 decay, 32 grid, 1.0 deposit, radius 3.
+    Each ablation varies ONE parameter away from default.
     """
     configs = {}
 
@@ -377,44 +371,37 @@ def get_diffusion_paper_configs() -> Dict[str, ExperimentConfig]:
     configs["no_comm"] = get_baseline_config()
     configs["no_comm"].name = "no_communication"
 
-    # Our method: stigmergic diffusion only
+    # Our method: stigmergic diffusion (default settings)
     configs["diffusion"] = get_diffusion_only_config()
 
-    # --- Diffusion ablations ---
+    # --- Diffusion ablations (vary one param at a time) ---
 
-    # Channel count ablation
+    # Channel count: default=4, test 1, 2, 8
     for n_ch in [1, 2, 8]:
         c = get_diffusion_only_config()
         c.name = f"diffusion_{n_ch}ch"
         c.diffusion.num_channels = n_ch
         configs[f"diffusion_{n_ch}ch"] = c
 
-    # Decay rate ablation
-    for decay, label in [(0.01, "low_decay"), (0.1, "mid_decay"), (0.2, "high_decay")]:
+    # Decay rate: default=0.05, test 0.01 (slow) and 0.2 (fast)
+    for decay, label in [(0.01, "slow_decay"), (0.2, "fast_decay")]:
         c = get_diffusion_only_config()
         c.name = f"diffusion_{label}"
         c.diffusion.decay_rate = decay
         configs[f"diffusion_{label}"] = c
 
-    # Grid resolution ablation
-    for grid, label in [(16, "grid16"), (32, "grid32"), (64, "grid64")]:
+    # Grid resolution: default=32, test 16 and 64
+    for grid, label in [(16, "grid16"), (64, "grid64")]:
         c = get_diffusion_only_config()
         c.name = f"diffusion_{label}"
         c.diffusion.grid_size = grid
         configs[f"diffusion_{label}"] = c
 
-    # Deposit strength ablation
-    for strength, label in [(0.5, "weak_deposit"), (1.0, "default_deposit"), (2.0, "strong_deposit")]:
+    # Deposit strength: default=1.0, test 0.5 and 2.0
+    for strength, label in [(0.5, "weak_deposit"), (2.0, "strong_deposit")]:
         c = get_diffusion_only_config()
         c.name = f"diffusion_{label}"
         c.diffusion.deposit_strength = strength
-        configs[f"diffusion_{label}"] = c
-
-    # Sense radius ablation
-    for radius, label in [(1, "radius1"), (3, "radius3"), (5, "radius5")]:
-        c = get_diffusion_only_config()
-        c.name = f"diffusion_{label}"
-        c.diffusion.sense_radius = radius
         configs[f"diffusion_{label}"] = c
 
     return configs
